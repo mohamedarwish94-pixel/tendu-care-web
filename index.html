@@ -811,6 +811,65 @@ label.chip{cursor:pointer}
 .wordmark{gap:3px}
 .wordmark .wm2{font-weight:600;opacity:.62;margin-left:0;font-size:.7em;position:relative;top:1px}
 .twocol>*{min-width:0}.twocol input[type=date]{width:100%;min-width:0;box-sizing:border-box}
+/* ===== Tendu 5.0: Tendu understands ===== */
+.eyebrow{font-size:.78rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--accent-ink,var(--accent));margin:4px 2px 2px}
+.gcentre{display:flex;align-items:center;gap:12px;padding:14px 16px;background:var(--brand);color:#FBF5EC}
+.gcentre .small{color:#BFD6D2!important}
+.gperson{display:block;width:100%;text-align:left;padding:12px 14px}
+.gperson .chev{color:var(--sub)}
+.gpct{font-weight:800;font-variant-numeric:tabular-nums;color:var(--brand);margin-right:4px}
+.gchips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.gchip{font-size:.75rem;font-weight:700;padding:4px 10px;border-radius:999px;background:var(--brand-soft);color:var(--ink)}
+.gchip.warn{background:color-mix(in srgb,var(--warn) 20%,transparent);color:color-mix(in srgb,var(--warn) 70%,var(--ink))}
+.gchip.good{background:color-mix(in srgb,var(--good) 16%,transparent);color:var(--good)}
+.gconn{border-top:1px solid var(--line);padding-top:10px;display:flex;flex-direction:column;gap:4px}
+.sigrow{display:flex;align-items:center;gap:10px;padding:12px 14px}
+.sigrow>button.grow{text-align:left;font-weight:600;line-height:1.35}
+.sitbar{padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+.sitbar .track,.cqhist .track{height:10px;border-radius:5px;background:var(--bg-2);overflow:hidden;display:block}
+.sitbar .fill{display:block;height:100%;background:var(--brand);border-radius:5px}
+.sitck{display:flex;gap:12px;align-items:flex-start;padding:12px 14px}
+.sitck .contchk{margin-right:0;margin-top:1px}
+.sitck.ok b{color:var(--sub)}
+.sitmini{display:flex;align-items:center;gap:10px;width:100%;text-align:left;padding:12px 14px;background:var(--brand-soft)}
+.sitmini>svg:first-child{width:20px;height:20px;color:var(--brand)}
+.impact{display:grid;grid-template-columns:repeat(auto-fit,minmax(96px,1fr));gap:8px}
+.impact>div{background:var(--card);border-radius:16px;padding:12px;display:flex;flex-direction:column}
+.impact b{font-size:1.6rem;font-weight:800;font-variant-numeric:tabular-nums;line-height:1.1}
+.impact span{font-size:.78rem;color:var(--sub)}
+.impact .warn b{color:var(--warn)}.impact .good b{color:var(--good)}
+.planrow{gap:10px}.planrow .main{min-width:0}
+.select.sm{width:auto;min-width:104px;padding:8px 30px 8px 10px;font-size:.88rem;min-height:40px}
+.epstep .chk{flex:none}
+.epstep.ok .ttl{text-decoration:line-through;color:var(--sub)}
+.goal{padding:14px 16px;display:flex;flex-direction:column;gap:6px}
+.goal.done{opacity:.7}
+.moment{display:flex;align-items:center;gap:10px;margin-top:12px;padding:10px 12px;border-radius:18px;background:var(--card)}
+.moment>button.grow{text-align:left}
+.moment b{font-size:.92rem}
+.p2row{align-items:flex-start;gap:12px;cursor:pointer}
+.p2row .sub{white-space:normal}
+.cqhist{display:flex;gap:10px;flex-wrap:wrap}
+.cqw{display:flex;flex-direction:column;align-items:center;gap:4px}
+.cqdot{width:22px;height:22px;border-radius:50%;background:var(--bg-2)}
+.cqdot.m-good{background:var(--good)}.cqdot.m-ok{background:color-mix(in srgb,var(--good) 45%,var(--bg-2))}.cqdot.m-low{background:var(--warn)}.cqdot.m-struggling{background:var(--crit)}
+.board{display:grid;grid-template-columns:1fr;gap:12px}
+
+.bsec{padding:14px 16px}
+.bnums{display:flex;gap:24px;margin-top:6px}
+.bnums>div{display:flex;flex-direction:column}
+.bnums b{font-size:2rem;font-weight:800;line-height:1.05;font-variant-numeric:tabular-nums}
+.bnums span{font-size:.8rem;color:var(--sub)}
+.bnums .good b{color:var(--good)}.bnums .warn b{color:var(--warn)}
+.bweek{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-top:8px}
+.bd{display:flex;flex-direction:column;align-items:center;gap:6px;padding:8px 0;border-radius:12px;background:var(--bg-2);font-weight:700;font-size:.8rem}
+.bd i{width:12px;height:12px;border-radius:50%;background:var(--good)}
+.bd.busy i{background:var(--warn)}.bd.need i{background:var(--crit)}
+.bkey{display:inline-block;width:9px;height:9px;border-radius:50%;margin:0 3px 0 8px;background:var(--good)}
+.bkey.busy{background:var(--warn)}.bkey.need{background:var(--crit)}
+@media (min-width:900px){#app:has(.board){max-width:1100px}.board{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (min-width:600px) and (max-width:899px){#app:has(.board){max-width:780px}.board{grid-template-columns:1fr 1fr}}
+@media (max-width:599px){.board{grid-template-columns:1fr}}
 
 </style>
 <div id="app"></div>
@@ -1724,7 +1783,7 @@ PAGES.more = (c) => {
       ${li({icon:'plus', tone:'c-plain', title:'Care for someone else too', sub:'Another parent, a partner, a child…', a:'go', v:'newcircle'})}
       ${li({icon:'logout', tone:'c-plain', title:'Lock and sign out', a:'signout'})}
     </div></div>
-    <p class="disclaim center">Tendu helps people organise care together. It isn’t a medical device and doesn’t give medical advice.<br>Version 4.3.1</p>`;
+    <p class="disclaim center">Tendu helps people organise care together. It isn’t a medical device and doesn’t give medical advice.<br>Version 5.0</p>`;
 };
 ACTIONS.signout = async () => { await Session.flush(); Session.lock(); App.authView = 'signin'; App.route = {name:'home'}; App.stack = []; render(); };
 
@@ -3737,7 +3796,7 @@ PAGES.more = c => { const who = esc(whoName(c)), d = D(), simple = simpleMode(),
       ${li({icon:'plus', tone:'c-plain', title:'Care for someone else too', sub:'Each person gets their own circle', a:'go', v:'newcircle'})}
       ${li({icon:'logout', tone:'c-plain', title:'Lock and sign out', a:'signout'})}
     </div></section>
-    <p class="disclaim center">Tendu helps people organise care together. It isn’t a medical device and doesn’t give medical advice.<br>Version 4.3.1</p>`; };
+    <p class="disclaim center">Tendu helps people organise care together. It isn’t a medical device and doesn’t give medical advice.<br>Version 5.0</p>`; };
 
 /* ---------- Home: quick actions instead of a wall of shortcuts ---------- */
 const _home3 = PAGES.home; PAGES.home = c => { let h = _home3(c);
@@ -5800,6 +5859,358 @@ const _homeCalm = PAGES.home; PAGES.home = c => { let h = _homeCalm(c); if (c.ar
 /* ideas: one row on Home instead of three cards */
 suggestCard = (orig => c => { const h = orig(c); if (!h) return ''; const n = (h.match(/data-a="sugAdd"|class="card sug|class="sug /g) || []).length;
   return `<div class="section"><button class="calmbtn" data-a="go" data-v="situations">${ic('sparkle')}<span>Ideas for ${esc(whoName(c))}</span>${n ? `<span class="badge">${n}</span>` : ''}${chevron()}</button></div>`; })(suggestCard);
+
+/* Tendu 5.0 "Tendu Understands", part 1: the Care Graph, Care Signals and Care Situations.
+   The Care Graph connects what Tendu already holds (people, jobs, appointments, visits, routines, documents,
+   questions, Know me) so Tendu can say how care fits together: who usually does what, who backs up whom,
+   what an appointment needs. It is computed from the plan every time; nothing new is stored about anyone,
+   and it never looks at health. Signals are named "Tendu noticed" facts about the care system, never predictions. */
+
+/* a "go" button that names something (data-id) opens that thing */
+document.addEventListener('click', e => { const el = e.target.closest('[data-a="go"][data-id]'); if (!el || !el.dataset.id) return; e.stopImmediatePropagation(); e.preventDefault(); if (App.sheet) closeSheet(); App.pipOpen = false; go(el.dataset.v, {id:el.dataset.id}); }, true);
+
+/* ---------- the Care Graph ---------- */
+const TRANSPORT = /\b(lift|lifts|transport|taxi|drive|driving|pick ?up|drop ?off|take (mum|dad|her|him|them))\b/i;
+const meWord = m => m.isMe ? 'You' : firstName(m.name);
+function graphPerson(c, m){
+  const r = rhythm(c), wk = Care.days(7), open = openItems(c), hid = c.hiddenFacts || {};
+  const owns = open.filter(i => i.owner === m.id), week = owns.filter(i => i.date && wk.includes(i.date));
+  const visits = c.visits.filter(v => v.memberId === m.id && wk.includes(v.date));
+  const usualDays = r.days.map((d, w) => (d.regular || []).includes(m.id) ? WDAY[w] : null).filter(Boolean);
+  const usualJobs = Object.values(r.jobs).filter(j => j.usual === m.id && !hid['job-' + j.title]).map(j => j.title);
+  const k = continuity(c), only = (k.spof[m.id] || []);
+  const backupFor = open.filter(i => i.owner && i.owner !== m.id && !isAway(m, i.date || todayIso())).filter(i => { const h = bestOthers(c, i).concat(helpers(c, i)).find(x => x.m.id !== i.owner); return h && h.m.id === m.id; }).slice(0, 6);
+  const away = m.away && m.away.to && m.away.to >= todayIso() ? m.away : null;
+  return {m, owns, week, visits, usualDays, usualJobs, only, backupFor, away, share:(k.per.find(x => x.m.id === m.id) || {}).pct || 0}; }
+function itemLinks(c, i){
+  const owner = i.owner ? member(i.owner, c) : null, u = Care.usual(c, i), backup = helpers(c, i, i.date).find(h => h.m.id !== i.owner);
+  const tw = new Set(words(i.title)), docs = (c.docs || []).filter(d => words(d.title).some(w => tw.has(w)) || (i.docs || []).includes(d.id));
+  const sameDay = i.date ? openItems(c).filter(x => x.id !== i.id && x.date === i.date) : [];
+  const lift = sameDay.find(x => TRANSPORT.test(x.title));
+  return {owner, usual:u && u.m, backup:backup && backup.m, why:backup && backup.why, docs, lift, sameDay}; }
+PAGES.graph = c => { const who = whoName(c), ppl = c.members.map(m => graphPerson(c, m));
+  const chip = (t, tone) => `<span class="gchip ${tone || ''}">${esc(t)}</span>`;
+  return `${bar('How care fits together')}<h1 class="largetitle">How ${esc(who)}’s care fits together</h1><p class="subtitle">Who does what, who backs up whom, and what depends on one person. Built from the plan; nothing about health.</p>
+    <div class="gcentre card"><span class="gav">${personAvatar(c)}</span><div><b>${esc(c.name)}</b><div class="small muted">${esc([c.lives, (c.goals || []).filter(g => !g.done).length ? (c.goals.filter(g => !g.done).length + ' goals') : ''].filter(Boolean).join(' · ') || 'The person at the centre')}</div></div></div>
+    <div class="stack mt12">${ppl.map(p => `<button class="card gperson" data-a="go" data-v="gperson" data-id="${p.m.id}">
+      <div class="row" style="gap:10px">${avatar(p.m)}<span class="grow"><b>${esc(p.m.isMe ? 'You' : p.m.name)}</b><span class="small muted" style="display:block">${esc([p.m.relation, roleWord(p.m)].filter(Boolean).join(' · '))}</span></span>${p.share ? `<span class="gpct">${p.share}%</span>` : ''}${chevron()}</div>
+      <div class="gchips">${p.usualDays.slice(0, 3).map(d => chip('Usually ' + d + 's')).join('')}${p.usualJobs.slice(0, 2).map(j => chip('Usually: ' + j)).join('')}${p.week.length ? chip(p.week.length + ' this week') : ''}${p.only.length ? chip('Only one for ' + p.only.length, 'warn') : ''}${p.backupFor.length ? chip('Backup for ' + p.backupFor.length, 'good') : ''}${p.away ? chip('Away until ' + niceDate(p.away.to), 'warn') : ''}</div></button>`).join('')}</div>
+    <p class="disclaim">“Usually” comes from the last 8 weeks of the plan. Tap anyone to see the detail. Tendu never judges people: caring is shared work.</p>`; };
+const roleWord = m => ({organiser:'Organiser', family:'Family', carer:'Paid carer', friend:'Friend', neighbour:'Neighbour', pro:'Professional'})[m.role] || '';
+PAGES.gperson = (c, p) => { const m = member(p.id, c) || me(c), g = graphPerson(c, m), nm = m.isMe ? 'You' : firstName(m.name);
+  const sec = (h, body) => body ? `<div class="section"><div class="sechead"><h2>${h}</h2></div>${body}</div>` : '';
+  return `${bar(esc(m.isMe ? 'You' : m.name))}<div class="row" style="gap:12px;margin:4px 0 12px">${avatar(m, 'lg')}<div><h1 class="largetitle" style="margin:0">${esc(m.isMe ? 'You' : m.name)}</h1><p class="subtitle" style="margin:2px 0 0">${esc([m.relation, roleWord(m)].filter(Boolean).join(' · '))}</p></div></div>
+    ${g.away ? `<div class="card tint small">Away ${esc(niceDate(g.away.from))} to ${esc(niceDate(g.away.to))}${g.away.note ? ' · ' + esc(g.away.note) : ''}</div>` : ''}
+    ${sec('Usually', g.usualDays.length || g.usualJobs.length ? `<div class="list">${g.usualDays.map(d => li({icon:'calendar', title:`Helps on ${d}s`})).join('')}${g.usualJobs.map(j => li({icon:'repeat', title:esc(j)})).join('')}</div>` : `<p class="small muted" style="margin:2px 4px">Tendu is still learning ${esc(nm === 'You' ? 'your' : nm + '’s')} usual pattern.</p>`)}
+    ${sec('This week', g.week.length || g.visits.length ? `<div class="list">${g.week.map(i => itemRow(c, i, {showDate:true})).join('')}${g.visits.map(v => li({icon:'home', title:'Visit', sub:esc(niceDate(v.date))})).join('')}</div>` : '')}
+    ${sec('Only ' + esc(nm === 'You' ? 'you do' : nm + ' does') + ' these', g.only.length ? `<div class="card" style="padding:12px 14px"><ul class="whyl">${g.only.map(t => `<li>${esc(t)}</li>`).join('')}</ul><button class="claim mt8" data-a="go" data-v="studio" data-id="${m.id}">What if ${esc(nm === 'You' ? 'I' : nm)} can’t?</button></div>` : '')}
+    ${sec('Backup for', g.backupFor.length ? `<div class="list">${g.backupFor.map(i => li({icon:'shield', title:esc(i.title), sub:esc('Main: ' + memberName(i.owner, c))})).join('')}</div>` : '')}
+    <p class="disclaim">From the plan only. ${esc(nm === 'You' ? 'You' : nm)} can see and correct anything here.</p>`; };
+
+/* ---------- Care Signals: named "Tendu noticed" facts ---------- */
+const SIGNAL = {coverage:['task','Coverage','A job or appointment has nobody on it.'], continuity:['users','Continuity','A regular helper is away when they’re needed.'],
+  information:['inbox','Information','Something is waiting, or a document needs a home.'], handover:['route','Handover','Someone is about to step away from care.'],
+  dependency:['shield','Dependency','One person carries much of the care.'], change:['sparkle','Change','This week looks different from the usual routine.'], preparation:['doc','Preparation','An appointment is coming and isn’t ready yet.']};
+function careSignals(c){ const out = [], wk = Care.days(7), open = openItems(c), meM = me(c), hidden = c.hiddenSignals || {};
+  open.filter(i => !i.owner && i.date && wk.includes(i.date) && !(i.req && i.req.st === 'asked')).slice(0, 4).forEach(i => out.push({type:'coverage', key:'cov-' + i.id, t:`Nobody is on “${i.title}” ${dayWord(i.date)}`, a:'sheet', v:'item', id:i.id}));
+  open.filter(i => i.owner && i.date && wk.includes(i.date) && isAway(member(i.owner, c), i.date)).slice(0, 3).forEach(i => out.push({type:'continuity', key:'con-' + i.id, t:`${memberName(i.owner, c)} ${member(i.owner, c).isMe ? 'are' : 'is'} away for “${i.title}” ${dayWord(i.date)}`, a:'sheet', v:'item', id:i.id}));
+  (c.waiting || []).filter(w => !w.done && w.due && daysFromToday(w.due) < 0).slice(0, 2).forEach(w => out.push({type:'information', key:'wait-' + w.id, t:`Still waiting on ${w.title}${w.from ? ' from ' + w.from : ''}`, a:'go', v:'waiting'}));
+  (typeof inboxCount === 'function' && inboxCount(c) ? [1] : []).forEach(x => out.push({type:'information', key:'inb-' + x.id, t:'Something in the Care inbox hasn’t been sorted', a:'go', v:'inbox'}));
+  c.members.filter(m => m.away && m.away.from && daysFromToday(m.away.from) >= 0 && daysFromToday(m.away.from) <= 7).forEach(m => { const n = open.filter(i => i.owner === m.id && i.date && i.date >= m.away.from && i.date <= m.away.to).length;
+    if (n) out.push({type:'handover', key:'ho-' + m.id + m.away.from, t:`${meWord(m)} ${m.isMe ? 'are' : 'is'} away from ${niceDate(m.away.from)} with ${n} ${n === 1 ? 'job' : 'jobs'} to hand over`, a:m.isMe ? 'go' : 'go', v:m.isMe ? 'handmy' : 'studio', id:m.id}); });
+  const k = continuity(c); if (k.per[0] && k.per[0].pct >= 60 && c.members.length > 1) out.push({type:'dependency', key:'dep-' + k.per[0].m.id, t:`A large part of this week’s care (${k.per[0].pct}%) depends on ${k.per[0].m.isMe ? 'you' : firstName(k.per[0].m.name)}`, a:'go', v:'continuity'});
+  Object.entries(k.spof).filter(([, ts]) => ts.length >= 2).slice(0, 1).forEach(([id, ts]) => { const m = member(id, c); if (m) out.push({type:'dependency', key:'spof-' + id, t:`${meWord(m)} ${m.isMe ? 'are' : 'is'} the only person for ${ts.length} regular jobs`, a:'go', v:'gperson', id}); });
+  rhythm(c).diffs.slice(0, 2).forEach(d => out.push({type:'change', key:'chg-' + d.k, t:d.t, a:'fcGo', v:String(d.k2)}));
+  situations(c, 7).filter(s => s.score < s.checks.length).slice(0, 2).forEach(s => out.push({type:'preparation', key:'sit-' + s.i.id, t:`${s.label}: ${s.score} of ${s.checks.length} ready`, a:'go', v:'situation', id:s.i.id}));
+  return out.filter(x => !hidden[x.key]); }
+PAGES.signals = c => { const s = careSignals(c), groups = Object.keys(SIGNAL).map(t => [t, s.filter(x => x.type === t)]).filter(([, xs]) => xs.length);
+  return `${bar('Tendu noticed')}<h1 class="largetitle">Tendu noticed</h1><p class="subtitle">Signals about how the care is organised. Never about health, never a prediction: just what the plan shows.</p>
+    ${groups.length ? groups.map(([t, xs]) => `<div class="section"><div class="sechead"><h2>${ic(SIGNAL[t][0], 'style="width:18px;height:18px;vertical-align:-3px"')} ${SIGNAL[t][1]}</h2><span class="tiny muted">${esc(SIGNAL[t][2])}</span></div><div class="stack">${xs.map(x => `<div class="card sigrow"><button class="grow" data-a="${x.a}" data-v="${esc(x.v || '')}" data-id="${esc(x.id || '')}">${esc(x.t)}</button><button class="textbtn tiny" data-a="sigHide" data-v="${esc(x.key)}">Not now</button></div>`).join('')}</div></div>`).join('')
+      : `<div class="card center">${ic('checkCircle', 'style="width:28px;height:28px;color:var(--good)"')}<div class="b mt4">Nothing to flag</div><div class="small muted">Everything this week has someone, and nobody is carrying it all.</div></div>`}
+    <p class="disclaim">Tap a signal to sort it. “Not now” hides it until something changes.</p>`; };
+ACTIONS.sigHide = v => { const c = circle(); (c.hiddenSignals = c.hiddenSignals || {})[v] = Date.now(); save(); render(); };
+
+/* ---------- Care Situations: an appointment and everything around it ---------- */
+function situationOf(c, i){ const L = itemLinks(c, i), a = c.about || {}, qs = (c.questions || []).filter(q => !q.done), s = i.sit || {};
+  const followed = openItems(c).some(x => x.followOf === i.id) || s.after === 'none';
+  const checks = [
+    {k:'when', ok:!!(i.date && i.time), t:'Date and time', sub:i.date ? niceDate(i.date) + (i.time ? ' · ' + i.time : ' · no time yet') : 'No date yet', fix:i.date && i.time ? '' : `<button class="claim" data-a="sheet" data-v="item" data-id="${i.id}">Add the time</button>`},
+    {k:'who', ok:!!L.owner, t:'Someone going', sub:L.owner ? meWord(L.owner) + (L.owner.isMe ? ' are going' : ' is going') : 'Nobody yet', fix:L.owner ? '' : `<button class="claim" data-a="mine" data-id="${i.id}">I’ll go</button>${L.backup && !L.backup.isMe ? `<button class="claim ghostish" data-a="askPerson" data-v="${L.backup.id}" data-id="${i.id}">Ask ${esc(firstName(L.backup.name))}</button>` : ''}`},
+    {k:'lift', ok:!!L.lift || s.lift === 'none', t:'Getting there', sub:L.lift ? `“${L.lift.title}”${L.lift.owner ? ' · ' + memberName(L.lift.owner, c) : ' · nobody yet'}` : s.lift === 'none' ? 'Not needed' : 'No lift planned', fix:L.lift || s.lift === 'none' ? '' : `<button class="claim" data-a="sitLift" data-id="${i.id}">Add a lift</button><button class="claim ghostish" data-a="sitSet" data-v="lift|none" data-id="${i.id}">Not needed</button>`},
+    {k:'qs', ok:qs.length > 0 || s.qs === 'none', t:'Questions to ask', sub:qs.length ? `${qs.length} saved` : s.qs === 'none' ? 'None this time' : 'None saved yet', fix:qs.length || s.qs === 'none' ? '' : `<button class="claim" data-a="go" data-v="questions">Add questions</button><button class="claim ghostish" data-a="sitSet" data-v="qs|none" data-id="${i.id}">None</button>`},
+    {k:'docs', ok:L.docs.length > 0 || !!s.docs, t:'Letters and documents', sub:L.docs.length ? L.docs.map(d => d.title).slice(0, 2).join(', ') : s.docs ? 'Ready to take' : 'Nothing linked', fix:L.docs.length || s.docs ? '' : `<button class="claim" data-a="sitSet" data-v="docs|ok" data-id="${i.id}">I have the letter</button><button class="claim ghostish" data-a="go" data-v="docs">Documents</button>`},
+    {k:'comms', ok:!!(a.comms && a.comms.length) || !!a.matters, t:`How ${whoName(c)} likes to be spoken to`, sub:(a.comms && a.comms.length) ? a.comms.map(k => (COMMS.find(x => x[0] === k) || [k, k])[1]).slice(0, 2).join(', ') : 'Not filled in', fix:(a.comms && a.comms.length) || a.matters ? '' : `<button class="claim" data-a="go" data-v="about">Fill in Know me</button>`},
+    {k:'told', ok:!!s.told, t:'Team told', sub:s.told ? 'Shared ' + niceDate(iso(new Date(s.told))) : 'Not yet', fix:s.told ? '' : `<button class="claim" data-a="sitTell" data-id="${i.id}">Tell the team</button>`},
+    {k:'after', ok:followed, t:'What happens afterwards', sub:followed ? (s.after === 'none' ? 'Nothing needed' : 'Follow-up job added') : 'No follow-up planned', fix:followed ? '' : `<button class="claim" data-a="sitAfter" data-id="${i.id}">Add a follow-up</button><button class="claim ghostish" data-a="sitSet" data-v="after|none" data-id="${i.id}">Not needed</button>`}];
+  const label = `${i.date ? (daysFromToday(i.date) <= 1 ? dayWord(i.date).replace(/^./, x => x.toUpperCase()) : WDAY[parseIso(i.date).getDay()]) : 'Upcoming'} ${i.title}`;
+  return {i, L, checks, score:checks.filter(x => x.ok).length, label}; }
+function situations(c, days = 14){ return openItems(c).filter(i => i.kind === 'appointment' && i.date && daysFromToday(i.date) >= 0 && daysFromToday(i.date) <= days).map(i => situationOf(c, i)); }
+PAGES.situation = (c, p) => { const i = c.items.find(x => x.id === p.id); if (!i) return `${bar('Situation')}<p class="muted">This appointment has gone.</p>`;
+  const s = situationOf(c, i), pct = Math.round(s.score / s.checks.length * 100);
+  return `${bar('Getting ready')}<p class="eyebrow">${esc(i.date ? niceDate(i.date) : '')}${i.time ? ' · ' + esc(i.time) : ''}</p><h1 class="largetitle">${esc(i.title)}</h1>
+    <div class="card sitbar"><div class="row" style="justify-content:space-between"><b>${s.score === s.checks.length ? 'Ready' : `${s.score} of ${s.checks.length} ready`}</b><span class="small muted">Tendu put this together from the plan</span></div><span class="track"><span class="fill" style="width:${pct}%"></span></span></div>
+    <div class="stack mt12">${s.checks.map(x => `<div class="card sitck ${x.ok ? 'ok' : ''}"><span class="contchk ${x.ok ? 'ok' : 'no'}">${ic(x.ok ? 'check' : 'alert')}</span><div class="grow"><b>${esc(x.t)}</b><div class="small muted">${esc(x.sub)}</div>${x.fix ? `<div class="row mt8" style="gap:6px;flex-wrap:wrap">${x.fix}</div>` : ''}</div></div>`).join('')}</div>
+    <div class="btnrow mt16"><button class="btn" data-a="go" data-v="apptbrief" data-id="${i.id}">${ic('doc')}Open the brief</button><button class="btn ghost" data-a="sheet" data-v="item" data-id="${i.id}">Edit the appointment</button></div>
+    <p class="disclaim">Getting ready means the practical side only. Tendu doesn’t give medical advice.</p>`; };
+ACTIONS.sitSet = (v, id) => { const c = circle(), i = c.items.find(x => x.id === id); if (!i) return; const [k, val] = v.split('|'); i.sit = {...(i.sit || {}), [k]:val}; save(); render(); };
+ACTIONS.sitLift = (v, id) => { const c = circle(), i = c.items.find(x => x.id === id); if (!i) return; const t = i.time ? (() => { const [h, m] = i.time.split(':').map(Number), mins = Math.max(0, h * 60 + m - 45); return String(Math.floor(mins / 60)).padStart(2, '0') + ':' + String(mins % 60).padStart(2, '0'); })() : '';
+  const x = addItem(c, {title:`Lift to ${i.title}`, date:i.date, time:t, owner:i.owner || ''}); x.liftOf = i.id; log(c, `Added a lift for ${i.title}`, 'assign'); save(); render(); toast(x.owner ? 'Lift added' : 'Lift added. Nobody is on it yet.'); };
+ACTIONS.sitAfter = (v, id) => { const c = circle(), i = c.items.find(x => x.id === id); if (!i) return; const x = addItem(c, {title:`Follow up after ${i.title}`, date:plusDays(1, i.date || todayIso()), owner:i.owner || me(c).id}); x.followOf = i.id; save(); render(); toast('Follow-up added for the next day'); };
+ACTIONS.sitTell = async (v, id) => { const c = circle(), i = c.items.find(x => x.id === id); if (!i) return; const s = situationOf(c, i), o = s.L.owner;
+  const text = `${i.title} ${i.date ? dayWord(i.date) : ''}${i.time ? ' at ' + i.time : ''}. ${o ? meWord(o) + (o.isMe ? ' are' : ' is') + ' going' : 'Nobody is going yet'}${s.L.lift ? '; lift: ' + (s.L.lift.owner ? memberName(s.L.lift.owner, c) : 'nobody yet') : ''}.`;
+  i.sit = {...(i.sit || {}), told:Date.now()}; save(); const sent = await tenduSays(c, text, {k:'msg', ref:i.id, jt:i.title}); render(); if (sent) toast('Shared with the team'); else shareText('Appointment', text); };
+
+/* ---------- connections on every job and appointment ---------- */
+const _itemSheet5 = SHEETS.item; SHEETS.item = (c, p) => { const s = _itemSheet5(c, p), i = c.items.find(x => x.id === p.id); if (!i || i.done) return s; const L = itemLinks(c, i);
+  const rows = [L.usual && (!L.owner || L.usual.id !== L.owner.id) ? `Usually done by <b>${esc(meWord(L.usual))}</b>` : '', L.backup ? `Backup: <b>${esc(meWord(L.backup))}</b> (${esc(L.why)})` : '', L.lift ? `Lift: ${esc(L.lift.title)}` : '', L.docs.length ? `Documents: ${esc(L.docs.map(d => d.title).join(', '))}` : '', L.sameDay.length ? `Same day: ${esc(L.sameDay.slice(0, 3).map(x => x.title).join(', '))}` : ''].filter(Boolean);
+  const sit = i.kind === 'appointment' && i.date && daysFromToday(i.date) >= 0 ? (() => { const st = situationOf(c, i); return `<button class="card sitmini mt8" data-a="go" data-v="situation" data-id="${i.id}">${ic('doc')}<span class="grow"><b>Get ready</b><span class="tiny muted" style="display:block">${st.score} of ${st.checks.length} ready</span></span>${chevron()}</button>`; })() : '';
+  if (!rows.length && !sit) return s;
+  return {...s, body:s.body + `<div class="gconn mt12"><div class="tiny b up muted">Connected</div>${rows.map(r => `<div class="small">${r}</div>`).join('')}${sit}</div>`}; };
+
+/* Tendu 5.0, part 2: Scenario Studio and Care Episodes.
+   Scenario Studio: "What if Sarah can't help for two weeks?" Tendu shows the impact, proposes a Plan A that
+   shares the work fairly, and the family asks (or assigns, if people have already agreed). Nothing moves on its own.
+   Care Episodes: the stretches of care that come with a whole set of practical steps (coming home from hospital,
+   a new carer, respite, recovery, someone stepping away, moving home). Practical steps only, never clinical advice. */
+
+/* ---------- Scenario Studio ---------- */
+function studioState(c, p){ const s = App.studio = App.studio || {}; if (p && p.id && s.forId !== p.id){ s.who = p.id; s.forId = p.id; s.pick = {}; }
+  s.who = member(s.who, c) ? s.who : (c.members.find(m => !m.isMe) || me(c)).id; s.from = s.from || todayIso(); s.to = s.to || plusDays(13); s.pick = s.pick || {}; return s; }
+function scenario(c, s){ const sel = member(s.who, c), inR = d => !d || (d >= s.from && d <= s.to), load = {};
+  const items = openItems(c).filter(i => i.owner === sel.id && i.date && inR(i.date)).sort(byWhen);
+  const rts = (c.routines || []).filter(r => r.owner === sel.id), vis = c.visits.filter(v => v.memberId === sel.id && inR(v.date));
+  const plan = items.map(i => { const opts = helpers(c, i, i.date).filter(h => h.m.id !== sel.id && !isAway(h.m, i.date));
+    opts.forEach(h => h.adj = h.score - (load[h.m.id] || 0) * 1.5); opts.sort((a, b) => b.adj - a.adj);
+    const chosen = s.pick[i.id] !== undefined ? member(s.pick[i.id], c) || null : (opts[0] || {}).m || null; if (chosen) load[chosen.id] = (load[chosen.id] || 0) + 1;
+    return {i, to:chosen, opts:opts.map(h => h.m), why:chosen ? (opts.find(h => h.m.id === chosen.id) || {}).why || 'chosen by you' : ''}; });
+  const gaps = plan.filter(x => !x.to), notify = [...new Set(plan.filter(x => x.to).map(x => x.to.id))].map(id => member(id, c));
+  return {sel, items, rts, vis, plan, gaps, notify, appts:items.filter(i => i.kind === 'appointment').length}; }
+PAGES.studio = (c, p) => { const s = studioState(c, p), r = scenario(c, s), nm = r.sel.isMe ? 'I' : firstName(r.sel.name), who = whoName(c);
+  const days = Math.round((parseIso(s.to) - parseIso(s.from)) / 864e5) + 1;
+  return `${bar('Scenario Studio')}<h1 class="largetitle">What if ${esc(nm)} can’t help?</h1><p class="subtitle">See what changes for ${esc(who)}, and a fair plan to cover it. Nothing changes until you choose.</p>
+    <div class="card stack"><div class="field"><label for="st-who">Who can’t help</label><select class="select" id="st-who" data-change="stWho">${c.members.map(m => `<option value="${m.id}" ${m.id === r.sel.id ? 'selected' : ''}>${esc(m.isMe ? 'Me' : m.name)}</option>`).join('')}</select></div>
+      <div class="twocol"><div class="field"><label for="st-f">From</label><input class="input" type="date" id="st-f" value="${s.from}" data-change="stFrom"></div><div class="field"><label for="st-t">Until</label><input class="input" type="date" id="st-t" value="${s.to}" data-change="stTo"></div></div>
+      <div class="chips">${[[3,'3 days'],[7,'A week'],[14,'Two weeks'],[28,'A month']].map(([n, l]) => `<button class="chip" data-a="stLen" data-v="${n}" aria-pressed="${days === n}">${l}</button>`).join('')}</div></div>
+    <div class="section"><div class="sechead"><h2>Impact</h2></div><div class="impact">
+      <div><b>${r.items.length}</b><span>${r.items.length === 1 ? 'job' : 'jobs'} affected</span></div><div><b>${r.appts}</b><span>${r.appts === 1 ? 'appointment' : 'appointments'}</span></div>
+      <div><b>${r.vis.length + r.rts.length}</b><span>visits and routines</span></div><div><b>${r.notify.length}</b><span>${r.notify.length === 1 ? 'person' : 'people'} to ask</span></div>
+      <div class="${r.gaps.length ? 'warn' : 'good'}"><b>${r.gaps.length}</b><span>with no backup</span></div></div></div>
+    ${r.plan.length ? `<div class="section"><div class="sechead"><h2>Tendu proposes: Plan A</h2><span class="tiny muted">shared fairly</span></div><div class="list">${r.plan.map(x => `<div class="li noicon planrow"><span class="main"><div class="ttl" style="font-weight:600">${esc(x.i.title)}</div><div class="sub">${esc(niceDate(x.i.date))}${x.i.time ? ' · ' + esc(x.i.time) : ''}${x.why ? ' · ' + esc(x.why) : ''}</div></span>
+        <select class="select sm" data-change="stPick" data-id="${x.i.id}" aria-label="Who takes ${esc(x.i.title)}"><option value="">Nobody yet</option>${c.members.filter(m => m.id !== r.sel.id).map(m => `<option value="${m.id}" ${x.to && x.to.id === m.id ? 'selected' : ''}>${esc(m.isMe ? 'Me' : firstName(m.name))}</option>`).join('')}</select></div>`).join('')}</div>
+      ${r.gaps.length ? `<div class="card tint mt8 small"><b>Remaining gap${r.gaps.length > 1 ? 's' : ''}:</b> ${r.gaps.map(x => esc(x.i.title) + ' (' + esc(niceDate(x.i.date)) + ')').join(', ')}. Nobody else is free, or nobody has done it before. <button class="textbtn" data-a="go" data-v="connect">Find local help</button></div>` : ''}
+      <div class="btnrow mt12"><button class="btn" data-a="stAsk">${ic('handshake')}Ask the family</button><button class="btn ghost" data-a="stAssign">They’ve agreed: assign now</button></div>
+      <p class="disclaim">“Ask the family” sends each person a request they can accept in one tap, and marks ${esc(nm === 'I' ? 'you' : nm)} as away. ${r.rts.length ? 'Routines move only when you assign.' : ''}</p>`
+      : `<div class="card mt12 center">${ic('checkCircle', 'style="width:26px;height:26px;color:var(--good)"')}<div class="b mt4">Nothing of ${esc(nm === 'I' ? 'yours' : nm + '’s')} is planned in these dates</div><div class="small muted">${r.rts.length ? `${r.rts.length} regular ${r.rts.length === 1 ? 'routine' : 'routines'} would still need someone.` : 'The care would carry on as planned.'}</div></div>`}`; };
+ACTIONS.stWho = v => { const s = App.studio; s.who = v; s.pick = {}; s.forId = v; render(); };
+ACTIONS.stFrom = v => { App.studio.from = v; render(); }; ACTIONS.stTo = v => { App.studio.to = v; render(); };
+ACTIONS.stLen = v => { const s = App.studio; s.to = plusDays(+v - 1, s.from); render(); };
+ACTIONS.stPick = (v, id) => { App.studio.pick[id] = v; render(); };
+const markAway = (c, m, s, note) => { m.away = {from:s.from, to:s.to, note}; };
+ACTIONS.stAsk = async () => { const c = circle(), s = App.studio, r = scenario(c, s); markAway(c, r.sel, s, 'Planned in Scenario Studio');
+  for (const x of r.plan.filter(x => x.to)) { if (x.to.isMe){ x.i.owner = x.to.id; continue; } await ACTIONS.askPerson(x.to.id, x.i.id); }
+  log(c, `Planned cover while ${meWord(r.sel)} ${r.sel.isMe ? 'are' : 'is'} away (${niceDate(s.from)} to ${niceDate(s.to)})`, 'assign'); save(); go('requests'); toast(`Asked ${r.notify.filter(m => !m.isMe).length} ${r.notify.filter(m => !m.isMe).length === 1 ? 'person' : 'people'}`); };
+ACTIONS.stAssign = () => confirmSheet('Assign without asking?', 'Use this when people have already agreed. Each job moves to the person in Plan A, and the team sees it in the plan.', 'Assign now', () => { const c = circle(), s = App.studio, r = scenario(c, s);
+  r.plan.filter(x => x.to).forEach(x => { x.i.owner = x.to.id; x.i.req = {to:x.to.id, by:me(c).id, at:Date.now(), st:'yes', ans:Date.now(), no:[]}; });
+  const firstTo = (r.plan.find(x => x.to) || {}).to; if (firstTo) r.rts.forEach(rt => rt.owner = firstTo.id);
+  markAway(c, r.sel, s, 'Planned in Scenario Studio'); log(c, `Moved ${r.plan.filter(x => x.to).length} jobs while ${meWord(r.sel)} ${r.sel.isMe ? 'are' : 'is'} away`, 'assign'); save(); render(); toast('Plan A is in place'); }, false);
+
+/* ---------- Care Episodes ---------- */
+const EPISODES = {
+  discharge:{t:'Coming home from hospital', icon:'hospital', stages:[['Before leaving',[['transport','Confirm how they’re getting home, and who is collecting them',0],['letter','Ask the ward for the discharge letter and who to call with questions',0],['meds-list','Ask the ward or pharmacist to go through any medicine changes, then update the list',0],['home-ready','Get the home ready: heating, food in, keys, anything moved',0]]],['First 48 hours',[['who-48','Agree who is with them or checking in for the first two days',0],['jobs-new','Write down any new jobs the team agreed, and give each an owner',1],['tell','Tell everyone who needs to know that they’re home',0]]],['First week',[['appts','Add follow-up appointments from the letter to the plan',2],['routine','Agree the new routine for the week',3],['handover','Send a handover so every helper knows what changed',2]]]]},
+  newcarer:{t:'A new carer joins', icon:'users', stages:[['Before they start',[['meet','Send them “Meet” so they know the person',0],['access','Agree what they can see in Tendu',0],['first-job','Give them one clear first job',0]]],['First visit',[['intro','Introduce them in person, or by a call',1],['key','Sort out keys, door codes and where things are',1]]],['First week',[['check','Check in: how did the first visits go?',5],['rota','Add them to the visits rota',3]]]]},
+  respite:{t:'A break (respite)', icon:'coffee', stages:[['Before',[['book','Book the respite stay or sitting service',0],['pack','Pack the essentials and the passport',0],['tell-r','Tell the team the dates',0]]],['During',[['rest','Rest. The team covers what’s left',1],['update','Agree how the team will share news',1]]],['Coming back',[['back','Plan the first day back',0],['review','What would make the next break easier?',2]]]]},
+  recovery:{t:'Recovering at home', icon:'sun', stages:[['First days',[['help','Agree who helps with daily jobs for now',0],['notes','Keep notes of what the team does, so everyone knows',0]]],['Weeks 1 to 2',[['appts-r','Add any follow-up appointments to the plan',3],['lift-r','Plan lifts to appointments',3]]],['Back to routine',[['routine-r','Bring back the usual routine, one piece at a time',10],['goal','Note what “back to normal” means for them',10]]]]},
+  away:{t:'Someone is stepping away', icon:'calendar', stages:[['Before',[['studio','Open Scenario Studio and plan the cover',0],['handover-a','Send a handover to whoever is covering',0]]],['While away',[['check-a','Check the plan each day for gaps',1]]],['Back',[['return','Hand things back and say thank you',7]]]]},
+  moving:{t:'Moving home or into care', icon:'home', stages:[['Before the move',[['addr','Tell services the new address (GP, pharmacy, council)',0],['pack-m','Plan the packing and who helps',0],['passport-m','Share the passport with the new place',0]]],['Moving day',[['day','Agree who is there on the day',0],['familiar','Keep familiar things close',0]]],['Settling in',[['visits-m','Plan visits for the first two weeks',1],['contacts','Update the contacts book',2]]]]}};
+function episodeProgress(c, e){ const def = EPISODES[e.k], all = def.stages.flatMap(s => s[1]); const done = all.filter(st => (e.done || {})[st[0]] || (e.jobs && e.jobs[st[0]] && (c.items.find(i => i.id === e.jobs[st[0]]) || {}).done)).length; return {done, total:all.length}; }
+PAGES.episodes = c => { const act = (c.episodes || []).filter(e => !e.ended);
+  return `${bar('Care episodes')}<h1 class="largetitle">Care episodes</h1><p class="subtitle">Some stretches of care come with a whole set of things to sort. Start one and Tendu lays out the practical steps; you choose which become jobs.</p>
+    ${act.length ? `<div class="section"><div class="sechead"><h2>Happening now</h2></div><div class="stack">${act.map(e => { const d = EPISODES[e.k], pr = episodeProgress(c, e); return `<button class="card li" data-a="go" data-v="episode" data-id="${e.id}"><span class="hi c-accent">${ic(d.icon)}</span><span class="main"><div class="ttl" style="font-weight:650">${esc(d.t)}</div><div class="sub">Started ${esc(niceDate(e.start))} · ${pr.done} of ${pr.total} done</div></span>${chevron()}</button>`; }).join('')}</div></div>` : ''}
+    <div class="section"><div class="sechead"><h2>Start one</h2></div><div class="hubgrid">${Object.entries(EPISODES).map(([k, d]) => `<button class="hubtile" data-a="epStart" data-v="${k}"><span class="hi">${ic(d.icon)}</span><span class="hl">${esc(d.t)}</span></button>`).join('')}</div></div>
+    <p class="disclaim">Practical steps only. For anything medical, ask the ward, GP, pharmacist or NHS 111.</p>`; };
+ACTIONS.epStart = v => { const c = circle(); const e = {id:uid(), k:v, start:todayIso(), done:{}, jobs:{}}; (c.episodes = c.episodes || []).push(e); log(c, `Started: ${EPISODES[v].t}`, 'assign'); save(); go('episode', {id:e.id}); };
+PAGES.episode = (c, p) => { const e = (c.episodes || []).find(x => x.id === p.id); if (!e) return `${bar('Episode')}<p class="muted">Not found.</p>`; const d = EPISODES[e.k], pr = episodeProgress(c, e);
+  return `${bar(esc(d.t))}<h1 class="largetitle">${esc(d.t)}</h1><p class="subtitle">Started ${esc(niceDate(e.start))}. ${pr.done} of ${pr.total} steps done.</p>
+    <div class="card sitbar"><span class="track"><span class="fill" style="width:${Math.round(pr.done / pr.total * 100)}%"></span></span></div>
+    ${d.stages.map(([stage, steps]) => `<div class="section"><div class="sechead"><h2>${esc(stage)}</h2></div><div class="list">${steps.map(([k, t, off]) => { const jid = e.jobs[k], job = jid && c.items.find(i => i.id === jid), ok = e.done[k] || (job && job.done);
+      return `<div class="li noicon epstep ${ok ? 'ok' : ''}"><button class="chk" aria-checked="${!!ok}" data-a="epTick" data-v="${k}" data-id="${e.id}" aria-label="Done: ${esc(t)}">${ok ? ic('check') : ''}</button><span class="main"><div class="ttl">${esc(t)}</div>${job ? `<div class="sub">Job${job.owner ? ' · ' + esc(memberName(job.owner, c)) : ' · nobody yet'}${job.date ? ' · ' + esc(niceDate(job.date)) : ''}</div>` : ''}</span>${!ok && !job ? `<button class="claim" data-a="epJob" data-v="${k}" data-id="${e.id}">Make it a job</button>` : ''}</div>`; }).join('')}</div></div>`).join('')}
+    ${e.k === 'away' ? `<button class="btn mt12" data-a="go" data-v="studio">${ic('route')}Open Scenario Studio</button>` : e.k === 'discharge' ? `<button class="btn ghost mt12" data-a="go" data-v="hospital">${ic('hospital')}Hospital mode</button>` : e.k === 'newcarer' ? `<button class="btn ghost mt12" data-a="go" data-v="welcome">${ic('gift')}Welcome packs</button>` : ''}
+    <button class="btn ghost mt8" data-a="epEnd" data-id="${e.id}">This episode is over</button>`; };
+ACTIONS.epTick = (v, id) => { const c = circle(), e = c.episodes.find(x => x.id === id); e.done[v] = !e.done[v]; save(); render(); };
+ACTIONS.epJob = (v, id) => { const c = circle(), e = c.episodes.find(x => x.id === id), st = EPISODES[e.k].stages.flatMap(s => s[1]).find(s => s[0] === v); const x = addItem(c, {title:st[1].length > 60 ? st[1].split(',')[0] : st[1], date:plusDays(st[2], e.start)}); x.episode = e.id; e.jobs[v] = x.id; save(); render(); toast('Added as a job. Give it an owner in Plan.'); };
+ACTIONS.epEnd = (v, id) => { const c = circle(), e = c.episodes.find(x => x.id === id); e.ended = todayIso(); log(c, `Finished: ${EPISODES[e.k].t}`, 'assign'); save(); go('episodes'); };
+
+/* Tendu 5.0, part 3: what care is for, and the people doing it.
+   Care Goals (chosen by the person and the family, never prescribed), My Life (what matters beyond care),
+   Care Moments (gentle prompts to make today a good day), Passport 2.0 (the person controls what leaves Tendu,
+   per audience), access levels (who sees what, and why), Shift mode for paid carers, and a weekly
+   "How are you?" for the carer, kept private on this phone. */
+
+/* ---------- Care Goals ---------- */
+const GOALKIND = [['person','What they want'],['family','For the family'],['recovery','Getting back to normal'],['carer','For me']];
+PAGES.goals = c => { const gs = c.goals || [], who = whoName(c);
+  const steps = g => c.items.filter(i => i.goal === g.id), row = g => { const st = steps(g), done = st.filter(i => i.done).length;
+    return `<div class="card goal ${g.done ? 'done' : ''}"><div class="row" style="justify-content:space-between;align-items:flex-start;gap:8px"><div><span class="tiny b up muted">${esc((GOALKIND.find(k => k[0] === g.kind) || GOALKIND[0])[1])}</span><div class="b" style="font-size:1.05rem;margin-top:2px">${esc(g.t)}</div>${st.length ? `<div class="small muted">${done} of ${st.length} steps done</div>` : ''}</div>${g.done ? `<span class="badge good">Achieved</span>` : ''}</div>
+      ${st.filter(i => !i.done).slice(0, 3).map(i => itemRow(c, i, {showDate:true})).join('')}
+      ${g.done ? '' : `<div class="row mt8" style="gap:6px;flex-wrap:wrap"><button class="claim" data-a="sheet" data-v="goalStep" data-id="${g.id}">Add a step</button><button class="claim ghostish" data-a="goalDone" data-id="${g.id}">Achieved</button><button class="textbtn tiny" data-a="goalDel" data-id="${g.id}">Remove</button></div>`}</div>`; };
+  return `${bar('Goals')}<h1 class="largetitle">What are we working towards?</h1><p class="subtitle">Goals ${esc(who)} and the family choose: staying at home, keeping up church, sharing care more evenly. Tendu organises around them; it never sets them.</p>
+    <form class="card stack" data-submit="goalAdd"><div class="field"><label for="g-t">A goal</label><input class="input" id="g-t" name="t" required placeholder="e.g. ${esc(who)} keeps going to church on Sundays"></div>
+      <div class="chips">${GOALKIND.map(([k, l], n) => `<label class="chip"><input type="radio" name="kind" value="${k}" ${n === 0 ? 'checked' : ''} style="accent-color:var(--brand)"> ${esc(l)}</label>`).join('')}</div><button class="btn" type="submit">${ic('plus')}Add goal</button></form>
+    ${gs.length ? `<div class="stack mt16">${gs.filter(g => !g.done).map(row).join('')}${gs.filter(g => g.done).map(row).join('')}</div>` : `<div class="card mt16">${empty('star', 'No goals yet', 'Start with what matters most to ' + who + '. Goals help the team see why the jobs matter.')}</div>`}`; };
+ACTIONS.goalAdd = f => { const c = circle(); if (!(f.t || '').trim()) return; (c.goals = c.goals || []).push({id:uid(), t:f.t.trim(), kind:f.kind || 'person', at:Date.now(), by:me(c).id}); log(c, `New goal: ${f.t.trim()}`, 'assign'); save(); render(); toast('Goal added'); };
+ACTIONS.goalDone = (v, id) => { const c = circle(), g = c.goals.find(x => x.id === id); g.done = Date.now(); log(c, `Goal achieved: ${g.t}`, 'done'); save(); render(); toast('Well done, everyone'); };
+ACTIONS.goalDel = (v, id) => confirmSheet('Remove this goal?', 'Its steps stay in the plan.', 'Remove', () => { const c = circle(); c.goals = c.goals.filter(x => x.id !== id); save(); render(); });
+SHEETS.goalStep = (c, p) => ({title:'A step towards the goal', body:`<form class="stack" data-submit="goalStepAdd"><input type="hidden" name="g" value="${esc(p.id)}"><div class="field"><label for="gs-t">What needs doing?</label><input class="input" id="gs-t" name="t" required data-autofocus placeholder="e.g. Ask church about a lift on Sundays"></div><div class="field"><label for="gs-d">When (optional)</label><input class="input" type="date" id="gs-d" name="date"></div><button class="btn" type="submit">Add step</button></form>`});
+ACTIONS.goalStepAdd = f => { const c = circle(), x = addItem(c, {title:f.t, date:f.date || ''}); x.goal = f.g; closeSheet(); save(); render(); toast('Step added to the plan'); };
+
+/* ---------- My Life: beyond care ---------- */
+const LIFE = [['hobbies','What I love doing','Gardening, crosswords, the football on Saturday'],['people','People I like to see','My sister June, the neighbours at number 12'],['places','Places that matter','The park by the river, St Mary’s church'],['forward','Things to look forward to','Grandchildren visiting at half term'],['routine','A good day for me looks like','A slow breakfast, a walk, tea at four']];
+PAGES.mylife = c => { const L = c.life || {}, who = whoName(c), cel = (L.celebrations || []).slice().sort((a, b) => nextDate(a.d).localeCompare(nextDate(b.d)));
+  return `${bar('My life')}<h1 class="largetitle">${esc(who)}’s life, beyond care</h1><p class="subtitle">Care is there to help someone live their life. What makes ${esc(who)}’s days good?</p>
+    <div class="stack">${LIFE.map(([k, l, ph]) => `<div class="field card" style="padding:12px 14px"><label for="lf-${k}">${esc(l)}</label><textarea class="textarea" id="lf-${k}" rows="2" data-change="lifeSet" data-id="${k}" placeholder="${esc(ph)}">${esc(L[k] || '')}</textarea></div>`).join('')}</div>
+    <div class="section"><div class="sechead"><h2>Celebrations</h2><span class="tiny muted">birthdays, anniversaries</span></div>
+      ${cel.length ? `<div class="list">${cel.map(x => li({icon:'gift', title:esc(x.t), sub:esc(niceDate(nextDate(x.d)) + ' · ' + dayWord(nextDate(x.d))), end:`<button class="textbtn tiny" data-a="celDel" data-id="${x.id}">Remove</button>`})).join('')}</div>` : ''}
+      <form class="card stack mt8" data-submit="celAdd"><div class="twocol"><input class="input" name="t" required placeholder="e.g. ${esc(who)}’s birthday" aria-label="Celebration"><input class="input" type="date" name="d" required aria-label="Date"></div><button class="btn sm" type="submit">${ic('plus')}Add</button></form></div>
+    <p class="disclaim">Shared with the team. ${esc(who)} can change any of it.</p>`; };
+const nextDate = d => { if (!d) return '9999-12-31'; const y = new Date().getFullYear(), md = d.slice(5); let n = `${y}-${md}`; if (n < todayIso()) n = `${y + 1}-${md}`; return n; };
+ACTIONS.lifeSet = (v, id) => { const c = circle(); c.life = {...(c.life || {}), [id]:v}; save(); };
+ACTIONS.celAdd = f => { const c = circle(); c.life = c.life || {}; (c.life.celebrations = c.life.celebrations || []).push({id:uid(), t:f.t.trim(), d:f.d}); save(); render(); toast('Added'); };
+ACTIONS.celDel = (v, id) => { const c = circle(); c.life.celebrations = c.life.celebrations.filter(x => x.id !== id); save(); render(); };
+
+/* ---------- Care Moments: make today a good day ---------- */
+function moments(c){ const out = [], L = c.life || {}, who = whoName(c), hid = c.hiddenMoments || {};
+  (L.celebrations || []).forEach(x => { const n = nextDate(x.d), k = daysFromToday(n); if (k >= 0 && k <= 7) out.push({k:'cel-' + x.id + n, icon:'gift', t:k === 0 ? `${x.t} is today` : `${x.t} is ${dayWord(n)}`, s:'Would anyone like to plan something?', a:'sheet', v:'capture'}); });
+  const since = d => c.visits.filter(v => v.memberId === d.id && daysFromToday(v.date) <= 0).map(v => v.date).sort().pop();
+  c.members.filter(m => !m.isMe && m.role !== 'carer').forEach(m => { const last = since(m); if (last && daysFromToday(last) <= -14 && daysFromToday(last) >= -60) out.push({k:'vis-' + m.id + last, icon:'home', t:`${firstName(m.name)} last visited ${niceDate(last)}`, s:`${who} might enjoy seeing ${firstName(m.name)} this week.`, a:'go', v:'gperson', id:m.id}); });
+  if (L.hobbies) out.push({k:'hob-' + todayIso(), icon:'sun', t:`${who} enjoys: ${L.hobbies.split(/[,.;]/)[0].trim()}`, s:'Make today a good day.', a:'go', v:'mylife'});
+  return out.filter(x => !hid[x.k]); }
+ACTIONS.momentHide = v => { const c = circle(); (c.hiddenMoments = c.hiddenMoments || {})[v] = 1; save(); render(); };
+const _todayMom = todayCard; todayCard = c => { const h = _todayMom(c), m = moments(c)[0]; if (!m) return h;
+  return h.replace(/<\/div>$/, `<div class="moment"><span class="hi c-accent">${ic(m.icon)}</span><button class="grow" data-a="${m.a}" data-v="${esc(m.v)}" ${m.id ? `data-id="${esc(m.id)}"` : ''}><b>${esc(m.t)}</b><span class="tiny muted" style="display:block">${esc(m.s)}</span></button><button class="iconbtn" data-a="momentHide" data-v="${esc(m.k)}" aria-label="Not now">${ic('x')}</button></div></div>`); };
+commandCentre = todayCard;
+
+/* ---------- Passport 2.0: the person controls what leaves Tendu ---------- */
+const PASS = [['about','About me'],['matters','What matters to me'],['comms','How to talk with me'],['access','Access needs'],['people','Important people'],['prefs','What helps and what upsets me'],['routine','My usual day'],['network','Who supports me'],['docs','Important documents'],['emergency','Emergency information'],['care','Current care arrangements'],['pros','What I want professionals to know']];
+const PASS_FOR = {family:['about','matters','comms','people','prefs','routine','network','care','emergency'], carer:['about','matters','comms','access','prefs','routine','network','emergency'], pro:['about','comms','access','network','emergency','pros'], hospital:['about','matters','comms','access','prefs','people','network','emergency','docs','pros']};
+function passSection(c, k){ const a = c.about || {}, e = c.emergency || {}, L = c.life || {}, who = whoName(c);
+  const comm = (a.comms || []).map(x => (COMMS.find(y => y[0] === x) || [x, x])[1]);
+  const v = {about:[c.name + (c.preferred && c.preferred !== c.name ? ` (likes to be called ${c.preferred})` : ''), c.age ? 'Age ' + c.age : '', c.lives].filter(Boolean).join('. '),
+    matters:a.matters || L.hobbies || '', comms:[comm.join(', '), a.communication, a.language ? 'Language: ' + a.language : ''].filter(Boolean).join('. '), access:e.mobility || a.access || '',
+    people:L.people || c.members.filter(m => !m.isMe && m.role !== 'carer').map(m => `${m.name}${m.relation ? ' (' + m.relation + ')' : ''}`).join(', '),
+    prefs:[a.calms ? 'Helps: ' + a.calms : '', a.upsets ? 'Upsets: ' + a.upsets : ''].filter(Boolean).join('. '), routine:a.routine || L.routine || '',
+    network:c.members.map(m => `${m.isMe ? D().me.name : m.name}${m.relation ? ', ' + m.relation : ''}${m.phone ? ', ' + m.phone : ''}`).join('; '),
+    docs:(c.docs || []).filter(d => d.key).map(d => d.title).join(', '), emergency:[e.allergies ? 'Allergies: ' + e.allergies : '', e.gp ? 'GP: ' + e.gp + (e.gpPhone ? ' ' + e.gpPhone : '') : '', e.lpa ? 'Power of attorney: ' + e.lpa : ''].filter(Boolean).join('. '),
+    care:[...new Set(c.visits.filter(x => daysFromToday(x.date) >= 0 && daysFromToday(x.date) <= 7).map(x => memberName(x.memberId, c)))].join(', ') ? 'This week: ' + [...new Set(c.visits.filter(x => daysFromToday(x.date) >= 0 && daysFromToday(x.date) <= 7).map(x => memberName(x.memberId, c)))].join(', ') + ' visiting' : '',
+    pros:a.pros || ''}; return v[k] || ''; }
+PAGES.passport2 = c => { const P2 = App.p2 = App.p2 || {aud:'carer', off:{}}, on = PASS_FOR[P2.aud].filter(k => !P2.off[k]), who = whoName(c);
+  const body = on.map(k => [PASS.find(x => x[0] === k)[1], passSection(c, k)]).filter(([, t]) => t);
+  return `${bar('Passport')}<h1 class="largetitle">${esc(who)}’s Tendu Passport</h1><p class="subtitle">${esc(who)} decides what goes to whom. Choose who it’s for, untick anything private, then share.</p>
+    <div class="seg mt8">${[['family','Family'],['carer','New carer'],['pro','Professional'],['hospital','Hospital']].map(([k, l]) => `<button data-a="p2Aud" data-v="${k}" aria-pressed="${P2.aud === k}">${l}</button>`).join('')}</div>
+    <div class="list mt12">${PASS_FOR[P2.aud].map(k => { const t = passSection(c, k), lab = PASS.find(x => x[0] === k)[1]; return `<label class="li noicon p2row"><input type="checkbox" ${P2.off[k] ? '' : 'checked'} data-change="p2Tog" data-id="${k}" ${t ? '' : 'disabled'} style="width:22px;height:22px;accent-color:var(--brand)"><span class="main"><div class="ttl" style="font-weight:600">${esc(lab)}</div><div class="sub">${esc(t || 'Not filled in yet')}</div></span></label>`; }).join('')}</div>
+    <input type="hidden" id="p2-text" value="${esc(passText2(c, body))}">
+    <div class="btnrow mt12"><button class="btn" data-a="p2Share">${ic('share')}Share ${body.length} ${body.length === 1 ? 'section' : 'sections'}</button><button class="btn ghost" data-a="go" data-v="about">Edit Know me</button></div>
+    <p class="disclaim">Every share is recorded in the Privacy centre. Nothing is sent until you press Share.</p>`; };
+const passText2 = (c, body) => `${whoName(c)}’s Tendu Passport\n\n` + body.map(([h, t]) => `${h}\n${t}`).join('\n\n') + '\n\nShared from Tendu Care. Written by the family; not a medical record.';
+ACTIONS.p2Aud = v => { App.p2.aud = v; render(); }; ACTIONS.p2Tog = (v, id, el) => { App.p2.off[id] = !el.checked; render(); };
+ACTIONS.p2Share = () => { const c = circle(), t = document.getElementById('p2-text').value; plog('share', `Passport shared (${({family:'family', carer:'new carer', pro:'professional', hospital:'hospital'})[App.p2.aud]})`); shareText(whoName(c) + '’s Tendu Passport', t); };
+
+/* ---------- access levels: who sees what, and why ---------- */
+const ACCESS = [['full','Full access','Everything, including money, documents and settings.'],['coord','Care coordination','The plan, the team, Know me, the passport and the chat. Not money or settings.'],['daily','Daily support','Today’s jobs and visits, Know me, the emergency card and the chat.'],['meet','Meet only','“Meet” and today’s important information. For someone just starting.'],['pro','Professional','Only what is shared with them on purpose, such as the passport.']];
+const accessOf = m => m.access || (m.isMe || m.role === 'organiser' ? 'full' : m.role === 'carer' ? 'daily' : m.role === 'pro' ? 'pro' : 'coord');
+PAGES.access = c => { const who = whoName(c);
+  return `${bar('Who sees what')}<h1 class="largetitle">Who sees what</h1><p class="subtitle">Not everyone needs everything. ${esc(who)} and the organiser decide each person’s level.</p>
+    <div class="stack">${c.members.map(m => { const lv = accessOf(m), d = ACCESS.find(x => x[0] === lv); return `<div class="card" style="padding:12px 14px"><div class="row" style="gap:10px">${avatar(m)}<span class="grow"><b>${esc(m.isMe ? 'You' : m.name)}</b><span class="small muted" style="display:block">${esc([m.relation, roleWord(m)].filter(Boolean).join(' · '))}</span></span>
+      <select class="select sm" data-change="accSet" data-id="${m.id}" aria-label="Access level for ${esc(m.name)}" ${m.isMe ? 'disabled' : ''}>${ACCESS.map(([k, l]) => `<option value="${k}" ${k === lv ? 'selected' : ''}>${esc(l)}</option>`).join('')}</select></div>
+      <details class="mt8"><summary class="small b">Why can ${esc(m.isMe ? 'you' : firstName(m.name))} see this?</summary><p class="small muted" style="margin:6px 2px">${esc(d[2])} ${m.isMe ? 'You set up this circle.' : m.access ? 'Chosen by the organiser.' : `Set from their role (${roleWord(m) || 'family'}). Change it any time.`}</p></details></div>`; }).join('')}</div>
+    <p class="disclaim">Levels decide what each person’s Tendu shows them. ${esc(who)}’s own wishes come first.</p>`; };
+ACTIONS.accSet = (v, id) => { const c = circle(), m = member(id, c); m.access = v; log(c, `${firstName(m.name)}’s access: ${ACCESS.find(x => x[0] === v)[1]}`, 'assign'); save(); render(); toast('Updated'); };
+/* on a helper's own phone, a lower level hides what they don't need */
+const HIDE_FOR = {daily:['costs','entitle','docs','summary','share','meeting','impact','privacy'], meet:['costs','entitle','docs','summary','share','meeting','meds','obs','questions','waiting','impact','routines'], pro:['costs','entitle','summary','share','meeting','obs','impact']};
+const _moreAcc = PAGES.more; PAGES.more = c => { let h = _moreAcc(c); const lv = accessOf(me(c)), hide = HIDE_FOR[lv] || [];
+  hide.forEach(v => { h = h.replace(new RegExp(`<button class="hubtile" data-a="go" data-v="${v}"[\\s\\S]*?<\\/button>`), ''); }); return h; };
+
+/* ---------- Shift mode (for paid carers, or anyone doing a visit) ---------- */
+PAGES.shift = c => { const d = D(), sh = d.shift && d.shift.circle === c.id ? d.shift : null, meM = me(c), t = todayIso(), who = whoName(c);
+  const mine = c.items.filter(i => i.date === t && (i.owner === meM.id || !i.owner)), vis = visitsOn(c, t), since = Date.now() - 24 * 36e5;
+  const news = [...(c.chat || []).filter(m => m.at >= since && m.s !== meM.id && m.k === 'msg').slice(-3).map(m => `${m.n}: ${m.t}`), ...c.feed.filter(f => f.at >= since && f.by !== meM.id).slice(0, 2).map(f => f.text)];
+  if (!sh) return `${bar('Shift')}<h1 class="largetitle">Start a shift</h1><p class="subtitle">Everything you need for ${esc(who)} today, then a handover for the next person when you finish.</p>
+    <div class="impact"><div><b>${vis.length}</b><span>${vis.length === 1 ? 'visit' : 'visits'} today</span></div><div><b>${mine.filter(i => !i.done).length}</b><span>jobs for you or nobody</span></div><div><b>${news.length}</b><span>updates since yesterday</span></div></div>
+    ${news.length ? `<div class="section"><div class="sechead"><h2>Since your last visit</h2></div><div class="card stack small">${news.map(n => `<div>${esc(n)}</div>`).join('')}</div></div>` : ''}
+    ${(c.about || {}).calms || (c.about || {}).upsets ? `<div class="section"><div class="sechead"><h2>Remember</h2></div><div class="card small">${(c.about || {}).calms ? '<div><b>Helps:</b> ' + esc(c.about.calms) + '</div>' : ''}${(c.about || {}).upsets ? '<div class="mt4"><b>Avoid:</b> ' + esc(c.about.upsets) + '</div>' : ''}</div></div>` : ''}
+    <button class="btn mt16" data-a="shiftStart">${ic('route')}Start shift</button>`;
+  const left = mine.filter(i => !i.done), done = c.items.filter(i => i.done && i.doneBy === meM.id && i.doneAt >= sh.at);
+  return `${bar('On shift')}<p class="eyebrow">On shift since ${new Date(sh.at).toLocaleTimeString('en-GB', {hour:'2-digit', minute:'2-digit'})}</p><h1 class="largetitle">Today with ${esc(who)}</h1>
+    <div class="list">${left.map(i => itemRow(c, i, {})).join('') || `<div class="li noicon"><span class="main small muted">Nothing left for today.</span></div>`}</div>
+    ${done.length ? `<div class="section"><div class="sechead"><h2>Done this shift</h2><span class="tiny muted">${done.length}</span></div><div class="list">${done.map(i => li({icon:'check', tone:'c-good', title:esc(i.title)})).join('')}</div></div>` : ''}
+    <form class="card stack mt16" data-submit="shiftEnd"><div class="field"><label for="sh-n">Anything important?</label><textarea class="textarea" id="sh-n" name="note" rows="2" placeholder="e.g. Ate well, a bit tired this afternoon"></textarea></div>
+      <div class="field"><label for="sh-x">The next person needs to know</label><textarea class="textarea" id="sh-x" name="next" rows="2" placeholder="e.g. Bread is running low"></textarea></div><button class="btn" type="submit">${ic('check')}End shift and send handover</button></form>
+    <p class="disclaim">Record what happened in plain words. For anything urgent, call 999 or NHS 111.</p>`; };
+ACTIONS.shiftStart = () => { const c = circle(); D().shift = {circle:c.id, at:Date.now()}; log(c, `${firstName(me(c).name)} started a shift`, 'assign'); save(); render(); };
+ACTIONS.shiftEnd = async f => { const c = circle(), d = D(), sh = d.shift, meM = me(c), t = todayIso();
+  const done = c.items.filter(i => i.done && i.doneBy === meM.id && i.doneAt >= sh.at).map(i => i.title), left = c.items.filter(i => i.date === t && !i.done && (i.owner === meM.id || !i.owner)).map(i => i.title);
+  const text = [`${firstName(meM.name)}’s shift with ${whoName(c)} (${new Date(sh.at).toLocaleTimeString('en-GB', {hour:'2-digit', minute:'2-digit'})} to ${new Date().toLocaleTimeString('en-GB', {hour:'2-digit', minute:'2-digit'})})`, done.length ? 'Done: ' + done.join(', ') : '', left.length ? 'Not done: ' + left.join(', ') : '', f.note ? 'Note: ' + f.note : '', f.next ? 'Next person: ' + f.next : ''].filter(Boolean).join('\n');
+  d.shift = null; log(c, `${firstName(meM.name)} ended a shift`, 'assign'); save();
+  if (typeof Sync !== 'undefined' && Sync.on(c)){ await postChat(c, text, 'msg'); toast('Handover sent to the team'); go('updates'); } else { shareText('Shift handover', text); render(); } };
+
+/* ---------- How are you? A weekly check-in for the carer, private to this phone ---------- */
+const CQ = [['mood','How have you been feeling?',[['good','Good'],['ok','OK'],['low','Low'],['struggling','Struggling']]],['sleep','How have you slept?',[['good','Well'],['ok','Some bad nights'],['poor','Badly']]],['stress','How stretched do you feel?',[['low','I’m coping'],['some','A bit stretched'],['high','At my limit']]],['eat','Have you been eating properly?',[['yes','Yes'],['no','Not really']]],['me','Any time for yourself this week?',[['yes','Yes'],['no','No']]]];
+PAGES.carercheck = c => { const d = D(), hist = (d.carerChecks || []).slice(-8), cur = App.cq = App.cq || {}, last = hist[hist.length - 1];
+  const hard = x => x && (x.mood === 'struggling' || x.stress === 'high' || (x.mood === 'low' && x.sleep === 'poor'));
+  return `${bar('How are you?')}<h1 class="largetitle">How are you, ${esc(firstName(d.me.name))}?</h1><p class="subtitle">Once a week, just for you. This stays on your phone; nobody else sees it unless you choose to share.</p>
+    <div class="stack">${CQ.map(([k, q, opts]) => `<div class="card" style="padding:12px 14px"><div class="b">${esc(q)}</div><div class="chips mt8">${opts.map(([v, l]) => `<button class="chip" data-a="cqSet" data-v="${k}|${v}" aria-pressed="${cur[k] === v}">${esc(l)}</button>`).join('')}</div></div>`).join('')}</div>
+    <button class="btn mt12" data-a="cqSave" ${CQ.every(([k]) => cur[k]) ? '' : 'disabled'}>Save this week</button>
+    ${hard(last) ? `<div class="card mt16" style="border:2px solid var(--warn)"><b>It sounds like a hard week.</b><p class="small" style="margin:6px 0">You don’t have to do this alone. Carers UK’s helpline is free: <b>0808 808 7777</b>. Your GP can help too, and can arrange a carer’s assessment. If you feel unable to cope or unsafe, call <b>NHS 111</b> (option 2 for mental health) or <b>999</b>.</p><div class="row" style="gap:6px;flex-wrap:wrap"><button class="claim" data-a="go" data-v="brk">I need a break</button><button class="claim ghostish" data-a="go" data-v="studio" data-id="${me(c).id}">Plan cover for me</button></div></div>` : ''}
+    ${hist.length ? `<div class="section"><div class="sechead"><h2>Your last weeks</h2></div><div class="cqhist">${hist.map(x => `<div class="cqw" title="${esc(niceDate(x.d))}"><span class="cqdot m-${x.mood}"></span><span class="tiny muted">${esc(niceDate(x.d).split(' ').slice(0, 2).join(' '))}</span></div>`).join('')}</div><p class="tiny muted">Dots show how you said you were feeling. Not a test or a score.</p></div>` : ''}
+    <p class="disclaim">This is a record for you, not a medical test.</p>`; };
+ACTIONS.cqSet = v => { const [k, x] = v.split('|'); App.cq[k] = x; render(); };
+ACTIONS.cqSave = () => { const d = D(); (d.carerChecks = d.carerChecks || []).push({...App.cq, d:todayIso(), at:Date.now()}); App.cq = {}; save(); render(); toast('Saved. Thank you for looking after yourself too.'); };
+const carerCheckDue = () => { const h = (D().carerChecks || []), l = h[h.length - 1]; return !l || Date.now() - l.at > 7 * 864e5; };
+
+/* Tendu 5.0, part 4: the Family Command Centre, and Bud as the face of the care brain.
+   Bud now watches the Care Signals, prepares Care Situations, and his skills reach every 5.0 feature. */
+
+/* ---------- Family Command Centre ---------- */
+PAGES.board = c => { const who = whoName(c), f = Care.forecast(c), g = gaps(c).filter(x => x.p <= 3), rows = todayRows(c), sig = careSignals(c), prep = budPrepared(c), l = Care.load(c);
+  const todayCov = rows.filter(r => r.v || (r.i && (r.i.owner || r.i.done))).length, todayNeed = rows.length - todayCov;
+  const state = d => d.probs.some(p => p.p <= 2) ? 'need' : d.items.length > 4 ? 'busy' : 'ok', max = Math.max(1, ...l.per.map(x => x.total));
+  return `${bar(esc(who) + '’s care')}<h1 class="largetitle">${esc(who)}’s care</h1><p class="subtitle">${longDate()}</p>
+    <div class="board">
+      <section class="card bsec"><div class="tiny b up muted">Today</div><div class="bnums"><div class="good"><b>${todayCov}</b><span>covered</span></div><div class="${todayNeed || g.length ? 'warn' : 'good'}"><b>${Math.max(todayNeed, g.filter(x => x.p <= 2).length)}</b><span>need${Math.max(todayNeed, g.filter(x => x.p <= 2).length) === 1 ? 's' : ''} attention</span></div></div></section>
+      <section class="card bsec"><div class="tiny b up muted">This week</div><div class="bweek">${f.map(d => `<button data-a="fcGo" data-v="${d.k}" class="bd ${state(d)}"><span>${esc(WDAY[parseIso(d.d).getDay()].slice(0, 3))}</span><i></i></button>`).join('')}</div><div class="tiny muted mt8"><span class="bkey ok"></span>covered <span class="bkey busy"></span>busy <span class="bkey need"></span>needs someone</div></section>
+      <section class="card bsec"><div class="tiny b up muted">Care network</div><div class="stack" style="gap:6px;margin-top:8px">${l.per.filter(x => x.total).map(x => `<div class="deprow"><span class="row" style="gap:8px">${avatar(x.m, 'sm')}<b>${esc(x.m.isMe ? 'You' : firstName(x.m.name))}</b></span><span class="track"><span class="fill" style="width:${Math.round(x.total / max * 100)}%"></span></span><b class="pct">${x.total}</b></div>`).join('') || '<p class="small muted">Nothing planned this week.</p>'}</div></section>
+      <section class="card bsec"><div class="tiny b up muted">Tendu noticed</div>${sig.length ? `<div class="budlist mt8">${sig.slice(0, 4).map(x => `<button class="budrow" data-a="${x.a}" data-v="${esc(x.v || '')}" ${x.id ? `data-id="${esc(x.id)}"` : ''}>${ic(SIGNAL[x.type][0])}<span>${esc(x.t)}</span>${chevron()}</button>`).join('')}</div>${sig.length > 4 ? `<button class="textbtn tiny mt8" data-a="go" data-v="signals">All ${sig.length}</button>` : ''}` : '<p class="small muted mt8">Nothing to flag this week.</p>'}</section>
+      <section class="card bsec"><div class="tiny b up muted">Tendu prepared</div>${prep.length ? `<div class="budlist mt8">${prep.map(w => `<button class="budrow prep" data-a="budDo" data-v="${esc(w.a + '|' + (w.v || '') + (w.id ? '#' + w.id : ''))}">${ic(w.icon)}<span>${esc(w.t)}</span>${chevron()}</button>`).join('')}</div>` : '<p class="small muted mt8">Nothing waiting for you.</p>'}</section>
+      <section class="card bsec"><div class="tiny b up muted">Resilience</div>${(() => { const k = continuity(c); return `<div class="contw" style="font-size:1.6rem;margin-top:4px;color:var(--${k.word === 'Strong' ? 'good' : k.word === 'Fair' ? 'warn' : 'crit'})">${k.word}</div><div class="small muted">${k.score} of ${k.checks.length} things in place</div><button class="textbtn tiny mt8" data-a="go" data-v="continuity">See why</button>`; })()}</section>
+    </div>`; };
+
+/* ---------- Bud watches the signals and prepares situations ---------- */
+budWatch = function(c){ const s = careSignals(c).slice(0, 5).map(x => ({icon:SIGNAL[x.type][0], t:x.t, a:x.a, v:(x.v || '') + (x.id ? '#' + x.id : '')}));
+  if (carerCheckDue() && new Date().getDay() === 0 || (carerCheckDue() && (D().carerChecks || []).length === 0)) s.push({icon:'smile', t:'How are you this week? A 30-second check-in, just for you', a:'go', v:'carercheck'});
+  return s.slice(0, 5); };
+const _budPrep = budPrepared; budPrepared = function(c){ const out = _budPrep(c); if (autoLevel() < 2) return out;
+  situations(c, 3).filter(s => s.score < s.checks.length).slice(0, 2).forEach(s => out.unshift({icon:'doc', t:`Get ready: ${s.label} (${s.score} of ${s.checks.length})`, a:'go', v:'situation', id:s.i.id}));
+  return out.filter((x, n, a) => !(x.a === 'briefOpen' && a.some(y => y.v === 'situation' && y.id === x.id))); };
+ACTIONS.budDo = (v, id) => { const [a, rest] = v.split('|'), [x, xid] = (rest || '').split('#'), tid = xid || id; App.pipOpen = false;
+  if (a === 'go') return tid ? go(x, {id:tid}) : go(x); if (a === 'sheet') return openSheet(x, tid ? {id:tid} : {}); if (a === 'fcGo') return ACTIONS.fcGo(x); if (a === 'briefOpen') return ACTIONS.briefOpen('', tid);
+  if (ACTIONS[a]) return ACTIONS[a](x, tid); };
+/* Bud's skills, now reaching the whole care brain */
+SKILLS.splice(0, SKILLS.length, ['calendar','Plan the week','go','forecast'], ['doc','Get ready for an appointment','budReady',''], ['route','What if someone can’t?','go','studio'], ['users','Hand over my care','go','handmy'],
+  ['handshake','Find cover','go','requests'], ['share','How care fits together','go','graph'], ['inbox','Read a letter','go','inbox'], ['list','Care episodes','go','episodes'],
+  ['star','Goals','go','goals'], ['heart','Meet ','go','meet'], ['doc','Passport','go','passport2'], ['clock','Start a shift','go','shift'], ['shield','Care continuity','go','continuity'], ['smile','How are you?','go','carercheck'], ['siren','Emergency','go','sos']);
+ACTIONS.budReady = () => { const c = circle(), s = situations(c, 30)[0]; App.pipOpen = false; if (s) go('situation', {id:s.i.id}); else { toast('No appointment in the next month', 'info'); render(); } };
+
+/* ---------- entry points ---------- */
+const _more50 = PAGES.more; PAGES.more = c => { const n = careSignals(c).length;
+  const sec = `<section class="section"><div class="sechead"><h2>Tendu understands</h2></div><div class="hubgrid">${tile('sparkle', 'Tendu noticed', 'go', 'signals', 'c-accent', n ? n : '')}${tile('share', 'How care fits', 'go', 'graph', 'c-good')}${tile('route', 'What if…', 'go', 'studio', 'c-accent')}${tile('list', 'Care episodes', 'go', 'episodes', 'c-plain')}${tile('star', 'Goals', 'go', 'goals', 'c-good')}${tile('sun', 'My life', 'go', 'mylife', 'c-accent')}${tile('doc', 'Passport', 'go', 'passport2', 'c-crit')}${tile('lock', 'Who sees what', 'go', 'access', 'c-plain')}${tile('clock', 'Start a shift', 'go', 'shift', 'c-plain')}${tile('grid', 'Command centre', 'go', 'board', 'c-plain')}</div></section>`;
+  return _more50(c).replace(/(<section class="section"><div class="sechead"><h2>Help and ideas<\/h2>)/, sec + '$1').replace(/(<h2>For you<\/h2><\/div><div class="hubgrid">)/, `$1${tile('smile', 'How are you?', 'go', 'carercheck', 'c-good', carerCheckDue() ? '1' : '')}`); };
+/* paid carers see "Start shift" first on Home */
+const _homeShift = PAGES.home; PAGES.home = c => { const h = _homeShift(c), m = me(c); if (!m || m.role !== 'carer' || c.archived) return h; const on = D().shift && D().shift.circle === c.id;
+  return h.replace('<section class="hero', `<button class="calmbtn" style="margin:0 0 12px" data-a="go" data-v="shift">${ic('clock')}<span>${on ? 'On shift: see today and end the shift' : 'Start your shift'}</span>${chevron()}</button><section class="hero`); };
+/* on a wide screen, Home opens with the Command Centre link */
+const _homeBoard = PAGES.home; PAGES.home = c => { const h = _homeBoard(c); if (window.innerWidth < 900 || c.archived) return h;
+  return h.replace('<div class="calm">', `<button class="calmbtn" style="margin-top:14px" data-a="go" data-v="board">${ic('grid')}<span>Open the Command Centre</span>${chevron()}</button><div class="calm">`); };
+/* one check-in for the carer: Bud's quick mood question steps aside when the weekly check-in is done */
+const _pipDue = pipCheckinDue; pipCheckinDue = c => !carerCheckDue() ? false : _pipDue(c);
 
 /* Start-up */
 (function boot(){
