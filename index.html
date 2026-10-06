@@ -814,6 +814,11 @@ label.chip{cursor:pointer}
 @media (max-width:599px){.board{grid-template-columns:1fr}}
 .sechead.sigh{flex-direction:column;align-items:flex-start;gap:2px}
 
+.invcode{font:700 2.1rem/1.1 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.12em;color:var(--brand);background:var(--brand-soft);border-radius:18px;padding:16px 10px;user-select:all;-webkit-user-select:all}
+.invin{font:600 1.35rem ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.14em;text-align:center;text-transform:uppercase}
+.invin::placeholder{letter-spacing:.14em;opacity:.35}
+body:has(.chatin.ontab) .pip.ontab .pip-fab{display:none}
+
 </style>
 <div id="app"></div>
 <script>
@@ -1390,6 +1395,7 @@ function renderAuth(){
       <div class="slides" aria-hidden="true">${SLIDES.map((_, i) => `<i class="${i===s?'on':''}"></i>`).join('')}</div>
       <div class="stack"><button class="btn" data-a="emStart" data-v="signup">Get started</button>
       <button class="btn ghost" data-a="emStart" data-v="signin">I already have an account</button>
+      <button class="btn ghost" data-a="auth" data-v="invited">${ic('users')}I’ve been invited</button>
       <button class="textbtn small" data-a="auth" data-v="restore">Restore from a backup</button></div></div>`;
   }
   if (v === 'terms' || v === 'privacy') return legalPage(v, 'legalBack');
@@ -1628,7 +1634,7 @@ PAGES.more = (c) => {
       ${li({icon:'plus', tone:'c-plain', title:'Care for someone else too', sub:'Another parent, a partner, a child…', a:'go', v:'newcircle'})}
       ${li({icon:'logout', tone:'c-plain', title:'Lock and sign out', a:'signout'})}
     </div></div>
-    <p class="disclaim center">Tendu helps people organise care together. It isn’t a medical device and doesn’t give medical advice.<br>Version 5.0.1</p>`;
+    <p class="disclaim center">Tendu helps people organise care together. It isn’t a medical device and doesn’t give medical advice.<br>Version 5.1</p>`;
 };
 ACTIONS.signout = async () => { const a = Session.acct && Accounts.list().find(x => x.id === Session.acct.id); await Session.flush(); Session.lock(); App.sheet = null; App.pipOpen = false;
   App.em = {flow:'signin', email:a ? a.email : ''}; App.authView = a && a.pin ? 'pin' : 'email'; App.lockedAcct = a ? a.id : null; App.route = {name:'home'}; App.stack = []; render(); };
@@ -3545,7 +3551,7 @@ PAGES.more = c => { const who = esc(whoName(c)), d = D(), simple = simpleMode(),
       ${li({icon:'plus', tone:'c-plain', title:'Care for someone else too', sub:'Each person gets their own circle', a:'go', v:'newcircle'})}
       ${li({icon:'logout', tone:'c-plain', title:'Lock and sign out', a:'signout'})}
     </div></section>
-    <p class="disclaim center">Tendu helps people organise care together. It isn’t a medical device and doesn’t give medical advice.<br>Version 5.0.1</p>`; };
+    <p class="disclaim center">Tendu helps people organise care together. It isn’t a medical device and doesn’t give medical advice.<br>Version 5.1</p>`; };
 
 const _home3 = PAGES.home; PAGES.home = c => { let h = _home3(c);
   h = h.replace(/<div class="section"><div class="sechead"><h2>Shortcuts<\/h2><\/div><div class="stats"[\s\S]*?<\/div><\/div>\s*/, '');
@@ -5377,7 +5383,7 @@ function careSignals(c){ const out = [], wk = Care.days(7), open = openItems(c),
   const k = continuity(c); if (k.per[0] && k.per[0].pct >= 60 && c.members.length > 1) out.push({type:'dependency', key:'dep-' + k.per[0].m.id, t:`A large part of this week’s care (${k.per[0].pct}%) depends on ${k.per[0].m.isMe ? 'you' : firstName(k.per[0].m.name)}`, a:'go', v:'continuity'});
   Object.entries(k.spof).filter(([, ts]) => ts.length >= 2).slice(0, 1).forEach(([id, ts]) => { const m = member(id, c); if (m) out.push({type:'dependency', key:'spof-' + id, t:`${meWord(m)} ${m.isMe ? 'are' : 'is'} the only person for ${ts.length} regular jobs`, a:'go', v:'gperson', id}); });
   rhythm(c).diffs.slice(0, 2).forEach(d => out.push({type:'change', key:'chg-' + d.k, t:d.t, a:'fcGo', v:String(d.k2)}));
-  situations(c, 7).filter(s => s.score < s.checks.length).slice(0, 2).forEach(s => out.push({type:'preparation', key:'sit-' + s.i.id, t:`${s.label}: ${s.score} of ${s.checks.length} ready`, a:'go', v:'situation', id:s.i.id}));
+  situations(c, 7).filter(s => s.score < s.checks.length).slice(0, 2).forEach(s => out.push({type:'preparation', key:'sit-' + s.i.id, t:`${s.label}: ${s.score} of ${s.checks.length} ready`, a:'go', v:'getready', id:s.i.id}));
   return out.filter(x => !hidden[x.key]); }
 PAGES.signals = c => { const s = careSignals(c), groups = Object.keys(SIGNAL).map(t => [t, s.filter(x => x.type === t)]).filter(([, xs]) => xs.length);
   return `${bar('Tendu noticed')}<h1 class="largetitle">Tendu noticed</h1><p class="subtitle">Signals about how the care is organised. Never about health, never a prediction: just what the plan shows.</p>
@@ -5400,7 +5406,7 @@ function situationOf(c, i){ const L = itemLinks(c, i), a = c.about || {}, qs = (
   const label = `${i.date ? (daysFromToday(i.date) <= 1 ? dayWord(i.date).replace(/^./, x => x.toUpperCase()) : WDAY[parseIso(i.date).getDay()]) : 'Upcoming'} ${i.title}`;
   return {i, L, checks, score:checks.filter(x => x.ok).length, label}; }
 function situations(c, days = 14){ return openItems(c).filter(i => i.kind === 'appointment' && i.date && daysFromToday(i.date) >= 0 && daysFromToday(i.date) <= days).map(i => situationOf(c, i)); }
-PAGES.situation = (c, p) => { const i = c.items.find(x => x.id === p.id); if (!i) return `${bar('Situation')}<p class="muted">This appointment has gone.</p>`;
+PAGES.getready = (c, p) => { const i = c.items.find(x => x.id === p.id); if (!i) return `${bar('Situation')}<p class="muted">This appointment has gone.</p>`;
   const s = situationOf(c, i), pct = Math.round(s.score / s.checks.length * 100);
   return `${bar('Getting ready')}<p class="eyebrow">${esc(i.date ? niceDate(i.date) : '')}${i.time ? ' · ' + esc(i.time) : ''}</p><h1 class="largetitle">${esc(i.title)}</h1>
     <div class="card sitbar"><div class="row" style="justify-content:space-between"><b>${s.score === s.checks.length ? 'Ready' : `${s.score} of ${s.checks.length} ready`}</b><span class="small muted">Tendu put this together from the plan</span></div><span class="track"><span class="fill" style="width:${pct}%"></span></span></div>
@@ -5417,7 +5423,7 @@ ACTIONS.sitTell = async (v, id) => { const c = circle(), i = c.items.find(x => x
 
 const _itemSheet5 = SHEETS.item; SHEETS.item = (c, p) => { const s = _itemSheet5(c, p), i = c.items.find(x => x.id === p.id); if (!i || i.done) return s; const L = itemLinks(c, i);
   const rows = [L.usual && (!L.owner || L.usual.id !== L.owner.id) ? `Usually done by <b>${esc(meWord(L.usual))}</b>` : '', L.backup ? `Backup: <b>${esc(meWord(L.backup))}</b> (${esc(L.why)})` : '', L.lift ? `Lift: ${esc(L.lift.title)}` : '', L.docs.length ? `Documents: ${esc(L.docs.map(d => d.title).join(', '))}` : '', L.sameDay.length ? `Same day: ${esc(L.sameDay.slice(0, 3).map(x => x.title).join(', '))}` : ''].filter(Boolean);
-  const sit = i.kind === 'appointment' && i.date && daysFromToday(i.date) >= 0 ? (() => { const st = situationOf(c, i); return `<button class="card sitmini mt8" data-a="go" data-v="situation" data-id="${i.id}">${ic('doc')}<span class="grow"><b>Get ready</b><span class="tiny muted" style="display:block">${st.score} of ${st.checks.length} ready</span></span>${chevron()}</button>`; })() : '';
+  const sit = i.kind === 'appointment' && i.date && daysFromToday(i.date) >= 0 ? (() => { const st = situationOf(c, i); return `<button class="card sitmini mt8" data-a="go" data-v="getready" data-id="${i.id}">${ic('doc')}<span class="grow"><b>Get ready</b><span class="tiny muted" style="display:block">${st.score} of ${st.checks.length} ready</span></span>${chevron()}</button>`; })() : '';
   if (!rows.length && !sit) return s;
   return {...s, body:s.body + `<div class="gconn mt12"><div class="tiny b up muted">Connected</div>${rows.map(r => `<div class="small">${r}</div>`).join('')}${sit}</div>`}; };
 
@@ -5618,15 +5624,15 @@ budWatch = function(c){ const s = careSignals(c).slice(0, 5).map(x => ({icon:SIG
   if (carerCheckDue() && new Date().getDay() === 0 || (carerCheckDue() && (D().carerChecks || []).length === 0)) s.push({icon:'smile', t:'How are you this week? A 30-second check-in, just for you', a:'go', v:'carercheck'});
   return s.slice(0, 5); };
 const _budPrep = budPrepared; budPrepared = function(c){ const out = _budPrep(c); if (autoLevel() < 2) return out;
-  situations(c, 3).filter(s => s.score < s.checks.length).slice(0, 2).forEach(s => out.unshift({icon:'doc', t:`Get ready: ${s.label} (${s.score} of ${s.checks.length})`, a:'go', v:'situation', id:s.i.id}));
-  return out.filter((x, n, a) => !(x.a === 'briefOpen' && a.some(y => y.v === 'situation' && y.id === x.id))); };
+  situations(c, 3).filter(s => s.score < s.checks.length).slice(0, 2).forEach(s => out.unshift({icon:'doc', t:`Get ready: ${s.label} (${s.score} of ${s.checks.length})`, a:'go', v:'getready', id:s.i.id}));
+  return out.filter((x, n, a) => !(x.a === 'briefOpen' && a.some(y => y.v === 'getready' && y.id === x.id))); };
 ACTIONS.budDo = (v, id) => { const [a, rest] = v.split('|'), [x, xid] = (rest || '').split('#'), tid = xid || id; App.pipOpen = false;
   if (a === 'go') return tid ? go(x, {id:tid}) : go(x); if (a === 'sheet') return openSheet(x, tid ? {id:tid} : {}); if (a === 'fcGo') return ACTIONS.fcGo(x); if (a === 'briefOpen') return ACTIONS.briefOpen('', tid);
   if (ACTIONS[a]) return ACTIONS[a](x, tid); };
 SKILLS.splice(0, SKILLS.length, ['calendar','Plan the week','go','forecast'], ['doc','Get ready for an appointment','budReady',''], ['route','What if someone can’t?','go','studio'], ['users','Hand over my care','go','handmy'],
   ['handshake','Find cover','go','requests'], ['share','How care fits together','go','graph'], ['inbox','Read a letter','go','inbox'], ['list','Care episodes','go','episodes'],
   ['star','Goals','go','goals'], ['heart','Meet ','go','meet'], ['doc','Passport','go','passport2'], ['clock','Start a shift','go','shift'], ['shield','Care continuity','go','continuity'], ['smile','How are you?','go','carercheck'], ['siren','Emergency','go','sos']);
-ACTIONS.budReady = () => { const c = circle(), s = situations(c, 30)[0]; App.pipOpen = false; if (s) go('situation', {id:s.i.id}); else { toast('No appointment in the next month', 'info'); render(); } };
+ACTIONS.budReady = () => { const c = circle(), s = situations(c, 30)[0]; App.pipOpen = false; if (s) go('getready', {id:s.i.id}); else { toast('No appointment in the next month', 'info'); render(); } };
 
 const _more50 = PAGES.more; PAGES.more = c => { const n = careSignals(c).length;
   const sec = `<section class="section"><div class="sechead"><h2>Tendu understands</h2></div><div class="hubgrid">${tile('sparkle', 'Tendu noticed', 'go', 'signals', 'c-accent', n ? n : '')}${tile('share', 'How care fits', 'go', 'graph', 'c-good')}${tile('route', 'What if…', 'go', 'studio', 'c-accent')}${tile('list', 'Care episodes', 'go', 'episodes', 'c-plain')}${tile('star', 'Goals', 'go', 'goals', 'c-good')}${tile('sun', 'My life', 'go', 'mylife', 'c-accent')}${tile('doc', 'Passport', 'go', 'passport2', 'c-crit')}${tile('lock', 'Who sees what', 'go', 'access', 'c-plain')}${tile('clock', 'Start a shift', 'go', 'shift', 'c-plain')}${tile('grid', 'Command centre', 'go', 'board', 'c-plain')}</div></section>`;
@@ -5636,6 +5642,168 @@ const _homeShift = PAGES.home; PAGES.home = c => { const h = _homeShift(c), m = 
 const _homeBoard = PAGES.home; PAGES.home = c => { const h = _homeBoard(c); if (window.innerWidth < 900 || c.archived) return h;
   return h.replace('<div class="calm">', `<button class="calmbtn" style="margin-top:14px" data-a="go" data-v="board">${ic('grid')}<span>Open the Command Centre</span>${chevron()}</button><div class="calm">`); };
 const _pipDue = pipCheckinDue; pipCheckinDue = c => !carerCheckDue() ? false : _pipDue(c);
+
+const INV_ABC = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789', INV_DAYS = 7, INV_PENDING = 'tendu.join';
+const INV_WEB = 'https://mohamedarwish94-pixel.github.io/tendu-care-web/';
+const invNorm = s => { s = String(s || '').trim(); const m = /join=([A-Za-z0-9-]+)/.exec(s); return (m ? m[1] : s).toUpperCase().replace(/[^A-Z0-9]/g, ''); };
+const invShow = code => code.slice(0, 5) + '-' + code.slice(5);
+const invValid = code => code.length === 10 && [...code].every(x => INV_ABC.includes(x));
+const invLink = code => INV_WEB + '#join=' + code;
+const INV_REL = [['family', 'Family', 'family', ''], ['friend', 'Friend', 'friend', 'Friend'], ['neighbour', 'Neighbour', 'neighbour', 'Neighbour'], ['carer', 'Paid carer', 'carer', 'Carer'], ['agency', 'Care agency', 'carer', 'Care agency'], ['pro', 'Professional', 'pro', '']];
+const invDefAccess = role => role === 'carer' ? 'daily' : role === 'pro' ? 'pro' : 'coord';
+
+async function invKeys(code){
+  const base = await crypto.subtle.importKey('raw', enc.encode(code), 'PBKDF2', false, ['deriveBits']);
+  const bits = new Uint8Array(await crypto.subtle.deriveBits({name:'PBKDF2', salt:enc.encode('tendu-invite-v1'), iterations:150000, hash:'SHA-256'}, base, 512));
+  return {id:Array.from(bits.slice(0, 32), b => b.toString(16).padStart(2, '0')).join(''), key:await crypto.subtle.importKey('raw', bits.slice(32), 'AES-GCM', false, ['encrypt', 'decrypt'])};
+}
+const invSrv = () => authSrv() || Sync.cfg();
+async function invRpc(name, body){
+  const s = invSrv(); if (!s) throw new Error('Invites need a connection to the Tendu server.');
+  let r; try { r = await fetch(s.url.replace(/\/+$/, '') + '/rest/v1/rpc/' + name, {method:'POST', headers:srvHeaders(s), body:JSON.stringify(body)}); }
+  catch(e){ throw new Error('No connection. Check your internet and try again.'); }
+  const t = await r.text();
+  if (!r.ok){ const e = new Error(/not found/.test(t) ? 'That code didn’t work. It may have expired or been cancelled. Ask for a new one.' : 'The Tendu server replied ' + r.status + '. Try again in a moment.'); e.notFound = /not found/.test(t); throw e; }
+  try { return t ? JSON.parse(t) : null; } catch(e){ return t; }
+}
+
+async function invCreate(c, {mid, name, role, rel, acc}){
+  inviteCode(c); if (c.share.board === undefined) c.share.board = true;
+  const code = Array.from(crypto.getRandomValues(new Uint8Array(10)), b => INV_ABC[b & 31]).join(''), owner = hex(32), {id, key} = await invKeys(code);
+  const s = Sync.cfg(), own = s && authSrv() && s.url === authSrv().url;
+  const body = {v:1, r:c.share.room, k:c.share.key, n:c.name, p:c.preferred, pr:c.pronoun, by:firstName(D().me.name), mid:mid || '', mn:name || '', role, rel, acc, ...(s && !own ? {u:s.url, a:s.anon} : {})};
+  const iv = crypto.getRandomValues(new Uint8Array(12)), ct = await crypto.subtle.encrypt({name:'AES-GCM', iv}, key, enc.encode(JSON.stringify(body)));
+  await invRpc('tendu_invite_put', {p_id:id, p_owner:owner, p_blob:JSON.stringify({iv:b64(iv), ct:b64(ct)}), p_days:INV_DAYS});
+  const rec = {id, code, owner, mid:mid || '', name:name || '', rel, at:Date.now(), exp:Date.now() + INV_DAYS * 864e5};
+  (c.invites = c.invites || []).unshift(rec); c.invites = c.invites.slice(0, 30);
+  log(c, `${firstName(D().me.name)} invited ${name ? firstName(name) : 'someone'} to the team`, 'assign'); save(); if (typeof scheduleSync === 'function') scheduleSync();
+  return rec;
+}
+async function invOpen(code){
+  const {id, key} = await invKeys(code), blob = await invRpc('tendu_invite_get', {p_id:id});
+  try { const o = typeof blob === 'string' ? JSON.parse(blob) : blob; return JSON.parse(dec.decode(await crypto.subtle.decrypt({name:'AES-GCM', iv:unb64(o.iv)}, key, unb64(o.ct)))); }
+  catch(e){ throw new Error('That code didn’t work. Check it and try again.'); }
+}
+function invJoin(j){
+  const d = D(); if (j.u && j.a && (!Sync.cfg() || Sync.cfg().url !== j.u)) d.prefs.server = {url:j.u, anon:j.a};
+  let c = d.circles.find(x => x.share && x.share.room === j.r), fresh = !c;
+  if (!c){ c = newCircle({name:j.n || 'Shared care', preferred:j.p || '', pronoun:j.pr || 'they'}); c.share = {room:j.r, key:j.k, seq:0, joiner:true, board:true};
+    if (j.role && j.role !== 'family' && j.n) c.callAs = firstName(j.n);
+    const m = c.members.find(x => x.isMe); if (j.mid) m.id = j.mid; m.role = j.role || 'family'; m.relation = j.rel || ''; if (j.acc) m.access = j.acc; m.acct = d.me.id;
+    log(c, `${firstName(d.me.name)} joined ${whoName(c)}’s team${j.by ? ', invited by ' + j.by : ''}`, 'system'); }
+  d.active = c.id; App.onb = null; App.invite = null; LS.del(INV_PENDING); save(); App.sheet = null; App.updView = 'chat'; App.route = {name:'updates'}; App.stack = []; render();
+  toast(fresh ? `You’ve joined ${whoName(c)}’s team` : `You’re already in ${whoName(c)}’s team`);
+  if (fresh && Sync.on(c)) postChat(c, `${firstName(d.me.name)} joined the team`, 'join');
+}
+const _applyRecsInv = applyRecs; applyRecs = function(c, recs){
+  const mine = c.members.find(x => x.isMe);
+  let claimed = false;
+  if (mine) recs.forEach(m => { if (m.key === 'members/' + mine.id && m.v && !m.del && m.v.acct !== D().me.id){ claimed = true; m.v = {...m.v, acct:D().me.id, name:mine.name || m.v.name, access:m.v.access || mine.access}; } });
+  const r = _applyRecsInv(c, recs);
+  if (claimed){ delete syncState(c).h['members/' + mine.id]; scheduleSync(); }
+  return r; };
+
+SHEETS.invite = c => {
+  if (!invSrv()) return {title:'Invite the team', body:`<p class="muted small">Inviting needs a connection to the Tendu server, which isn’t available in this preview.</p>`};
+  const f = App.invForm || (App.invForm = {mid:'', rel:'family'}), waiting = c.members.filter(m => !m.isMe && !m.acct);
+  const r = INV_REL.find(x => x[0] === f.rel) || INV_REL[0], acc = f.acc || invDefAccess(r[2]);
+  return {title:`Invite someone to help with ${whoName(c)}`, body:`<p class="muted small" style="margin:0 2px 12px">They get a short code and a link. When they join, they see the plan and the chat for ${esc(whoName(c))}, at the level you choose.</p>
+    <form class="stack" data-submit="invMake">
+      ${waiting.length ? `<div class="field"><span class="lbl">Who is it for?</span><div class="chips">${waiting.map(m => `<button type="button" class="chip" data-a="invWho" data-id="${m.id}" aria-pressed="${f.mid === m.id}">${esc(m.name)}${m.relation ? ' · ' + esc(m.relation) : ''}</button>`).join('')}<button type="button" class="chip" data-a="invWho" data-id="" aria-pressed="${!f.mid}">Someone new</button></div></div>` : ''}
+      ${f.mid ? '' : `<div class="field"><label for="inv-name">Their name</label><input class="input" id="inv-name" name="name" autocomplete="off" placeholder="e.g. James" value="${esc(f.name || '')}" data-autofocus></div>`}
+      <div class="field"><span class="lbl">They are</span><div class="chips">${INV_REL.map(([k, l]) => `<button type="button" class="chip" data-a="invRel" data-v="${k}" aria-pressed="${f.rel === k}">${l}</button>`).join('')}</div></div>
+      ${f.rel === 'family' && !f.mid ? `<div class="field"><label for="inv-relation">Relationship (optional)</label><input class="input" id="inv-relation" name="relation" placeholder="e.g. Brother, Granddaughter" value="${esc(f.relation || '')}"></div>` : ''}
+      <div class="field"><label for="inv-acc">What they can see</label><select class="select" id="inv-acc" name="acc">${ACCESS.filter(x => x[0] !== 'full').map(([k, l]) => `<option value="${k}" ${k === acc ? 'selected' : ''}>${esc(l)}</option>`).join('')}<option value="full" ${acc === 'full' ? 'selected' : ''}>Full access</option></select><span class="hint">${esc((ACCESS.find(x => x[0] === acc) || ACCESS[1])[2])} You can change it later.</span></div>
+      <button class="btn" type="submit">${ic('users')}Create invite</button></form>
+    ${(c.invites || []).some(i => !i.off && i.exp > Date.now()) ? `<button class="textbtn small mt12" data-a="go" data-v="members" style="display:block;margin:12px auto 0">Invites waiting</button>` : ''}`}; };
+const invKeep = () => { const f = document.querySelector('form[data-submit=invMake]'); if (f) Object.assign(App.invForm, Object.fromEntries(new FormData(f).entries())); };
+ACTIONS.invWho = (v, id) => { invKeep(); const m = member(id); Object.assign(App.invForm, {mid:id || '', rel:m ? ({carer:'carer', friend:'friend', neighbour:'neighbour', pro:'pro'})[m.role] || 'family' : App.invForm.rel, acc:m && m.access || ''}); render(); };
+ACTIONS.invRel = v => { invKeep(); App.invForm.rel = v; App.invForm.acc = ''; render(); };
+ACTIONS.invMake = f => busy('form[data-submit=invMake] [type=submit]', async () => {
+  const c = circle(), st = App.invForm || {}, r = INV_REL.find(x => x[0] === st.rel) || INV_REL[0];
+  let m = st.mid ? member(st.mid, c) : null; const name = m ? m.name : (f.name || '').trim();
+  if (!m && !name) return toast('Add their name, so the team knows who’s coming', 'info');
+  const rel = m ? m.relation : (st.rel === 'family' ? (f.relation || '').trim() : r[3]);
+  if (!m) m = addMember(c, {name, relation:rel, role:r[2]});
+  m.role = m.role === 'organiser' ? m.role : r[2]; m.access = f.acc || invDefAccess(r[2]); m.invitedAt = Date.now();
+  try { const rec = await invCreate(c, {mid:m.id, name:m.name, role:m.role, rel:m.relation || rel, acc:m.access}); App.invForm = null; App.invMade = rec.id; openSheet('invmade'); }
+  catch(e){ toast(e.message, 'info'); }
+});
+function invMsg(c, rec){ return `Hi${rec.name ? ' ' + firstName(rec.name) : ''}, I’ve invited you to help with ${whoName(c)}’s care on Tendu Care, so we can share the plan and keep in touch.\n\nTap to join: ${invLink(rec.code)}\n\nOr open the Tendu Care app, choose “I’ve been invited” and enter: ${invShow(rec.code)}\n\nThe code works for ${INV_DAYS} days.`; }
+SHEETS.invmade = c => { const rec = (c.invites || []).find(x => x.id === App.invMade); if (!rec) return {title:'Invite', body:'<p class="muted">This invite has gone.</p>'};
+  const days = Math.max(1, Math.ceil((rec.exp - Date.now()) / 864e5));
+  return {title:rec.name ? `Invite for ${firstName(rec.name)}` : 'Invite', body:`<div class="center"><p class="muted small" style="margin:0 2px 8px">Their code</p><div class="invcode" aria-label="Invite code ${esc(invShow(rec.code).split('').join(' '))}">${esc(invShow(rec.code))}</div>
+    <p class="small muted mt8">Works for ${days} more ${days === 1 ? 'day' : 'days'}. Only send it to ${rec.name ? esc(firstName(rec.name)) : 'the person it’s for'}.</p></div>
+    <div class="stack mt16"><button class="btn" data-a="invSend">${ic('share')}Send by WhatsApp, text or email</button><div class="btnrow"><button class="btn ghost" data-a="invCopy" data-v="link">${ic('copy')}Copy link</button><button class="btn ghost" data-a="invCopy" data-v="code">${ic('copy')}Copy code</button></div></div>
+    <p class="hint mt12">They tap the link, or open Tendu Care and choose “I’ve been invited”. You’ll see them in the team when they join.</p>`}; };
+ACTIONS.invSend = () => { const c = circle(), rec = (c.invites || []).find(x => x.id === App.invMade); if (rec) shareText(`Join ${whoName(c)}’s care team`, invMsg(c, rec)); };
+ACTIONS.invCopy = v => { const c = circle(), rec = (c.invites || []).find(x => x.id === App.invMade); if (rec) copyText(v === 'link' ? invLink(rec.code) : invShow(rec.code)); };
+ACTIONS.invResend = (v, id) => { App.invMade = id; openSheet('invmade'); };
+ACTIONS.invCancel = (v, id) => { const c = circle(), rec = (c.invites || []).find(x => x.id === id); if (!rec) return;
+  confirmSheet(`Cancel ${rec.name ? firstName(rec.name) + '’s' : 'this'} invite?`, 'The code will stop working. You can make a new one any time.', 'Cancel invite', async () => {
+    try { await invRpc('tendu_invite_revoke', {p_id:rec.id, p_owner:rec.owner}); } catch(e){ toast('Couldn’t reach the server. The code will expire on its own.', 'info'); }
+    rec.off = true; save(); render(); }, false); };
+const invWaiting = c => (c.invites || []).filter(i => !i.off && i.exp > Date.now() && !(i.mid && (member(i.mid, c) || {}).acct));
+
+SHEETS.join = () => ({title:'Join a care team', body:`<p class="muted small" style="margin:0 2px 12px">Enter the code from your invite. It looks like <b>K7M4P-Q2X9H</b>. You can also paste the whole link.</p>
+  <form class="stack" data-submit="invEnter"><input class="input invin" name="code" required autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="K7M4P-Q2X9H" aria-label="Invite code" data-autofocus>
+  ${App.authMsg && App.sheet ? `<p class="err" role="alert">${esc(App.authMsg)}</p>` : ''}<button class="btn" type="submit">Continue</button></form>
+  <details class="mt16"><summary class="small b">Got a long code starting TENDU1?</summary><form class="stack mt8" data-submit="joinTeam"><textarea class="textarea" name="code" required placeholder="TENDU1.…" style="min-height:90px;font-family:ui-monospace,monospace;font-size:.8rem"></textarea><button class="btn ghost" type="submit">Join with the long code</button></form></details>`});
+async function invLoad(raw){ if (/^TENDU1\./.test(String(raw).trim())) return {long:true};
+  const code = invNorm(raw); if (!invValid(code)) throw new Error('That doesn’t look like an invite code. It has 10 letters and numbers, like K7M4P-Q2X9H.');
+  const j = await invOpen(code); j.code = code; return j; }
+ACTIONS.invEnter = f => busy('form[data-submit=invEnter] [type=submit]', async () => {
+  try { const j = await invLoad(f.code); if (j.long) return ACTIONS.joinTeam(f); App.invite = j; openSheet('joinpreview'); }
+  catch(e){ toast(e.message, 'info'); } });
+const invWho = j => (j.role === 'family' && j.p) || firstName(j.n || '') || j.p || 'someone';
+function invPreview(j){ const r = INV_REL.find(x => x[2] === j.role) || INV_REL[0], acc = ACCESS.find(x => x[0] === (j.acc || invDefAccess(j.role))) || ACCESS[1], who = invWho(j);
+  return `<div class="center"><span class="av xl" style="--c:var(--brand-soft);color:var(--brand);margin:0 auto">${esc(initials(j.n || who))}</span>
+    <h2 style="margin:12px 0 4px">${j.by ? esc(j.by) + ' invited you' : 'You’re invited'}</h2><p class="lead" style="margin:0">to help with <b>${esc(who)}’s</b> care${j.n && j.p && j.p !== j.n ? ` (${esc(j.n)})` : ''}.</p></div>
+    <div class="card flat mt16" style="border-radius:16px;padding:12px 14px"><div class="small"><b>You’ll join as:</b> ${esc([j.rel, r[1]].filter((x, i, a) => x && a.indexOf(x) === i).join(' · '))}</div><div class="small mt4"><b>You’ll see:</b> ${esc(acc[2])}</div></div>
+    <p class="hint mt12">${ic('lock', 'style="width:14px;height:14px;vertical-align:-2px"')} The plan and messages are encrypted on each phone. Tendu can’t read them.</p>`; }
+SHEETS.joinpreview = () => { const j = App.invite; if (!j) return {title:'Invite', body:'<p class="muted">Enter the code again.</p>'};
+  return {title:'Join the team', body:`${invPreview(j)}<div class="stack mt16"><button class="btn" data-a="invJoinGo">Join ${esc(invWho(j))}’s team</button><button class="btn ghost" data-a="invNotNow">Not now</button></div>`}; };
+ACTIONS.invJoinGo = () => { if (App.invite) invJoin(App.invite); };
+ACTIONS.invNotNow = () => { App.invite = null; LS.del(INV_PENDING); closeSheet(); };
+
+AUTH_VIEWS.push('invited');
+function invPending(){ try { const p = JSON.parse(LS.get(INV_PENDING) || 'null'); if (p && p.exp > Date.now() && invValid(p.code)) return p.code; } catch(e){} LS.del(INV_PENDING); return ''; }
+const invSetPending = code => LS.set(INV_PENDING, JSON.stringify({code, exp:Date.now() + 36e5}));
+(() => { const m = /join=([A-Za-z0-9-]{10,14})/.exec(location.hash || ''); if (m){ const code = invNorm(m[1]); if (invValid(code)) invSetPending(code); try { history.replaceState(null, '', location.pathname + location.search); } catch(e){} } })();
+const _renderAuthInv = renderAuth; renderAuth = function(){
+  if (App.authView === 'welcome' && invPending() && !App._invAuto){ App._invAuto = true; App.authView = 'invited'; setTimeout(() => ACTIONS.invPre({code:invPending()}), 0); }
+  if (App.authView !== 'invited') return _renderAuthInv();
+  const msg = App.authMsg ? `<p class="err" role="alert">${esc(App.authMsg)}</p>` : '', j = App.invite;
+  if (j) return `<div class="auth">${authBar()}${invPreview(j)}<div class="stack mt24"><button class="btn" data-a="emStart" data-v="signup">Create my account and join</button><button class="btn ghost" data-a="emStart" data-v="signin">I already have an account</button></div>
+    <p class="disclaim center">After you confirm your email, you’ll join ${esc(invWho(j))}’s team straight away.</p></div>`;
+  return `<div class="auth">${authBar()}<h1>You’ve been invited</h1><p class="lead mt8">Enter the code from your invite. It looks like <b>K7M4P-Q2X9H</b>.</p>
+    <form class="stack mt24" data-submit="invPre"><input class="input invin" name="code" required autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="K7M4P-Q2X9H" aria-label="Invite code" value="${esc(App._invCode ? invShow(App._invCode) : '')}" data-autofocus>${msg}<button class="btn mt8" type="submit">Continue</button></form>
+    <p class="disclaim center">No code? Ask the person who invited you to send it again from Tendu Care.</p></div>`; };
+ACTIONS.invPre = f => busy('form[data-submit=invPre] [type=submit]', async () => {
+  try { const j = await invLoad(f.code); if (j.long){ App.authMsg = 'Long codes are entered after you sign in: More, then “Join a care team”.'; return render(); }
+    App.invite = j; App._invCode = j.code; invSetPending(j.code); App.authMsg = ''; render(); }
+  catch(e){ App._invCode = invNorm(f.code); App.authMsg = e.message; App.invite = null; render(); } });
+const _openInv = Session.open.bind(Session); Session.open = async (...x) => { const r = await _openInv(...x); const code = invPending();
+  if (code) setTimeout(async () => { if (!Session.data) return; try { const j = App.invite && App.invite.code === code ? App.invite : await invLoad(code); App.invite = j; openSheet('joinpreview'); } catch(e){ LS.del(INV_PENDING); toast(e.message, 'info'); } }, 450);
+  return r; };
+window.addEventListener('hashchange', () => { const m = /join=([A-Za-z0-9-]{10,14})/.exec(location.hash); if (!m) return; const code = invNorm(m[1]); if (!invValid(code)) return; invSetPending(code);
+  try { history.replaceState(null, '', location.pathname + location.search); } catch(e){}
+  if (Session.data) invLoad(code).then(j => { App.invite = j; openSheet('joinpreview'); }).catch(e => toast(e.message, 'info')); else { App.authView = 'invited'; App._invAuto = true; render(); ACTIONS.invPre({code}); } });
+
+const _chatViewInv = chatView; chatView = function(c){ let h = _chatViewInv(c); const joined = c.members.filter(m => !m.isMe && m.acct).length, w = invWaiting(c).length;
+  if (joined) return h;
+  h = h.replace(/<div class="card accent small" style="padding:12px 14px"><b>Chat on every phone\.<\/b>[\s\S]*?<\/div><\/div>/, '');
+  return h.replace('<div class="chat mt12">', `<div class="card accent mt12" style="padding:14px 16px"><b>Build ${esc(whoName(c))}’s support network</b><p class="small" style="margin:6px 0 10px">Invite family, friends, neighbours or carers. Each person gets a short code and a link, and joins in a minute.${w ? ` ${w} ${w === 1 ? 'invite is' : 'invites are'} waiting.` : ''}</p><button class="btn sm" data-a="sheet" data-v="invite">${ic('users')}Invite someone</button></div><div class="chat mt12">`); };
+const _membersInv = PAGES.members; PAGES.members = c => { const h = _membersInv(c), w = invWaiting(c);
+  const status = c.members.filter(m => !m.isMe).map(m => m.acct ? '' : m.invitedAt ? '' : m).filter(Boolean);
+  return h + `<div class="section"><div class="sechead"><h2>Invites</h2><button class="more" data-a="sheet" data-v="invite">New invite</button></div>
+    ${w.length ? `<div class="list">${w.map(i => `<div class="li"><span class="tile c-accent">${ic('users')}</span><span class="main"><div class="ttl">${esc(i.name || 'Anyone with the code')}</div><div class="sub">Waiting to join · code ${esc(invShow(i.code))} · ${Math.max(1, Math.ceil((i.exp - Date.now()) / 864e5))} days left</div></span><button class="textbtn small" data-a="invResend" data-id="${i.id}">Send</button><button class="textbtn small" data-a="invCancel" data-id="${i.id}" style="color:var(--crit)">Cancel</button></div>`).join('')}</div>`
+      : `<p class="small muted" style="margin:0 2px">${status.length ? `${esc(status.map(m => firstName(m.name)).join(', '))} ${status.length === 1 ? 'isn’t' : 'aren’t'} on Tendu yet. ` : ''}Invite people with a short code. They join in a minute.</p>`}</div>`; };
+const _memberSheetInv = SHEETS.member; SHEETS.member = (c, p) => { const s = _memberSheetInv(c, p), m = p && p.id && member(p.id, c);
+  if (!m || m.isMe || m.acct || !invSrv()) return s;
+  return {...s, body:s.body + `<button class="btn ghost mt12" data-a="invFor" data-id="${m.id}">${ic('users')}Invite ${esc(firstName(m.name))} to Tendu Care</button>`}; };
+ACTIONS.invFor = (v, id) => { App.invForm = {mid:id, rel:'family'}; ACTIONS.invWho('', id); openSheet('invite'); };
+const _whoNameInv = whoName; whoName = c => (c && c.callAs) || _whoNameInv(c);
 
 (function boot(){
   const accts = Accounts.list(), last = accts.find(a => a.id === LS.get('tendu.last'));
