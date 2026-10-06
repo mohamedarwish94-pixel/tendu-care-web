@@ -870,6 +870,7 @@ label.chip{cursor:pointer}
 @media (min-width:900px){#app:has(.board){max-width:1100px}.board{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media (min-width:600px) and (max-width:899px){#app:has(.board){max-width:780px}.board{grid-template-columns:1fr 1fr}}
 @media (max-width:599px){.board{grid-template-columns:1fr}}
+.sechead.sigh{flex-direction:column;align-items:flex-start;gap:2px}
 
 </style>
 <div id="app"></div>
@@ -5925,7 +5926,7 @@ function careSignals(c){ const out = [], wk = Care.days(7), open = openItems(c),
   return out.filter(x => !hidden[x.key]); }
 PAGES.signals = c => { const s = careSignals(c), groups = Object.keys(SIGNAL).map(t => [t, s.filter(x => x.type === t)]).filter(([, xs]) => xs.length);
   return `${bar('Tendu noticed')}<h1 class="largetitle">Tendu noticed</h1><p class="subtitle">Signals about how the care is organised. Never about health, never a prediction: just what the plan shows.</p>
-    ${groups.length ? groups.map(([t, xs]) => `<div class="section"><div class="sechead"><h2>${ic(SIGNAL[t][0], 'style="width:18px;height:18px;vertical-align:-3px"')} ${SIGNAL[t][1]}</h2><span class="tiny muted">${esc(SIGNAL[t][2])}</span></div><div class="stack">${xs.map(x => `<div class="card sigrow"><button class="grow" data-a="${x.a}" data-v="${esc(x.v || '')}" data-id="${esc(x.id || '')}">${esc(x.t)}</button><button class="textbtn tiny" data-a="sigHide" data-v="${esc(x.key)}">Not now</button></div>`).join('')}</div></div>`).join('')
+    ${groups.length ? groups.map(([t, xs]) => `<div class="section"><div class="sechead sigh"><h2>${ic(SIGNAL[t][0], 'style="width:18px;height:18px;vertical-align:-3px"')} ${SIGNAL[t][1]}</h2><span class="tiny muted">${esc(SIGNAL[t][2])}</span></div><div class="stack">${xs.map(x => `<div class="card sigrow"><button class="grow" data-a="${x.a}" data-v="${esc(x.v || '')}" data-id="${esc(x.id || '')}">${esc(x.t)}</button><button class="textbtn tiny" data-a="sigHide" data-v="${esc(x.key)}">Not now</button></div>`).join('')}</div></div>`).join('')
       : `<div class="card center">${ic('checkCircle', 'style="width:28px;height:28px;color:var(--good)"')}<div class="b mt4">Nothing to flag</div><div class="small muted">Everything this week has someone, and nobody is carrying it all.</div></div>`}
     <p class="disclaim">Tap a signal to sort it. “Not now” hides it until something changes.</p>`; };
 ACTIONS.sigHide = v => { const c = circle(); (c.hiddenSignals = c.hiddenSignals || {})[v] = Date.now(); save(); render(); };
