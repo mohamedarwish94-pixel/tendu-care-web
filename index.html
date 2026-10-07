@@ -711,7 +711,7 @@ label.chip{cursor:pointer}
 .autolv.on .alvn{background:var(--brand);color:#fff}
 .contcard{text-align:center;padding:20px}
 .contw{font-size:2rem;font-weight:800;letter-spacing:-.02em;margin:4px 0}
-.contcard.c-strong .contw{color:var(--good)}.contcard.c-fair .contw{color:var(--warn)}.contcard.c-fragile .contw{color:var(--crit)}
+.contcard.c-strong .contw{color:var(--good)}.contcard.c-fair .contw{color:var(--warn)}.contcard.c-fragile .contw{color:var(--warn)}
 .deprow{display:grid;grid-template-columns:minmax(90px,auto) 1fr 44px;align-items:center;gap:10px;padding:6px 0}
 .deprow .track{height:10px;border-radius:5px;background:var(--bg-2);overflow:hidden;display:block}
 .deprow .fill{display:block;height:100%;background:var(--brand);border-radius:5px}
@@ -897,6 +897,38 @@ body.kb .cvquick{display:none}
 .bkrow{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:10px 12px}.bkrow .grow{min-width:140px}.bkrow label{display:flex;flex-direction:column;gap:2px}
 .rhythm{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}.rday{background:var(--card);border-radius:12px;padding:8px 2px;display:flex;flex-direction:column;align-items:center;gap:4px;min-height:74px}.rday b{font-size:.74rem}
 .memrow{display:flex;gap:10px;align-items:flex-start;padding:10px 12px}
+.needbar{display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:12px 14px;margin:2px 0 10px;min-height:56px}
+.needbar .nbn{flex:none;width:36px;height:36px;border-radius:12px;display:grid;place-items:center;font-weight:800;font-size:1.05rem;background:var(--accent-soft);color:var(--accent-ink)}
+.needbar.clear .nbn{background:var(--good-soft);color:var(--good)}.needbar .nbn svg{width:18px;height:18px}
+.needbar b{display:block;font-size:1rem}.needbar span span,.needbar .grow>span{display:block;font-size:.84rem;color:var(--sub)}
+.sitlist{display:flex;flex-direction:column;background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden;margin-bottom:10px}
+.sitrow{display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:11px 14px;min-height:52px;border-top:1px solid var(--line)}
+.sitrow:first-child{border-top:0}.sitrow b{display:block;font-size:.95rem;overflow-wrap:anywhere}.sitrow .grow>span{display:block;font-size:.82rem;color:var(--sub)}
+.sdot{flex:none;width:12px;height:12px;border-radius:50%;background:var(--good)}.sdot.warn{background:var(--accent)}.sdot.crit{background:var(--crit)}
+.qchips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 6px}
+.qchip{display:inline-flex;align-items:center;gap:6px;min-height:40px;border-radius:999px;padding:6px 13px;font-size:.86rem;font-weight:650;background:var(--card);border:1px solid var(--line-2);color:var(--ink-2)}
+.qchip svg{width:16px;height:16px}.qchip.hot{background:var(--brand);color:var(--brand-ink);border-color:var(--brand)}.qchip.warn{background:var(--warn-soft);color:var(--warn);border-color:transparent}
+.needrow{display:flex;align-items:center;gap:8px;padding:10px 12px}.nr-main{display:flex;align-items:center;gap:12px;text-align:left;min-width:0}
+.nr-main b{display:block;overflow-wrap:anywhere}.nr-main .small{display:block}.needrow .hi{width:40px;height:40px;border-radius:12px}.needrow .hi svg{width:20px;height:20px}
+.mins{flex:none;font-size:.78rem;font-weight:700;color:var(--brand);background:var(--brand-soft);border-radius:999px;padding:3px 9px}
+.waitrow{padding:12px 14px}.waitrow b{display:block;overflow-wrap:anywhere}.waitrow .small{display:block}.waitrow.late{border-color:var(--warn)}
+.pill.warn{flex:none;font-size:.72rem;font-weight:700;color:var(--warn);background:var(--warn-soft);border-radius:999px;padding:3px 9px}
+.riskcard{padding:12px 14px}.riskcard b{display:block;overflow-wrap:anywhere}.riskcard .small{display:block;color:var(--ink-2)}.riskcard.s1{border-left:0;box-shadow:inset 0 0 0 1.5px var(--warn-soft)}
+.riskcard .hi{width:38px;height:38px;border-radius:12px;background:var(--warn-soft);color:var(--warn)}.riskcard .hi svg{width:20px;height:20px}
+.plans{display:flex;flex-direction:column;gap:6px;margin-top:10px}
+.plan{display:flex;align-items:center;gap:10px;text-align:left;width:100%;min-height:44px;padding:8px 12px;border-radius:12px;background:var(--bg-2);font-size:.9rem;font-weight:550;color:var(--ink)}
+.plan .pk{flex:none;font-size:.72rem;font-weight:800;color:var(--brand);background:var(--brand-soft);border-radius:8px;padding:3px 7px}.plan:hover{background:var(--brand-soft)}
+.deccard{padding:12px 14px}.deccard b{display:block;overflow-wrap:anywhere}.deccard .small{display:block;margin-top:2px}
+.decn{flex:none;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-size:.8rem;font-weight:800;background:var(--brand-soft);color:var(--brand)}
+.lettercard{padding:14px}.lettercard b{display:block}.lettercard .small{display:block}
+.lfound{display:flex;flex-direction:column;margin-top:10px;border-top:1px solid var(--line)}
+.lrow{display:flex;align-items:flex-start;gap:10px;padding:9px 2px;border-bottom:1px solid var(--line);font-size:.92rem}
+.lrow .lk{flex:none;width:96px;font-size:.78rem;font-weight:700;color:var(--sub);padding-top:2px}.lrow .lv{flex:1;min-width:0;overflow-wrap:anywhere}
+.lrow input{width:20px;height:20px;margin-top:1px;accent-color:var(--brand)}
+.tgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.tbox{display:flex;flex-direction:column;align-items:flex-start;gap:4px;text-align:left;padding:12px;min-height:44px}
+.tbox .hi{width:34px;height:34px;border-radius:11px}.tbox .hi svg{width:18px;height:18px}.tbox .tn{font-size:1.5rem;font-weight:800;line-height:1.1}
+.chip.static{cursor:default}
 
 </style>
 <div id="app"></div>
@@ -967,7 +999,7 @@ const ICONS = {
   route:'<circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="6" r="2.5"/><path d="M8.5 18H16a3.5 3.5 0 0 0 0-7H8a3.5 3.5 0 0 1 0-7h7.5"/>'
 };
 function ic(name, extra){ return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"${extra?' '+extra:''}>${ICONS[name]||''}</svg>`; }
-const MARK = '<svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="31" r="11" fill="#F4A261"/><path d="M60 52 V 80 C 60 92, 68 97, 80 95" fill="none" stroke="#FBF5EC" stroke-width="11" stroke-linecap="round"/><path d="M30 52 C 42 64, 78 64, 90 52" fill="none" stroke="#FBF5EC" stroke-width="11" stroke-linecap="round"/></svg>';
+const MARK = '<svg viewBox="0 0 120 120" aria-hidden="true"><g transform="translate(0 -3)"><circle cx="60" cy="41" r="14" fill="#F4A261"/><path d="M60 72 C 37 70, 25 51, 30 29 M60 72 C 83 70, 95 51, 90 29 M60 72 V 84 A 13 13 0 0 0 73 97" fill="none" stroke="#FBF5EC" stroke-width="15" stroke-linecap="round" stroke-linejoin="round"/></g></svg>';
 
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const uid = () => (crypto.randomUUID ? crypto.randomUUID() : 'id-' + Math.random().toString(36).slice(2) + Date.now().toString(36));
@@ -1717,7 +1749,7 @@ PAGES.more = (c) => {
       ${li({icon:'plus', tone:'c-plain', title:'Care for someone else too', sub:'Another parent, a partner, a child…', a:'go', v:'newcircle'})}
       ${li({icon:'logout', tone:'c-plain', title:'Lock and sign out', a:'signout'})}
     </div></div>
-    <p class="disclaim center">Tendu helps people organise care together. It isn’t a medical device and doesn’t give medical advice.<br>Version 6.0</p>`;
+    <p class="disclaim center">Tendu helps people organise care together. It isn’t a medical device and doesn’t give medical advice.<br>Version 6.5</p>`;
 };
 ACTIONS.signout = async () => { const a = Session.acct && Accounts.list().find(x => x.id === Session.acct.id); await Session.flush(); Session.lock(); App.sheet = null; App.pipOpen = false;
   App.em = {flow:'signin', email:a ? a.email : ''}; App.authView = a && a.pin ? 'pin' : 'email'; App.lockedAcct = a ? a.id : null; App.route = {name:'home'}; App.stack = []; render(); };
@@ -3639,7 +3671,7 @@ PAGES.more = c => { const who = esc(whoName(c)), d = D(), simple = simpleMode(),
       ${li({icon:'plus', tone:'c-plain', title:'Care for someone else too', sub:'Each person gets their own circle', a:'go', v:'newcircle'})}
       ${li({icon:'logout', tone:'c-plain', title:'Lock and sign out', a:'signout'})}
     </div></section>
-    <p class="disclaim center">Tendu helps people organise care together. It isn’t a medical device and doesn’t give medical advice.<br>Version 6.0</p>`; };
+    <p class="disclaim center">Tendu helps people organise care together. It isn’t a medical device and doesn’t give medical advice.<br>Version 6.5</p>`; };
 
 const _home3 = PAGES.home; PAGES.home = c => { let h = _home3(c);
   h = h.replace(/<div class="section"><div class="sechead"><h2>Shortcuts<\/h2><\/div><div class="stats"[\s\S]*?<\/div><\/div>\s*/, '');
@@ -5260,6 +5292,7 @@ const _more42 = PAGES.more; PAGES.more = c => { const n = inboxCount(c); return 
   .replace(/(<h2>About [^<]*<\/h2><\/div><div class="hubgrid">)/, `$1${tile('heart', 'Meet ' + esc(whoName(c)), 'go', 'meet', 'c-accent')}`); };
 const _members41 = PAGES.members; PAGES.members = c => _members41(c).replace(/(<div class="section"><div class="sechead"><h2>Away or busy<\/h2>)/, `<div class="section"><div class="sechead"><h2>Welcome packs</h2></div><div class="list">${c.members.filter(m => !m.isMe).map(m => li({icon:'gift', tone:'c-accent', title:'For ' + esc(firstName(m.name)), sub:'Meet ' + esc(whoName(c)) + ', their part, what to know', a:'welcomeFor', v:m.id})).join('') || '<div class="li noicon"><span class="main muted">Add someone first.</span></div>'}</div></div>$1`);
 
+const RES_LABEL = {Strong:'Well covered', Fair:'A few gaps', Fragile:'Needs a backup plan'};
 
 (() => { const fix = () => { if (!Session.data) return; const p = D().prefs; if (p.budV !== 2){ p.budV = 2; if (p.pip === false) p.pip = true; delete p.pipPos; save(); } };
   const _open = Session.open.bind(Session); Session.open = async (...a) => { const r = await _open(...a); fix(); return r; }; })();
@@ -5290,7 +5323,7 @@ function continuity(c){ const l = Care.load(c), f = Care.forecast(c), all = f.fl
   return {checks, word, per, spof, score}; }
 PAGES.continuity = c => { const k = continuity(c), who = whoName(c), top = k.per[0];
   return `${bar('Care continuity')}<h1 class="largetitle">How resilient is ${esc(who)}’s care?</h1><p class="subtitle">Not a health score. A look at whether care keeps working if something changes.</p>
-    <div class="card contcard c-${k.word.toLowerCase()}"><div class="tiny b up">Care continuity</div><div class="contw">${k.word}</div><div class="small">${k.score} of ${k.checks.length} things in place</div></div>
+    <div class="card contcard c-${k.word.toLowerCase()}"><div class="tiny b up">Care resilience</div><div class="contw">${RES_LABEL[k.word]}</div><div class="small">${k.score} of ${k.checks.length} things in place</div></div>
     <div class="list mt12">${k.checks.map(x => `<div class="li noicon"><span class="contchk ${x.ok ? 'ok' : 'no'}">${ic(x.ok ? 'check' : 'alert')}</span><span class="main"><div class="ttl" style="font-weight:600">${esc(x.t)}</div></span></div>`).join('')}</div>
     <div class="section"><div class="sechead"><h2>Who ${esc(who)}’s care depends on</h2><span class="tiny muted">this week</span></div>
       ${k.per.length ? `<div class="card">${k.per.map(x => `<div class="deprow"><span class="row" style="gap:8px">${avatar(x.m, 'sm')}<b>${esc(x.m.isMe ? 'You' : firstName(x.m.name))}</b></span><span class="track"><span class="fill" style="width:${x.pct}%"></span></span><b class="pct">${x.pct}%</b></div>`).join('')}</div>` : `<p class="small muted" style="margin:2px 4px">Nothing planned this week yet.</p>`}
@@ -5696,7 +5729,7 @@ PAGES.board = c => { const who = whoName(c), f = Care.forecast(c), g = gaps(c).f
       <section class="card bsec"><div class="tiny b up muted">Care network</div><div class="stack" style="gap:6px;margin-top:8px">${l.per.filter(x => x.total).map(x => `<div class="deprow"><span class="row" style="gap:8px">${avatar(x.m, 'sm')}<b>${esc(x.m.isMe ? 'You' : firstName(x.m.name))}</b></span><span class="track"><span class="fill" style="width:${Math.round(x.total / max * 100)}%"></span></span><b class="pct">${x.total}</b></div>`).join('') || '<p class="small muted">Nothing planned this week.</p>'}</div></section>
       <section class="card bsec"><div class="tiny b up muted">Tendu noticed</div>${sig.length ? `<div class="budlist mt8">${sig.slice(0, 4).map(x => `<button class="budrow" data-a="${x.a}" data-v="${esc(x.v || '')}" ${x.id ? `data-id="${esc(x.id)}"` : ''}>${ic(SIGNAL[x.type][0])}<span>${esc(x.t)}</span>${chevron()}</button>`).join('')}</div>${sig.length > 4 ? `<button class="textbtn tiny mt8" data-a="go" data-v="signals">All ${sig.length}</button>` : ''}` : '<p class="small muted mt8">Nothing to flag this week.</p>'}</section>
       <section class="card bsec"><div class="tiny b up muted">Tendu prepared</div>${prep.length ? `<div class="budlist mt8">${prep.map(w => `<button class="budrow prep" data-a="budDo" data-v="${esc(w.a + '|' + (w.v || '') + (w.id ? '#' + w.id : ''))}">${ic(w.icon)}<span>${esc(w.t)}</span>${chevron()}</button>`).join('')}</div>` : '<p class="small muted mt8">Nothing waiting for you.</p>'}</section>
-      <section class="card bsec"><div class="tiny b up muted">Resilience</div>${(() => { const k = continuity(c); return `<div class="contw" style="font-size:1.6rem;margin-top:4px;color:var(--${k.word === 'Strong' ? 'good' : k.word === 'Fair' ? 'warn' : 'crit'})">${k.word}</div><div class="small muted">${k.score} of ${k.checks.length} things in place</div><button class="textbtn tiny mt8" data-a="go" data-v="continuity">See why</button>`; })()}</section>
+      <section class="card bsec"><div class="tiny b up muted">Care resilience</div>${(() => { const k = continuity(c); return `<div class="contw" style="font-size:1.6rem;margin-top:4px;color:var(--${k.word === 'Strong' ? 'good' : 'warn'})">${RES_LABEL[k.word]}</div><div class="small muted">${k.score} of ${k.checks.length} things in place</div><button class="textbtn tiny mt8" data-a="go" data-v="continuity">See why</button>`; })()}</section>
     </div>`; };
 
 budWatch = function(c){ const s = careSignals(c).slice(0, 5).map(x => ({icon:SIGNAL[x.type][0], t:x.t, a:x.a, v:(x.v || '') + (x.id ? '#' + x.id : '')}));
@@ -6632,7 +6665,7 @@ PAGES.resilience = c => { const R = resilience(c), who = whoName(c), r = rhythm(
   const opts = (sel, not) => `<option value="">Nobody yet</option>` + c.members.filter(m => m.id !== not).map(m => `<option value="${m.id}" ${m.id === sel ? 'selected' : ''}>${esc(m.isMe ? 'You' : firstName(m.name))}</option>`).join('');
   const days = [1, 2, 3, 4, 5, 6, 0].map(w => ({w, d:r.days[w]}));
   return `${bar('Resilience')}<h1 class="largetitle">How well would ${esc(who)}’s care hold up?</h1><p class="subtitle">If someone couldn’t help tomorrow, what would still be covered? Built from the plan, never about health.</p>
-    <div class="card"><div class="row" style="justify-content:space-between;align-items:center"><div><div class="tiny b up muted">Resilience</div><div class="contw" style="font-size:1.7rem;color:var(--${R.word === 'Strong' ? 'good' : R.word === 'Fair' ? 'warn' : 'crit'})">${R.word}</div></div><div class="small muted">${R.score} of ${R.checks.length} in place</div></div>
+    <div class="card"><div class="row" style="justify-content:space-between;align-items:center"><div><div class="tiny b up muted">Care resilience</div><div class="contw" style="font-size:1.7rem;color:var(--${R.word === 'Strong' ? 'good' : 'warn'})">${RES_LABEL[R.word]}</div></div><div class="small muted">${R.score} of ${R.checks.length} in place</div></div>
       <div class="stack mt8">${R.checks.map(x => `<div class="row small" style="gap:8px;align-items:flex-start"><span class="contchk ${x.ok ? 'ok' : 'no'}" style="flex:none">${ic(x.ok ? 'check' : 'alert')}</span><span class="grow">${esc(x.t)}</span>${x.ok ? '' : `<button class="textbtn tiny" data-a="go" data-v="${x.fix}">Fix</button>`}</div>`).join('')}</div></div>
     <div class="section"><div class="sechead"><h2>If someone can’t help</h2></div><div class="stack">${R.people.filter(p => p.weight).map(p => `<div class="card" style="padding:12px 14px"><div class="row" style="gap:10px">${avatar(p.m, 'sm')}<div class="grow"><b>${esc(p.m.isMe ? 'You' : p.m.name)}</b><div class="small muted">${p.held.length} standing ${p.held.length === 1 ? 'responsibility' : 'responsibilities'} · ${p.items.length} ${p.items.length === 1 ? 'job' : 'jobs'} in the next two weeks</div>
       <div class="small mt4" style="color:var(--${p.critical ? 'crit' : 'good'})">${p.critical ? `${p.critical} with nobody to step in${p.noBk.length ? ': ' + esc(p.noBk.slice(0, 3).map(x => x.title).join(', ')) : ''}` : 'Everything has someone to step in'}</div></div>
@@ -6750,7 +6783,7 @@ const _hosp7 = PAGES.hospital; PAGES.hospital = c => { const h = _hosp7(c), hh =
 const _board7 = PAGES.board; PAGES.board = c => { const h = _board7(c), ss = careSituations(c, 14).slice(0, 4), ps = agentProposals(c).slice(0, 3), R = resilience(c);
   const extra = `<section class="card bsec"><div class="tiny b up muted">What’s happening</div>${ss.length ? `<div class="budlist mt8">${ss.map(s => `<button class="budrow" data-a="go" data-v="sit" data-id="${esc(s.id)}">${ic((SIT_KIND[s.kind] || ['doc'])[0])}<span>${esc(s.title)} · ${s.score}/${s.checks.length}</span>${chevron()}</button>`).join('')}</div>` : '<p class="small muted mt8">Nothing to line up.</p>'}</section>
     <section class="card bsec"><div class="tiny b up muted">Tendu suggests</div>${ps.length ? `<div class="budlist mt8">${ps.map(p => `<button class="budrow prep" data-a="go" data-v="agent">${ic(p.icon)}<span>${esc(p.title)}</span>${chevron()}</button>`).join('')}</div>` : '<p class="small muted mt8">Nothing to suggest.</p>'}</section>`;
-  return h.replace(/(<section class="card bsec"><div class="tiny b up muted">Resilience<\/div>)[\s\S]*?(<\/section>)/, `$1<div class="contw" style="font-size:1.6rem;margin-top:4px;color:var(--${R.word === 'Strong' ? 'good' : R.word === 'Fair' ? 'warn' : 'crit'})">${R.word}</div><div class="small muted">${R.score} of ${R.checks.length} in place</div><button class="textbtn tiny mt8" data-a="go" data-v="resilience">See backups</button>$2`)
+  return h.replace(/(<section class="card bsec"><div class="tiny b up muted">Care resilience<\/div>)[\s\S]*?(<\/section>)/, `$1<div class="contw" style="font-size:1.6rem;margin-top:4px;color:var(--${R.word === 'Strong' ? 'good' : 'warn'})">${RES_LABEL[R.word]}</div><div class="small muted">${R.score} of ${R.checks.length} in place</div><button class="textbtn tiny mt8" data-a="go" data-v="resilience">See backups</button>$2`)
     .replace(/(<\/section>\s*<\/div>\s*)$/, '</section>' + extra + '</div>'); };
 
 
@@ -6797,6 +6830,352 @@ PAGES.integrations = c => `${bar('Connections')}<h1 class="largetitle">Connectio
   <div class="stack">${INTEGRATIONS.map(x => `<div class="card" style="padding:12px 14px"><div class="row" style="justify-content:space-between"><b>${esc(x.name)}</b><span class="gchip ${x.status === 'ready' ? 'good' : ''}">${x.status === 'ready' ? 'Ready' : 'Planned'}</span></div><div class="small muted mt4">${esc(x.what)}</div></div>`).join('')}</div>
   <p class="disclaim">Tendu never connects to anything in the background. Every connection is listed here and in the Privacy centre.</p>`;
 const _settings8 = PAGES.settings; PAGES.settings = (c, p) => _settings8(c, p).replace('<div class="section"><div class="sechead"><h2>Your data</h2></div><div class="list">', `<div class="section"><div class="sechead"><h2>Your data</h2></div><div class="list">${li({icon:'route', title:'Connections', sub:'Calendar, and what’s planned', a:'go', v:'integrations'})}`);
+
+
+SYNC_COLS.push('links');
+const LINK_RELS = {docFor:'a document for', prepFor:'getting ready for', liftFor:'the lift for', questionFor:'a question for', waitFor:'needed before'};
+function addLink(c, from, rel, to){ if (!from || !to || !LINK_RELS[rel]) return null; c.links = c.links || [];
+  const got = c.links.find(l => l.from === from && l.rel === rel && l.to === to); if (got) return got;
+  const l = {id:uid(), from, rel, to, by:(me(c) || {}).id || '', at:Date.now()}; c.links.push(l); return l; }
+const linksTo = (c, to, rel) => (c.links || []).filter(l => l.to === to && (!rel || l.rel === rel));
+const linksFrom = (c, from, rel) => (c.links || []).filter(l => l.from === from && (!rel || l.rel === rel));
+
+function jobMinutes(i){ const t = String(i && i.title || '').toLowerCase(); if (i && i.mins) return +i.mins;
+  if (/\b(call|phone|ring|email|text|message|chase|confirm|book|order|renew|reply)\b/.test(t)) return 5;
+  if (/\b(lift|drive|take .* to|pick up|drop off)\b/.test(t)) return 45;
+  if (/\b(collect|shop|buy|pharmacy|prescription|post office|library)\b/.test(t)) return 30;
+  if (/\b(visit|sit with|company)\b/.test(t)) return 60;
+  return 15; }
+const minsText = n => n >= 60 ? (n % 60 ? `${Math.floor(n / 60)} h ${n % 60} min` : `${n / 60} h`) : `${n} min`;
+
+const DEP_LABEL = {who:'Someone going', lift:'Getting there', prep:'Getting ready', docs:'Letters and documents', qs:'Questions to ask', comms:'How they like to be spoken to', told:'Team told', after:'What happens afterwards', backup:'A backup'};
+function careEvent(c, i){ if (!i) return null; const L = itemLinks(c, i), s = i.sit || {}, a = c.about || {}, open = openItems(c);
+  const reqSt = x => !x ? 'missing' : x.done ? 'arranged' : x.owner ? 'arranged' : x.req && x.req.st === 'asked' ? 'asked' : 'missing';
+  const reqWho = x => x ? (x.owner || (x.req && x.req.st === 'asked' ? x.req.to : '')) : '';
+  const liftLinked = c.items.find(x => !x.done && (x.liftOf === i.id || linksTo(c, i.id, 'liftFor').some(l => l.from === x.id)));
+  const lift = liftLinked || L.lift || null;
+  const prepJobs = c.items.filter(x => x.prepOf === i.id || linksTo(c, i.id, 'prepFor').some(l => l.from === x.id));
+  const prepNotes = (Array.isArray(i.prep) ? i.prep : []).filter(p => p && typeof p.t === 'string');
+  const docs = [...new Set([...L.docs, ...linksTo(c, i.id, 'docFor').map(l => (c.docs || []).find(d => d.id === l.from)).filter(Boolean)])];
+  const qsLinked = (c.questions || []).filter(q => !q.done && (q.for === i.id || linksTo(c, i.id, 'questionFor').some(l => l.from === q.id))), qsAll = (c.questions || []).filter(q => !q.done);
+  const follow = open.find(x => x.followOf === i.id);
+  const waitsFor = (c.waiting || []).filter(w => !w.done && (w.for === i.id || linksTo(c, i.id, 'waitFor').some(l => l.from === w.id)));
+  const needs = [
+    {k:'who', st:i.owner ? 'arranged' : i.req && i.req.st === 'asked' ? 'asked' : 'missing', who:i.owner || (i.req && i.req.st === 'asked' ? i.req.to : ''), ref:i.id},
+    {k:'lift', st:s.lift === 'none' ? 'notneeded' : reqSt(lift), who:reqWho(lift), ref:lift && lift.id},
+    {k:'prep', st:prepNotes.length || prepJobs.length ? (prepJobs.every(x => x.done || x.owner) && prepNotes.every(p => p.done) ? 'arranged' : 'missing') : 'notneeded', list:prepNotes, jobs:prepJobs},
+    {k:'docs', st:docs.length || s.docs ? 'arranged' : 'missing', list:docs},
+    {k:'qs', st:qsLinked.length || qsAll.length || s.qs === 'none' ? (s.qs === 'none' && !qsAll.length ? 'notneeded' : 'arranged') : 'missing', list:qsLinked.length ? qsLinked : qsAll},
+    {k:'comms', st:(a.comms && a.comms.length) || a.matters ? 'arranged' : 'missing'},
+    {k:'told', st:s.told ? 'arranged' : 'missing', at:s.told},
+    {k:'after', st:s.after === 'none' ? 'notneeded' : follow ? 'arranged' : 'missing', ref:follow && follow.id}];
+  if (waitsFor.length) needs.push({k:'wait', st:'asked', list:waitsFor, who:'', label:'Waiting for', t:waitsFor.map(w => w.title).join(', ')});
+  needs.forEach(n => n.label = n.label || DEP_LABEL[n.k]);
+  return {id:i.id, type:'event', i, title:i.title, date:i.date || '', time:i.time || '', where:i.where || '', person:'centre', attendee:i.owner || '', backup:L.backup ? L.backup.id : '', backupWhy:L.why || '',
+    lift, needs, missing:needs.filter(n => n.st === 'missing'), waiting:needs.filter(n => n.st === 'asked'), ready:needs.filter(n => n.st === 'arranged' || n.st === 'notneeded').length,
+    src:i.src ? {...i.src} : {k:'plan', by:i.by, at:i.createdAt}}; }
+
+situationOf = (orig => function(c, i){ const s = orig(c, i), ev = careEvent(c, i);
+  const map = {who:'who', lift:'lift', qs:'qs', docs:'docs', comms:'comms', told:'told', after:'after'};
+  s.checks.forEach(x => { const n = ev.needs.find(d => d.k === map[x.k]); if (!n) return; x.ok = n.st === 'arranged' || n.st === 'notneeded';
+    if (x.k === 'lift' && n.st === 'asked'){ const w = member(n.who, c); x.ok = false; x.sub = `Asked ${w ? (w.isMe ? 'you' : firstName(w.name)) : 'someone'}, no answer yet`; }
+    if (x.k === 'lift' && ev.lift && !x.ok){ x.sub = n.st === 'asked' ? x.sub : `“${ev.lift.title}” · nobody yet`; x.fix = `<button class="claim" data-a="sheet" data-v="item" data-id="${esc(ev.lift.id)}">Open the lift</button>`; } });
+  const prep = ev.needs.find(d => d.k === 'prep');
+  if (prep && prep.st !== 'notneeded') s.checks.splice(4, 0, {k:'prep', ok:prep.st === 'arranged', t:'Getting ready', sub:prep.list.map(p => p.t).concat(prep.jobs.map(j => j.title)).slice(0, 3).join(' · '),
+    fix:prep.st === 'arranged' ? '' : prep.jobs.some(j => !j.done && !j.owner) ? `<button class="claim" data-a="sheet" data-v="item" data-id="${esc(prep.jobs.find(j => !j.done && !j.owner).id)}">Open the job</button>` : `<button class="claim" data-a="evPrepDone" data-id="${esc(i.id)}">It’s done</button>`});
+  const wt = ev.needs.find(d => d.k === 'wait');
+  if (wt) s.checks.push({k:'wait', ok:false, t:'Still waiting for', sub:wt.t, fix:`<button class="claim" data-a="go" data-v="waitingfor">See what you’re waiting for</button>`});
+  s.ev = ev; s.score = s.checks.filter(x => x.ok).length; return s; })(situationOf);
+ACTIONS.evPrepDone = (v, id) => { const c = circle(), i = c.items.find(x => x.id === id); if (!i || !Array.isArray(i.prep)) return; i.prep.forEach(p => { if (p && typeof p === 'object') p.done = true; }); save(); render(); toast('Marked as ready'); };
+
+function careWaits(c){ const out = [], meM = me(c) || {}, now = Date.now();
+  (c.waiting || []).filter(w => !w.done).forEach(w => { const m = w.who && member(w.who, c);
+    out.push({key:'w-' + w.id, kind:m ? 'person' : 'service', id:w.id, who:m ? m.id : '', from:m ? (m.isMe ? 'You' : firstName(m.name)) : (w.from || 'Not stated'), what:w.title, since:w.asked || '', due:w.due || '',
+      late:!!(w.due && daysFromToday(w.due) < 0), ref:w.for || '', act:'chaser',
+      why:[`Added ${w.asked ? niceDate(w.asked) : 'to the plan'}${w.by && member(w.by, c) ? ' by ' + memberName(w.by, c) : ''}.`, w.due ? `Expected by ${niceDate(w.due)}${daysFromToday(w.due) < 0 ? ', which has passed' : ''}.` : 'No expected date was given.']}); });
+  openItems(c).filter(i => i.req && i.req.st === 'asked' && !i.owner && i.req.to !== meM.id).forEach(i => { const m = member(i.req.to, c); if (!m) return;
+    out.push({key:'r-' + i.id, kind:'person', id:i.id, who:m.id, from:firstName(m.name), what:i.title + (i.date ? ' ' + dayWord(i.date) : ''), since:i.req.at ? iso(new Date(i.req.at)) : '', due:i.date || '',
+      late:!!(i.date && daysFromToday(i.date) <= 1), ref:i.liftOf || i.id, act:'reask',
+      why:[`${i.req.by && member(i.req.by, c) ? (member(i.req.by, c).isMe ? 'You' : firstName(member(i.req.by, c).name)) : 'Someone'} asked ${firstName(m.name)} ${i.req.at ? timeAgo(i.req.at) : ''}.`, `${firstName(m.name)} hasn’t said yes or no yet.`, i.date ? `It’s needed ${dayWord(i.date)}.` : '']}); });
+  (c.agent || []).filter(r => r.kind === 'backup' && r.st === 'asked' && !r.declined && agentOutcome(c, r).wait).forEach(r => { const m = member(r.to, c); if (!m) return;
+    out.push({key:'b-' + r.id, kind:'person', id:r.id, who:m.id, from:firstName(m.name), what:`Being the backup for “${r.rt || r.title}”`, since:iso(new Date(r.at)), due:'', late:now - r.at > 5 * 864e5, act:'none',
+      why:[`Tendu asked ${firstName(m.name)} in the team chat ${timeAgo(r.at)}, with your OK.`]}); });
+  c.members.filter(m => !m.isMe && !m.acct && m.invitedAt).forEach(m => out.push({key:'j-' + m.id, kind:'person', id:m.id, who:m.id, from:firstName(m.name), what:'Joining the team on Tendu',
+    since:iso(new Date(m.invitedAt)), due:'', late:now - m.invitedAt > 7 * 864e5, act:'invite', why:[`Invited ${timeAgo(m.invitedAt)}. The invite hasn’t been used yet.`]}));
+  return out.sort((a, b) => (b.late - a.late) || String(a.since).localeCompare(String(b.since))); }
+
+function needsMe(c, meId = (me(c) || {}).id){ const out = [], today = todayIso(), meM = member(meId, c), admin = typeof Access !== 'undefined' && Access.on(c) ? Access.admin(c) : true;
+  const push = x => { if (!out.some(y => y.key === x.key)) out.push(x); };
+  openItems(c).filter(i => i.req && i.req.st === 'asked' && i.req.to === meId && !i.owner).forEach(i => push({key:'ask-' + i.id, icon:'handshake', t:`Answer ${i.req.by && member(i.req.by, c) ? firstName(member(i.req.by, c).name) : 'the team'}: can you do “${i.title}”?`, mins:1,
+    a:'sheet', v:'item', id:i.id, why:[`You were asked ${i.req.at ? timeAgo(i.req.at) : ''}.`, i.date ? `It’s planned for ${niceDate(i.date)}.` : '']}));
+  chatMsgs(c).filter(m => m.x && m.x.ask && m.x.ask.to === meId && m.vt && !(c.agentAnswered || {})[m.id]).slice(-3).forEach(m => push({key:'bk-' + m.id, icon:'shield', t:`Answer: can you be the backup for “${m.x.ask.title}”?`, mins:1, a:'go', v:'updates', why:['Tendu asked you in the team chat, for someone in the team.']}));
+  openItems(c).filter(i => i.owner === meId && i.date && i.date <= today).forEach(i => push({key:'job-' + i.id, icon:i.kind === 'appointment' ? 'hospital' : 'task', t:i.title, sub:i.date < today ? `Was due ${niceDate(i.date)}` : i.time ? 'Today at ' + ampm(i.time) : 'Today',
+    mins:i.kind === 'appointment' ? 0 : jobMinutes(i), a:'sheet', v:'item', id:i.id, late:i.date < today, why:[`“${i.title}” is yours in the plan${i.date < today ? ' and its date has passed' : ' for today'}.`]}));
+  openItems(c).filter(i => i.kind === 'appointment' && i.date && daysFromToday(i.date) >= 0 && daysFromToday(i.date) <= 2 && (i.owner === meId || (!i.owner && admin))).forEach(i => { const ev = careEvent(c, i);
+    ev.missing.filter(n => ['who', 'lift', 'docs'].includes(n.k)).forEach(n => push({key:'ev-' + n.k + '-' + i.id, icon:n.k === 'lift' ? 'route' : n.k === 'who' ? 'users' : 'doc',
+      t:n.k === 'lift' ? `Confirm how ${whoName(c)} gets to “${i.title}”` : n.k === 'who' ? `Decide who goes to “${i.title}”` : `Find the letter for “${i.title}”`, sub:dayWord(i.date).replace(/^./, x => x.toUpperCase()) + (i.time ? ' at ' + ampm(i.time) : ''),
+      mins:n.k === 'docs' ? 5 : 2, a:'go', v:'getready', id:i.id, why:[`“${i.title}” is ${dayWord(i.date)}.`, `${n.label}: nothing arranged yet.`, i.owner === meId ? 'You are the one going.' : 'Nobody is going yet, and you organise the team.']})); });
+  if (admin) Object.entries((c.share && c.share.waiting) || {}).forEach(([acct, w]) => push({key:'join-' + acct, icon:'users', t:`Approve ${w.name || 'someone'} joining the team`, mins:1, a:'go', v:'access', why:['They joined with an older code, so an admin must approve them first.']}));
+  CG.of(c).waits().filter(w => w.late && w.kind === 'service').slice(0, 2).forEach(w => push({key:'chase-' + w.id, icon:'hourglass', t:`Chase ${w.from}: ${w.what}`, mins:5, a:'sheet', v:'chaser', id:w.id, why:w.why}));
+  const soon = openItems(c).filter(i => i.date && daysFromToday(i.date) >= 0 && daysFromToday(i.date) <= 1);
+  const covered = soon.filter(i => i.owner && i.owner !== meId && !isAway(member(i.owner, c), i.date)), nobody = soon.filter(i => !i.owner && !(i.req && i.req.st === 'asked'));
+  const mins = out.reduce((s, x) => s + (x.mins || 0), 0);
+  return {list:out.sort((a, b) => (b.late ? 1 : 0) - (a.late ? 1 : 0)), mins, covered, nobody, me:meM}; }
+
+function transportPlans(c, i, ev, notFor){ const h = helpers(c, {title:'Lift to ' + i.title, kind:'task', date:i.date}, i.date).find(x => x.m.id !== notFor && !(ev.lift && ev.lift.req && (ev.lift.req.no || []).includes(x.m.id)));
+  const A = ev.lift ? (h ? {k:'A', t:h.m.isMe ? `Do the lift yourself (you ${h.why})` : `Ask ${firstName(h.m.name)} to do the lift (${h.why})`, a:h.m.isMe ? 'mine' : 'askPerson', v:h.m.isMe ? 'me' : h.m.id, id:ev.lift.id} : {k:'A', t:'Ask the team who can do the lift', a:'askAll', id:ev.lift.id})
+    : h ? {k:'A', t:h.m.isMe ? `Add a lift for you (you ${h.why})` : `Add a lift and ask ${firstName(h.m.name)} (${h.why})`, a:'riskLift', v:h.m.isMe ? 'me' : h.m.id, id:i.id} : {k:'A', t:'Add a lift and ask the team', a:'riskLift', v:'all', id:i.id};
+  return [A, {k:'B', t:PLAN_B.transport, a:'riskJob', v:'B|' + PLAN_B.transport, id:i.id}, {k:'C', t:'Ask to move the appointment', a:'riskJob', v:'C|Call to move ' + i.title, id:i.id}]; }
+function spofPlans(c, r, notFor){ const h = helpers(c, {title:r.title, kind:'task'}, todayIso()).find(x => x.m.id !== notFor);
+  return [h ? {k:'A', t:h.m.isMe ? 'Be the backup yourself' : `Ask ${firstName(h.m.name)} to be the backup (${h.why})`, a:'riskBackup', v:(h.m.isMe ? me(c).id : h.m.id) + '|' + r.id, id:''} : {k:'A', t:'Name a backup', a:'go', v:'resp', id:''},
+    {k:'B', t:PLAN_B[r.area] || PLAN_B.other, a:'riskJob', v:'B|' + (PLAN_B[r.area] || PLAN_B.other), id:''},
+    {k:'C', t:'Write down how it’s done, so anyone could step in', a:'go', v:'resp', id:''}]; }
+const PLAN_B = {transport:'Book a taxi or community transport', meds:'Ask the pharmacy to deliver', shopping:'Order a food delivery', appts:'Ask if a phone or video appointment is possible',
+  company:'Arrange a phone call instead', personal:'Ask the care agency for an extra visit', money:'Ask the bank or council about a delay', paperwork:'Ask for more time', home:'Leave it until next week', other:'Find local help'};
+function riskPlans(c, i, area, notFor){ const h = helpers(c, i, i.date).find(x => x.m.id !== notFor && !(i.req && (i.req.no || []).includes(x.m.id)));
+  const appt = i.kind === 'appointment' || area === 'appts' || area === 'transport';
+  return [h ? {k:'A', t:h.m.isMe ? `You do it (you ${h.why})` : `Ask ${firstName(h.m.name)} (${h.why})`, a:h.m.isMe ? 'mine' : 'askPerson', v:h.m.isMe ? 'me' : h.m.id, id:i.id} : {k:'A', t:'Ask the team who can help', a:'askAll', id:i.id},
+    {k:'B', t:PLAN_B[area] || PLAN_B.other, a:'riskJob', v:'B|' + (PLAN_B[area] || PLAN_B.other), id:i.id},
+    {k:'C', t:appt ? 'Ask to move the appointment' : 'Move it to another day', a:appt ? 'riskJob' : 'sheet', v:appt ? 'C|Call to move ' + i.title : 'item', id:i.id}]; }
+function careRisks(c, days = 14){ const out = [], open = openItems(c), inR = d => d && daysFromToday(d) >= 0 && daysFromToday(d) <= days;
+  open.filter(i => i.kind === 'appointment' && inR(i.date)).forEach(i => { const ev = careEvent(c, i), when = dayWord(i.date).replace(/^./, x => x.toUpperCase()), o = i.owner && member(i.owner, c);
+    if (o && isAway(o, i.date)) out.push({key:'away-' + i.id, on:o.id, sev:1, when:i.date, icon:'calendar', t:`${meWord(o)} ${o.isMe ? 'are' : 'is'} away for “${i.title}”`, cons:`${when}’s ${i.title} has nobody going unless someone steps in.`,
+      why:[`${meWord(o)} ${o.isMe ? 'are' : 'is'} marked away ${niceDate(i.date)}.`, `“${i.title}” is down for ${o.isMe ? 'you' : firstName(o.name)}.`], plans:riskPlans(c, i, 'appts', o.id)});
+    const tr = ev.needs.find(n => n.k === 'lift');
+    if (tr && (tr.st === 'missing' || tr.st === 'asked') && daysFromToday(i.date) <= 7) out.push({key:'tr-' + i.id, on:tr.who || '', sev:tr.st === 'missing' ? 1 : 2, when:i.date, icon:'route', t:tr.st === 'asked' ? `Transport to “${i.title}” isn’t confirmed` : `No transport to “${i.title}”`,
+      cons:`${when}’s ${i.title}${i.time ? ' at ' + ampm(i.time) : ''} currently has no confirmed transport.`, why:[tr.st === 'asked' ? `${memberName(tr.who, c)} was asked to do the lift and hasn’t answered.` : 'There is no lift or transport job for that day.', ev.backup ? `${memberName(ev.backup, c)} could step in (${ev.backupWhy}).` : ''].filter(Boolean),
+      plans:transportPlans(c, i, ev, tr.who)});
+    if (!i.owner && !(i.req && i.req.st === 'asked') && daysFromToday(i.date) <= 7) out.push({key:'who-' + i.id, sev:1, when:i.date, icon:'users', t:`Nobody is going to “${i.title}”`, cons:`${when}’s ${i.title} has nobody with ${whoName(c)}.`,
+      why:['Nobody has said they’ll go.'], plans:riskPlans(c, i, 'appts')}); });
+  open.filter(i => i.kind !== 'appointment' && inR(i.date) && i.owner && isAway(member(i.owner, c), i.date)).forEach(i => { const o = member(i.owner, c), area = respArea(i.title);
+    out.push({key:'jaway-' + i.id, on:o.id, sev:2, when:i.date, icon:'calendar', t:`${meWord(o)} ${o.isMe ? 'are' : 'is'} away for “${i.title}”`, cons:`“${i.title}” ${dayWord(i.date)} won’t happen unless someone else does it.`, why:[`${meWord(o)} ${o.isMe ? 'are' : 'is'} marked away then.`], plans:riskPlans(c, i, area, o.id)}); });
+  const health = typeof Access === 'undefined' || !Access.on(c) || Access.has(c, 'health');
+  (health ? c.meds : []).filter(m => m.supplyUntil && inR(m.supplyUntil) && daysFromToday(m.supplyUntil) <= 7).forEach(m => { const nm = String(m.name || '').toLowerCase().split(/\s+/)[0], mentions = (i, x) => !!x && i.title.toLowerCase().includes(x);
+    const job = open.find(i => /prescri|pharmac/i.test(i.title) && (mentions(i, nm) || !c.meds.some(o => o !== m && mentions(i, String(o.name || '').toLowerCase().split(/\s+/)[0]))));
+    if (job && job.owner && !isAway(member(job.owner, c), job.date)) return;
+    out.push({key:'rx-' + m.id, on:job && job.owner || '', sev:1, when:m.supplyUntil, icon:'pill', t:`${m.name} runs out ${dayWord(m.supplyUntil)}`, cons:!job ? 'There’s no collection job in the plan.' : job.owner ? `${memberName(job.owner, c)} is away for “${job.title}”.` : `“${job.title}” has nobody on it yet.`,
+      why:[`The medicines list says the supply lasts until ${niceDate(m.supplyUntil)}.`], plans:job ? riskPlans(c, job, 'meds', job.owner) : [{k:'A', t:'Add a job to order the repeat prescription', a:'riskJob', v:'A|Order the repeat prescription', id:''}, {k:'B', t:PLAN_B.meds, a:'riskJob', v:'B|' + PLAN_B.meds, id:''}]}); });
+  const g = CG.of(c);
+  c.members.filter(m => m.away && m.away.from && inR(m.away.from)).forEach(m => { const solo = g.heldBy(m.id).filter(r => !r.backup && !r.backupInferred);
+    solo.slice(0, 3).forEach(r => out.push({key:'spof-' + r.id + m.away.from, on:m.id, sev:2, when:m.away.from, icon:'shield', t:`Nobody else does “${r.title}” while ${meWord(m).replace('You', 'you')} ${m.isMe ? 'are' : 'is'} away`,
+      cons:`From ${niceDate(m.away.from)} to ${niceDate(m.away.to || m.away.from)}, “${r.title}” has no backup.`, why:[g.why(r.id), `${meWord(m)} ${m.isMe ? 'are' : 'is'} away from ${niceDate(m.away.from)}.`].filter(Boolean),
+      plans:spofPlans(c, r, m.id)})); });
+  CG.of(c).waits().filter(w => w.ref && w.late && w.key.startsWith('w-')).forEach(w => { const i = c.items.find(x => x.id === w.ref && x.kind === 'appointment'); if (!i || !inR(i.date)) return;
+    out.push({key:'wt-' + w.key, sev:2, when:i.date, icon:'hourglass', t:`Still waiting for ${w.what} before “${i.title}”`, cons:`${w.from} hasn’t sent it, and the appointment is ${dayWord(i.date)}.`, why:w.why, plans:[{k:'A', t:`Chase ${w.from}`, a:w.kind === 'service' ? 'sheet' : 'go', v:w.kind === 'service' ? 'chaser' : 'waitingfor', id:w.id},
+      {k:'B', t:'Ask for a copy at the appointment', a:'riskJob', v:'B|Ask for a copy of ' + w.what, id:i.id}, {k:'C', t:'Ask to move the appointment', a:'riskJob', v:'C|Call to move ' + i.title, id:i.id}]}); });
+  const hid = c.hiddenRisks || {};
+  return out.filter(r => !hid[r.key]).sort((a, b) => a.sev - b.sev || String(a.when).localeCompare(String(b.when))); }
+
+function careDecisions(c){ const out = [], meM = me(c) || {}, admin = typeof Access !== 'undefined' && Access.on(c) ? Access.admin(c) : true, hid = c.hiddenDecisions || {};
+  openItems(c).filter(i => i.req && i.req.st === 'asked' && i.req.to === meM.id && !i.owner).forEach(i => out.push({key:'req-' + i.id, icon:'handshake', t:`Can you do “${i.title}”${i.date ? ' ' + dayWord(i.date) : ''}?`,
+    sub:`Asked by ${i.req.by && member(i.req.by, c) ? firstName(member(i.req.by, c).name) : 'the team'}`, yes:{a:'reqYes', id:i.id, t:'I can help'}, no:{a:'reqNo', id:i.id, t:'Can’t this time'}, why:[`You were asked ${i.req.at ? timeAgo(i.req.at) : ''}.`]}));
+  chatMsgs(c).filter(m => m.x && m.x.ask && m.x.ask.to === meM.id && m.vt && !(c.agentAnswered || {})[m.id]).slice(-3).forEach(m => out.push({key:'bk-' + m.id, icon:'shield', t:`Be the backup for “${m.x.ask.title}”?`,
+    sub:'Asked through Tendu', yes:{a:'agentYes', id:m.id, t:'Yes, I can'}, no:{a:'agentNo', id:m.id, t:'Not now'}, why:['Someone in the team approved this ask. It came through the team chat and was checked.']}));
+  if (admin) Object.entries((c.share && c.share.waiting) || {}).forEach(([acct, w]) => out.push({key:'join-' + acct, icon:'users', t:`Let ${w.name || 'someone'} join the team?`, sub:'They have the team’s room but no invite from you',
+    yes:{a:'accApprove', v:acct, t:'Approve'}, no:{a:'accIgnore', v:acct, t:'Ignore'}, why:['They joined with an older long code, so they wait until an admin approves them. Only approve someone you know.']}));
+  (App.letter && App.letter.cid === c.id && App.letter.found && App.letter.found.length ? [App.letter] : []).forEach(L => out.push({key:'letter-now', icon:'inbox', t:`Add ${L.found.length} ${L.found.length === 1 ? 'thing' : 'things'} from a letter to the plan?`, sub:L.title || 'From the Care inbox',
+    yes:{a:'letterAddAll', t:'Add all'}, edit:{a:'go', v:'inbox', t:'Review'}, why:['Tendu found these in the letter you pasted. Nothing is added until you say so.']}));
+  try { agentProposals(c).slice(0, 6).forEach(p => out.push({key:'ag-' + p.key, icon:p.icon, t:p.title, sub:p.observe, yes:{a:'agentGo', v:p.key, t:'Approve'}, edit:{a:'go', v:'agent', t:'Edit'}, no:{a:'agentHide', v:p.key, t:'Ignore'},
+    why:p.why.map(w => w.t), prepare:p.prepare})); } catch(e){}
+  return out.filter(d => !hid[d.key]); }
+
+buildCareGraph = (orig => function(c){ const g = orig(c), N = g.N, E = g.E;
+  [...N.values()].filter(n => n.type === 'dependency' && n.kind === 'transport').forEach(n => N.delete(n.id));
+  openItems(c).filter(i => i.kind === 'appointment' && i.date && daysFromToday(i.date) >= 0 && daysFromToday(i.date) <= 30).forEach(i => { let ev; try { ev = careEvent(c, i); } catch(e){ return; } const n = N.get(i.id);
+    if (n){ n.ev = ev; n.where = ev.where; }
+    ev.needs.filter(d => d.st !== 'notneeded').forEach(d => { const id = `dep-${d.k}-${i.id}`;
+      N.set(id, {id, type:'dependency', kind:d.k === 'lift' ? 'transport' : d.k, on:d.who || '', what:i.id, status:d.st, missing:d.st === 'missing', spof:false, label:d.label, src:{k:'plan', what:d.st === 'missing' ? 'not in the plan yet' : d.st === 'asked' ? 'asked, no answer yet' : 'in the plan'}});
+      E.push({from:i.id, rel:'needs', to:id}); if (d.who) E.push({from:id, rel:'heldBy', to:d.who}); }); });
+  (c.links || []).forEach(l => E.push({from:l.from, rel:l.rel, to:l.to, link:l.id}));
+  g.waits = () => { if (!g._w){ g._w = careWaits(c); g._w.forEach(w => { N.set('wait-' + w.key, {id:'wait-' + w.key, type:'wait', ...w, src:{k:w.kind === 'service' ? 'person' : 'plan', what:w.why[0]}});
+    if (w.who) E.push({from:'wait-' + w.key, rel:'waitingOn', to:w.who}); if (w.ref) E.push({from:'wait-' + w.key, rel:'waitFor', to:w.ref}); }); } return g._w; };
+  g.situations = () => { if (!g._s){ try { g._s = careSituations(c, 14); } catch(e){ g._s = []; }
+    g._s.forEach(s => { N.set('sit-' + s.id, {id:'sit-' + s.id, type:'situation', s, title:s.title, src:{k:'inferred', what:'worked out from the plan'}}); if (s.ref) E.push({from:'sit-' + s.id, rel:'about', to:s.ref}); }); } return g._s; };
+  g.event = id => { const i = c.items.find(x => x.id === id); return i ? careEvent(c, i) : null; };
+  g.deps = (st) => g.all('dependency').filter(d => !st || d.status === st);
+  g.needsMe = mid => needsMe(c, mid);
+  g.risks = days => careRisks(c, days);
+  g.decisions = () => careDecisions(c);
+  return g; })(buildCareGraph);
+
+
+const whyOf = (key, why) => whyBtn({key, why:(why || []).filter(Boolean)});
+const sitTone = s => { const miss = s.checks.filter(x => !x.ok).length; return miss === 0 ? 'good' : miss === 1 ? 'warn' : 'crit'; };
+const sitLine = s => { const miss = s.checks.filter(x => !x.ok); return miss.length ? `${miss[0].t}${miss.length > 1 ? ` and ${miss.length - 1} more` : ''} still to sort` : 'Everything ready'; };
+const planBtns = (r) => `<div class="plans">${r.plans.map(p => `<button class="plan" data-a="${p.a}" data-v="${esc(p.v || '')}" data-id="${esc(p.id || '')}"><span class="pk">Plan ${p.k}</span>${esc(p.t)}</button>`).join('')}</div>`;
+
+PAGES.needsme = c => { const n = needsMe(c), who = whoName(c);
+  const row = x => `<div class="card needrow"><button class="grow nr-main" data-a="${x.a}" data-v="${esc(x.v || '')}" data-id="${esc(x.id || '')}"><span class="hi">${ic(x.icon || 'task')}</span><span class="grow"><b>${esc(x.t)}</b>${x.sub ? `<span class="small muted">${esc(x.sub)}</span>` : ''}</span>${x.mins ? `<span class="mins">${esc(minsText(x.mins))}</span>` : ''}</button>${whyOf('nm-' + x.key, x.why)}</div>`;
+  return `${bar('What needs me')}<h1 class="largetitle">${n.list.length ? `${n.list.length} ${n.list.length === 1 ? 'thing needs' : 'things need'} you today` : 'Nothing needs you today'}</h1>
+    <p class="subtitle">${n.list.length ? `About ${esc(minsText(n.mins || 1))} in all.` : ''} ${n.nobody.length ? `${n.nobody.length} ${n.nobody.length === 1 ? 'job has' : 'jobs have'} nobody yet.` : 'Everything else is covered.'}</p>
+    ${n.list.length ? `<div class="stack">${n.list.map(row).join('')}</div>` : `<div class="card center">${ic('checkCircle', 'style="width:28px;height:28px;color:var(--good)"')}<div class="b mt4">You’re clear</div><div class="small muted">Nothing is waiting on you. Tendu will show it here when something is.</div></div>`}
+    ${n.nobody.length ? `<div class="section"><div class="sechead"><h2>Nobody on these yet</h2><span class="tiny muted">today and tomorrow</span></div><div class="tlist">${n.nobody.map(i => itemRow(c, i, {showDate:true})).join('')}</div></div>` : ''}
+    ${n.covered.length ? `<div class="section"><div class="sechead"><h2>Covered by others</h2><span class="tiny muted">${n.covered.length}</span></div><div class="list">${n.covered.slice(0, 8).map(i => li({icon:'check', tone:'c-good', title:esc(i.title), sub:esc(memberName(i.owner, c) + ' · ' + dayWord(i.date)), a:'sheet', v:'item', id:i.id})).join('')}</div></div>` : ''}
+    <p class="disclaim">Worked out from ${esc(who)}’s plan: what’s yours, what you’ve been asked, and what only you can decide. Times are rough guides.</p>`; };
+
+PAGES.waitingfor = c => { const ws = CG.of(c).waits(), groups = {}; ws.forEach(w => (groups[w.from] = groups[w.from] || []).push(w));
+  const age = w => w.since ? Math.max(0, -daysFromToday(w.since)) : null;
+  const act = w => w.act === 'chaser' ? `<button class="claim" data-a="sheet" data-v="chaser" data-id="${esc(w.id)}">${w.late ? 'Chase' : 'Check in'}</button><button class="claim ghostish" data-a="waitDone" data-id="${esc(w.id)}">It’s arrived</button>`
+    : w.act === 'reask' ? `<button class="claim" data-a="waitReask" data-id="${esc(w.id)}">Ask again</button>` : w.act === 'invite' ? `<button class="claim" data-a="go" data-v="members">Send the invite again</button>` : '';
+  const others = c.members.filter(m => !m.isMe);
+  return `${bar('Waiting for')}<h1 class="largetitle">What you’re waiting for</h1><p class="subtitle">${ws.length ? `${ws.length} ${ws.length === 1 ? 'thing' : 'things'}${ws.some(w => w.late) ? `, ${ws.filter(w => w.late).length} late` : ''}. One list for answers from the family and from services.` : 'Nothing at the moment.'}</p>
+    ${Object.entries(groups).map(([from, list]) => `<div class="section"><div class="sechead"><h2>Waiting for ${esc(from)}</h2><span class="tiny muted">${list.length}</span></div><div class="stack">${list.map(w => `<div class="card waitrow ${w.late ? 'late' : ''}"><div class="row" style="gap:8px;align-items:flex-start"><span class="grow"><b>${esc(w.what)}</b><span class="small muted">${age(w) !== null ? `Waiting ${age(w) === 0 ? 'since today' : age(w) === 1 ? '1 day' : age(w) + ' days'}` : ''}${w.due ? ` · ${w.late ? 'was expected' : 'expected'} ${esc(niceDate(w.due))}` : ''}</span></span>${w.late ? '<span class="pill warn">Late</span>' : ''}${whyOf('wf-' + w.key, w.why)}</div>${act(w) ? `<div class="row mt8" style="gap:6px;flex-wrap:wrap">${act(w)}</div>` : ''}</div>`).join('')}</div></div>`).join('')}
+    <div class="section"><div class="sechead"><h2>Add something you’re waiting for</h2></div><form class="card stack" data-submit="waitAdd">
+      ${field('What is it?', 'title', '', 'required placeholder="e.g. Discharge letter, or James confirming the lift"')}
+      <div class="field"><label for="wf-from">From</label><select class="select" id="wf-from" name="from">${others.map(m => `<option value="m:${m.id}">${esc(m.name)}</option>`).join('')}<option value="other" ${others.length ? '' : 'selected'}>A service or someone else</option></select></div>
+      ${field('If a service or someone else, who?', 'other', '', 'placeholder="e.g. Royal Infirmary, the council, the GP surgery"')}
+      ${field('Expected by', 'due', plusDays(7), 'type="date"')}
+      <button class="btn" type="submit">Keep track of it</button></form></div>
+    <p class="disclaim">“Chase” prepares a message for you to send. “Ask again” posts the ask in the team chat when you tap it.</p>`; };
+ACTIONS.waitAdd = f => { const c = circle(), m = String(f.from || '').startsWith('m:') ? member(f.from.slice(2), c) : null, from = m ? m.name : (f.other || '').trim() || 'Not stated';
+  const w = {id:uid(), title:(f.title || '').trim(), from, who:m ? m.id : '', asked:todayIso(), due:f.due || plusDays(7), ref:'', notes:'', done:false, by:me(c).id}; if (!w.title) return;
+  c.waiting.push(w); log(c, `Now waiting for: ${w.title} (${from})`, 'waiting'); save(); render(); toast('Tracking it'); };
+ACTIONS.waitReask = (v, id) => { const c = circle(), i = c.items.find(x => x.id === id); if (i && i.req && i.req.to) ACTIONS.askPerson(i.req.to, id); };
+
+PAGES.risks = c => { const rs = careRisks(c, 14);
+  return `${bar('What could go wrong')}<h1 class="largetitle">What could go wrong</h1><p class="subtitle">The next two weeks, from the plan. Each with what would happen, and three ways to sort it. Nothing changes until you choose.</p>
+    ${rs.length ? `<div class="stack">${rs.map(r => `<div class="card riskcard s${r.sev}"><div class="row" style="gap:10px;align-items:flex-start"><span class="hi">${ic(r.icon)}</span><span class="grow"><b>${esc(r.t)}</b><span class="small">${esc(r.cons)}</span></span>${whyOf('rk-' + r.key, r.why)}</div>${planBtns(r)}<button class="textbtn tiny mt4" data-a="riskHide" data-v="${esc(r.key)}">Not now</button></div>`).join('')}</div>`
+      : `<div class="card center">${ic('checkCircle', 'style="width:28px;height:28px;color:var(--good)"')}<div class="b mt4">Nothing looks likely to go wrong</div><div class="small muted">Every appointment this week has someone going and a way to get there, and nobody away in the next two weeks leaves a gap.</div></div>`}
+    <div class="section"><button class="calmbtn" data-a="go" data-v="studio">${ic('route')}<span>Plan for someone being away</span>${chevron()}</button></div>
+    <p class="disclaim">Plan A asks the best-placed person. Plan B uses help from outside the family. Plan C moves the date. Nothing on this page is sent or changed until you tap a plan. Tendu never judges anyone’s health.</p>`; };
+ACTIONS.riskHide = v => { const c = circle(); (c.hiddenRisks = c.hiddenRisks || {})[v] = Date.now(); save(); render(); };
+ACTIONS.riskJob = (v, id) => { const c = circle(), [k, text] = String(v).split(/\|(.*)/s), i = c.items.find(x => x.id === id);
+  const x = addItem(c, {title:i ? `${text} (${i.title})` : text, date:i && i.date ? (k === 'C' ? todayIso() : plusDays(-1, i.date) < todayIso() ? todayIso() : plusDays(-1, i.date)) : todayIso(), owner:me(c).id});
+  x.src = {k:'agent', by:me(c).id, at:Date.now(), what:`Plan ${k} from “What could go wrong”`}; if (i) addLink(c, x.id, 'prepFor', i.id); log(c, `Added: ${x.title}`, 'plan'); save(); render(); toast('Added to your jobs'); };
+ACTIONS.riskLift = async (v, id) => { const c = circle(), i = c.items.find(x => x.id === id); if (!i) return;
+  const t = i.time ? (() => { const [h, m] = i.time.split(':').map(Number), mins = Math.max(0, h * 60 + m - 45); return String(Math.floor(mins / 60)).padStart(2, '0') + ':' + String(mins % 60).padStart(2, '0'); })() : '';
+  const x = addItem(c, {title:`Lift to ${i.title}`, date:i.date, time:t, owner:v === 'me' ? me(c).id : ''}); x.liftOf = i.id; log(c, `Added a lift for ${i.title}`, 'assign'); save();
+  if (v === 'all') await ACTIONS.askAll('', x.id); else if (v && v !== 'me') await ACTIONS.askPerson(v, x.id); render(); if (v === 'me') toast('Lift added for you'); };
+ACTIONS.riskBackup = (v) => { const c = circle(), [to, rid] = String(v).split('|'), r = CG.of(c).responsibilities().find(x => x.id === rid); if (!r) return;
+  agentRun(c, {key:'bk-' + r.id + '-' + to, kind:'backup', title:`Ask ${firstName((member(to, c) || {}).name || '')} to be the backup for “${r.title}”`, act:{a:'backup', resp:r.id, title:r.title, owner:r.owner, to}}); };
+ACTIONS.askAll = async (v, id) => { const c = circle(), i = c.items.find(x => x.id === id); if (!i) return;
+  const text = `Can anyone do “${i.title}” for ${whoName(c)}${i.date ? ' ' + dayWord(i.date) : ''}${i.time ? ' at ' + i.time : ''}? Tap the job to take it.`;
+  const sent = Sync.on(c) ? await tenduSays(c, text, {ref:i.id, jt:i.title}) : false; if (sent) toast('Asked the team'); else shareText('Can anyone help?', text.replace(' Tap the job to take it.', '')); };
+
+PAGES.actions = c => { const ds = careDecisions(c);
+  const btn = (b, cls) => b ? `<button class="btn sm ${cls || ''}" data-a="${b.a}" data-v="${esc(b.v || '')}" data-id="${esc(b.id || '')}">${esc(b.t)}</button>` : '';
+  return `${bar('Action Centre')}<h1 class="largetitle">${ds.length ? `${ds.length} ${ds.length === 1 ? 'thing needs' : 'things need'} your decision` : 'Nothing to decide'}</h1>
+    <p class="subtitle">Instead of Bud interrupting, everything Tendu is waiting on you for is here. Approve, change it, or ignore it.</p>
+    ${ds.length ? `<div class="stack">${ds.map((d, n) => `<div class="card deccard"><div class="row" style="gap:10px;align-items:flex-start"><span class="decn">${n + 1}</span><span class="grow"><b>${esc(d.t)}</b>${d.sub ? `<span class="small muted">${esc(d.sub)}</span>` : ''}${d.prepare ? `<span class="small">${esc(d.prepare)}</span>` : ''}</span>${whyOf('dc-' + d.key, d.why)}</div>
+      <div class="btnrow mt8">${btn(d.yes)}${btn(d.edit, 'ghost')}${d.no ? btn(d.no, 'ghost') : `<button class="btn sm ghost" data-a="decHide" data-v="${esc(d.key)}">Ignore</button>`}</div></div>`).join('')}</div>`
+      : `<div class="card center">${ic('checkCircle', 'style="width:28px;height:28px;color:var(--good)"')}<div class="b mt4">You’re up to date</div><div class="small muted">When Tendu needs your OK for something, it waits here.</div></div>`}
+    <p class="disclaim">Approving does exactly what the card says and nothing more. Everything is in the activity record.</p>`; };
+ACTIONS.decHide = v => { const c = circle(); (c.hiddenDecisions = c.hiddenDecisions || {})[v] = Date.now(); save(); render(); };
+
+todayCard = (orig => function(c){ const h0 = orig(c); if (c.archived || (typeof assisted === 'function' && assisted())) return h0;
+  const n = needsMe(c), ds = careDecisions(c), ws = CG.of(c).waits(), rs = careRisks(c, 7).filter(r => r.sev === 1);
+  let sits = []; try { sits = careSituations(c, 2).slice(0, 4); } catch(e){}
+  const top = `<div class="calm">
+    <div class="sechead calmh"><h2>Today</h2><button class="more" data-a="go" data-v="forecast">Whole week</button></div>
+    <button class="needbar ${n.list.length ? '' : 'clear'}" data-a="go" data-v="needsme"><span class="nbn">${n.list.length || ic('check')}</span><span class="grow"><b>${n.list.length ? `${n.list.length} ${n.list.length === 1 ? 'thing needs' : 'things need'} you` : 'Nothing needs you today'}</b><span>${n.list.length ? `About ${esc(minsText(n.mins || 1))}` : ''}${n.list.length ? ' · ' : ''}${n.nobody.length ? `${n.nobody.length} with nobody yet` : 'Everything else is covered'}</span></span>${chevron()}</button>
+    ${sits.length ? `<div class="sitlist">${sits.map(s => `<button class="sitrow" data-a="go" data-v="sit" data-id="${esc(s.id)}"><span class="sdot ${sitTone(s)}" aria-hidden="true"></span><span class="grow"><b>${esc(s.title)}</b><span>${esc(sitLine(s))}</span></span>${chevron()}</button>`).join('')}</div>` : ''}
+    <div class="qchips">${ds.length ? `<button class="qchip hot" data-a="go" data-v="actions">${ic('check')}${ds.length} to decide</button>` : ''}<button class="qchip" data-a="go" data-v="waitingfor">${ic('hourglass')}Waiting for${ws.length ? ' · ' + ws.length : ''}</button><button class="qchip ${rs.length ? 'warn' : ''}" data-a="go" data-v="risks">${ic('shield')}${rs.length ? `${rs.length} could go wrong` : 'What could go wrong'}</button></div>
+  </div>`;
+  return top + h0.replace(/<div class="sechead calmh"><h2>(Today so far|Today)<\/h2><button class="more"[^>]*>Whole week<\/button><\/div>/, '<div class="sechead calmh"><h2>Jobs today</h2></div>').replace(/<button class="budstrip"[\s\S]*?<\/button>/, '').replace(/<button class="calmbtn" data-a="go" data-v="sit"[\s\S]*?<\/button>/, ''); })(todayCard);
+commandCentre = todayCard;
+
+PAGES.studio = (orig => (c, p) => { const h = orig(c, p), s = App.studio; if (!s) return h; const sel = member(s.who, c); if (!sel) return h;
+  const old = sel.away; sel.away = {from:s.from, to:s.to}; let rs = []; try { rs = careRisks(c, Math.max(14, daysFromToday(s.to) + 1)).filter(r => r.when >= s.from && r.when <= s.to && r.on === sel.id); } finally { sel.away = old; }
+  const g = CG.of(c), held = g.heldBy(sel.id), bk = {}; held.forEach(r => { const b = r.backup || r.backupInferred; if (b) (bk[b] = bk[b] || []).push(r.title); });
+  const areas = [...new Set(held.map(r => (RESP_AREAS.find(a => a[0] === r.area) || [0, 'Other'])[1]))];
+  const cons = `<div class="section"><div class="sechead"><h2>What depends on ${esc(sel.isMe ? 'you' : firstName(sel.name))}</h2></div>
+    ${areas.length ? `<div class="chips">${areas.map(a => `<span class="chip static">${esc(a)}</span>`).join('')}</div>` : '<p class="small muted" style="margin:2px 4px">No standing responsibilities recorded.</p>'}
+    ${Object.keys(bk).length ? `<div class="list mt8">${Object.entries(bk).map(([id, ts]) => li({icon:'shield', tone:'c-good', title:esc(memberName(id, c)) + ' already backs up', sub:esc(ts.slice(0, 3).join(', ') + (ts.length > 3 ? ` and ${ts.length - 3} more` : ''))})).join('')}</div>` : ''}</div>
+    ${rs.length ? `<div class="section"><div class="sechead"><h2>What would go wrong</h2><span class="tiny muted">${rs.length}</span></div><div class="stack">${rs.map(r => `<div class="card riskcard s${r.sev}"><div class="row" style="gap:10px;align-items:flex-start"><span class="hi">${ic(r.icon)}</span><span class="grow"><b>${esc(r.cons)}</b></span>${whyOf('st-' + r.key, r.why)}</div>${planBtns(r)}</div>`).join('')}</div></div>` : ''}`;
+  return h.includes('<div class="section"><div class="sechead"><h2>Tendu proposes') ? h.replace('<div class="section"><div class="sechead"><h2>Tendu proposes', cons + '<div class="section"><div class="sechead"><h2>Tendu proposes') : h + cons; })(PAGES.studio);
+
+const _more65 = PAGES.more; PAGES.more = c => { const d = careDecisions(c).length;
+  return _more65(c).replace(/(<h2>Tendu understands<\/h2><\/div><div class="hubgrid">)/, `$1${tile('check', 'Action Centre', 'go', 'actions', 'c-accent', d || '')}${tile('task', 'What needs me', 'go', 'needsme', 'c-good')}${tile('hourglass', 'Waiting for', 'go', 'waitingfor', 'c-warn')}${tile('shield', 'What could go wrong', 'go', 'risks', 'c-plain')}`); };
+
+pipHtml = (orig => function(){ let h = orig(); if (!App.pipOpen || (App.budTab || 'watch') !== 'watch' || !h.includes('<div class="budbody">')) return h; const c = circle(); if (!c) return h;
+  let n = {list:[]}, d = [], w = [], r = []; try { n = needsMe(c); d = careDecisions(c); w = CG.of(c).waits(); r = careRisks(c, 14); } catch(e){ return h; }
+  const row = (icon, t, k, v) => `<button class="budrow" data-a="pipGo" data-v="${v}">${ic(icon)}<span>${esc(t)}${k ? ` <b>· ${k}</b>` : ''}</span>${chevron()}</button>`;
+  return h.replace('<div class="budbody">', `<div class="budbody"><div class="budlist">${row('task', 'What needs me', n.list.length, 'needsme')}${row('check', 'Decisions waiting', d.length, 'actions')}${row('hourglass', 'What I’m waiting for', w.length, 'waitingfor')}${row('shield', 'What could go wrong', r.length, 'risks')}</div><div class="tsub">Bud is watching</div>`); })(pipHtml);
+
+careSignals = (orig => function(c){ const out = orig(c), g = CG.of(c);
+  out.forEach(x => { if (!x.why) x.why = [x.t + '.', SIGNAL[x.type] ? SIGNAL[x.type][2] : '', x.id && g.node(x.id) ? g.why(x.id) : ''].filter(Boolean); }); return out; })(careSignals);
+PAGES.signals = (orig => c => { const h = orig(c), sig = careSignals(c);
+  return h.replace(/<button class="textbtn tiny" data-a="sigHide" data-v="([^"]*)">Not now<\/button>/g, (m, k) => { const x = sig.find(s => esc(s.key) === k); return (x ? whyOf('sg-' + x.key, x.why) : '') + m; }); })(PAGES.signals);
+
+
+const PLACE_RX = /\b(?:at|to)\s+(?:the\s+)?((?:[A-Z][\w'’&.-]*\s+){0,5}(?:Hospital|Clinic|Surgery|Centre|Center|Practice|Unit|Ward|Infirmary|Department|Hospice))\b/;
+const PREP_RX = /\b(?:please\s+)?(?:bring|remember to bring|wear|arrive\s+(?:\d+\s+minutes\s+)?early|arrive\s+\d+\s+minutes|complete the (?:enclosed )?form|fill in the (?:enclosed )?form|bring (?:a|your) list)\b/i;
+const CONFIRM_RX = /\b(?:call|phone|ring|contact|telephone)\b[^.]*\b(?:confirm|rearrange|cancel|change|cannot attend|can't attend|unable to attend)\b/i;
+const FOLLOW_RX = /\b(?:we will (?:write|send|contact)|you will (?:receive|be sent|hear)|results will be|a letter will be sent|will be sent to you|follow[- ]up appointment will)\b/i;
+const SENDER_RX = /\b((?:[A-Z][\w'’&.-]*\s+){0,4}(?:NHS(?: Foundation)? Trust|Hospital|Infirmary|Surgery|Medical Practice|Practice|Council|Clinic|Health Centre))\b/;
+function letterRead(c, text){ const t = String(text || '').replace(/\r/g, ''); if (t.trim().length < 20) return null;
+  const sents = t.split(/\n+|(?<=[.!?])\s+/).map(s => s.trim()).filter(s => s.length > 3);
+  let appt = null;
+  for (const s of sents){ let r; try { r = smartFile(c, s); } catch(e){ continue; } const it = r && r.items && r.items[0];
+    if (it && it.date && (it.kind === 'appointment' || /appointment|clinic|review|scan|test|consultation|assessment|see (?:the|a|dr)/i.test(s))){ appt = {...it, kind:'appointment', s}; break; } }
+  const pm = (appt && appt.s.match(PLACE_RX)) || t.match(PLACE_RX), where = pm ? pm[1].trim() : (t.match(/^\s*(?:Location|Venue|Where)\s*:\s*(.+)$/im) || [])[1] || '';
+  const sm = t.match(SENDER_RX), sender = (sm ? sm[1].trim() : '') || where || 'the hospital';
+  if (appt && (!appt.title || /^((your|an|the|follow[- ]up|clinic|hospital)\s+)*appointment$/i.test(appt.title.trim()))) appt.title = where ? `${where} appointment` : 'Appointment';
+  const prep = [...new Set(sents.filter(s => PREP_RX.test(s)).map(s => s.replace(/^please\s+/i, '').replace(/^./, x => x.toUpperCase()).replace(/[.!]+$/, '')))].slice(0, 4);
+  const cs = sents.find(s => CONFIRM_RX.test(s)), phone = cs && (cs.match(/(?:\+44\s?|0)\d[\d ]{8,12}\d/) || [])[0];
+  const fs = sents.find(s => FOLLOW_RX.test(s));
+  const title = appt ? appt.title : 'Letter';
+  const found = [];
+  if (appt) found.push({k:'appt', on:true, label:'Appointment', text:`${appt.title} · ${niceDate(appt.date)}${appt.time ? ' at ' + appt.time : ''}`});
+  if (where) found.push({k:'where', on:true, label:'Where', text:where});
+  prep.forEach((p, n) => found.push({k:'prep' + n, on:true, label:'Getting ready', text:p}));
+  if (cs) found.push({k:'confirm', on:true, label:'To confirm', text:`Call to confirm${phone ? ' on ' + phone.trim() : ''}`});
+  if (fs) found.push({k:'follow', on:true, label:'Afterwards', text:`Wait for a letter from ${sender}`});
+  if (!found.length) return null;
+  return {cid:c.id, title, appt, where, prep, confirm:cs ? {phone:phone ? phone.trim() : ''} : null, follow:fs ? {from:sender} : null, sender, found}; }
+
+(() => { const _read = ACTIONS.inboxRead; ACTIONS.inboxRead = f => { App.letter = letterRead(circle(), f.text || ''); _read(f);
+  if (App.letter && App.letter.appt && App.inboxRes) App.inboxRes = App.inboxRes.filter(x => !(x.it.kind === 'appointment' && x.it.date === App.letter.appt.date)); render(); }; })();
+PAGES.inbox = (orig => c => { const h = orig(c), L = App.letter; if (!L) return h; if (L.cid !== c.id){ App.letter = null; return h; } const who = whoName(c), on = L.found.filter(x => x.on).length;
+  const card = `<div class="section"><div class="card lettercard"><div class="row" style="gap:10px"><span class="hi">${ic('inbox')}</span><span class="grow"><b>Tendu found ${L.found.length} ${L.found.length === 1 ? 'thing' : 'things'} in this letter</b><span class="small muted">From ${esc(L.sender)}</span></span></div>
+    <div class="lfound">${L.found.map((x, n) => `<label class="lrow"><input type="checkbox" ${x.on ? 'checked' : ''} data-change="letterTog" data-id="${n}" ${App.letterReview ? '' : 'hidden'}><span class="lk">${esc(x.label)}</span><span class="lv">${esc(x.text)}</span></label>`).join('')}
+      <div class="lrow"><span class="lk">Questions</span><span class="lv muted">Nothing recorded yet. You can add some after.</span></div></div>
+    <div class="btnrow mt12"><button class="btn" data-a="letterAddAll">${App.letterReview ? `Add ${on} to ${esc(who)}’s plan` : `Add all to ${esc(who)}’s plan`}</button>${App.letterReview ? '' : `<button class="btn ghost" data-a="letterReview">Review one by one</button>`}</div>
+    <p class="tiny muted mt8">What you add goes into the plan, which everyone in the team can see, so untick anything private. Practical details only. Tendu doesn’t interpret what a letter means for someone’s health: ask the person who sent it.</p></div></div>`;
+  return h.replace(/(<\/form>)/, '$1' + card).replace(/<div class="card mt12 small muted">Tendu didn’t find any dates or jobs in that\.[^<]*<\/div>/, ''); })(PAGES.inbox);
+ACTIONS.letterTog = (v, id, el) => { const x = App.letter && App.letter.found[+id]; if (x) x.on = !!(el && el.checked); render(); };
+ACTIONS.letterReview = () => { App.letterReview = true; render(); };
+ACTIONS.letterAddAll = () => { const c = circle(), L = App.letter; if (!L) return; const on = k => (L.found.find(x => x.k === k) || {}).on, meM = me(c);
+  if (L.cid && L.cid !== c.id){ App.letter = null; return render(); }
+  let doc = null; if (App.inboxText){ c.docs = c.docs || []; doc = c.docs.find(d => d.text === App.inboxText);
+    if (!doc){ doc = {id:uid(), title:'Letter, ' + niceDate(todayIso()), kind:'Letter', text:App.inboxText.slice(0, 6000), at:Date.now(), by:meM.id, confirmed:{by:meM.id, at:Date.now()}}; c.docs.push(doc); } }
+  const src = {k:'document', doc:doc ? doc.id : App.letterDoc || '', title:doc ? doc.title : 'Letter', by:meM.id, checkedBy:meM.id, at:Date.now(), what:'from a letter, checked by you'};
+  let ev = null, n = 0;
+  if (L.appt && on('appt')){ const GEN = /^(appointment|clinic|hospital|follow|review|your|the)$/, tw = new Set(words(L.appt.title).filter(w => !GEN.test(w)));
+    ev = openItems(c).find(i => i.kind === 'appointment' && i.date === L.appt.date && ((L.appt.time && i.time === L.appt.time) || (L.where && i.where === L.where) || words(i.title).some(w => tw.has(w))));
+    if (!ev){ ev = addItem(c, {kind:'appointment', title:L.appt.title, date:L.appt.date, time:L.appt.time || ''}); ev.src = src; n++; } else if (!ev.time && L.appt.time) ev.time = L.appt.time;
+    if (L.where && on('where') && !ev.where) ev.where = L.where;
+    const prep = L.prep.filter((p, k) => on('prep' + k)); if (!Array.isArray(ev.prep)) ev.prep = []; if (prep.length){ ev.prep = [...ev.prep, ...prep.filter(p => !(ev.prep || []).some(x => x.t === p)).map(t => ({id:uid(), t, done:false}))]; n += prep.length; }
+    if (doc) ev.docs = [...new Set([...(ev.docs || []), doc.id])]; if (App.letterDoc) addLink(c, App.letterDoc, 'docFor', ev.id); }
+  const confTitle = `Confirm ${ev ? ev.title : L.title}${L.confirm && L.confirm.phone ? ' (' + L.confirm.phone + ')' : ''}`;
+  if (L.confirm && on('confirm') && !openItems(c).some(i => i.title === confTitle)){ const x = addItem(c, {title:confTitle, date:todayIso(), owner:meM.id}); x.src = src; if (ev) addLink(c, x.id, 'prepFor', ev.id); n++; }
+  if (L.follow && on('follow') && !(c.waiting || []).some(x => !x.done && x.from === L.follow.from && (ev ? x.for === ev.id : x.title === `Letter after ${L.title}`))){ const w = {id:uid(), src, title:`Letter after ${ev ? ev.title : L.title}`, from:L.follow.from, who:'', asked:todayIso(), due:plusDays(28, ev && ev.date > todayIso() ? ev.date : todayIso()), ref:'', notes:'', done:false, by:meM.id, for:ev ? ev.id : ''};
+    c.waiting.push(w); n++; }
+  if (ev && !n) n = 1;
+  audit(c, 'plan', `Added ${n} ${n === 1 ? 'thing' : 'things'} from a letter${ev ? ' for ' + ev.title : ''}`, 'person'); log(c, `Added from a letter: ${ev ? ev.title : L.title}`, 'plan');
+  App.letter = null; App.letterReview = false; App.letterDoc = null; App.inboxText = ''; save(); toast(`Added to ${whoName(c)}’s plan`); if (ev) go('getready', {id:ev.id}); else render(); };
+(() => { const _ph = ACTIONS.inboxPhoto; ACTIONS.inboxPhoto = async (v, id, el) => { const c = circle(), before = new Set((c.docs || []).map(d => d.id)); await _ph(v, id, el);
+  const d = (c.docs || []).find(x => !before.has(x.id)); if (d) App.letterDoc = d.id; }; })();
+
+PAGES.privacy = (orig => c => { let h = orig(c); const g = CG.of(c), resp = g.responsibilities(), inferred = resp.filter(r => r.src.k === 'inferred').length;
+  const aiItems = c.items.filter(i => i.src && i.src.k === 'ai'), did = (c.audit || []).filter(x => x.via === 'agent'), known = careMemory(c).filter(e => e.src && (e.src.k === 'person' || e.src.k === 'plan')).length;
+  const sig = (() => { try { return careSignals(c).length; } catch(e){ return 0; } })(), autoAsked = c.items.filter(i => i.askedOn && !i.askedWho).length;
+  const box = (icon, t, n, sub, a, v) => `<button class="card tbox" data-a="${a}" data-v="${v}"><span class="hi">${ic(icon)}</span><b>${esc(t)}</b><span class="tn">${esc(String(n))}</span><span class="small muted">${esc(sub)}</span></button>`;
+  const grid = `<div class="section"><div class="sechead"><h2>What Tendu knows and does</h2></div><div class="tgrid">
+      ${box('check', 'What Tendu knows', known, 'Facts from the plan and confirmed by people', 'go', 'caremem')}
+      ${box('sparkle', 'What Tendu noticed', inferred + sig, 'Patterns it worked out, always marked as noticed', 'go', 'resp')}
+      ${box('chat', 'What AI suggested', aiItems.length, aiItems.length ? 'Added by you from the assistant, each marked' : 'Nothing from AI is in the plan', 'go', 'audit')}
+      ${box('route', 'What Tendu did', did.length + autoAsked, autoAsked ? `${did.length} with your OK, ${autoAsked} asks it sent by itself` : 'Only with your OK, each in the activity record', 'go', 'audit')}</div></div>
+    <div class="section"><div class="sechead"><h2>Controls</h2></div><div class="list">
+      ${li({icon:'sparkle', title:'What Bud can do', sub:askCfg(c).on && askCfg(c).consent ? 'Suggest and prepare, with your approval in the Action Centre. You also turned on “Tendu asks for you”, so Tendu posts asks about late or untaken jobs to the team chat by itself.' : 'Suggest and prepare. Nothing is sent or changed until you approve it in the Action Centre.', a:'go', v:'actions'})}
+      ${li({icon:'handshake', title:'Tendu asks for you', sub:askCfg(c).on && askCfg(c).consent ? 'On: Tendu asks the team about late or untaken jobs, outside quiet hours' : 'Off', a:'sheet', v:'autoask'})}
+      ${li({icon:'chat', title:'Tendu AI', sub:'Questions go through Tendu’s own server with names, numbers and emails removed. Medicines, the emergency card and documents are never sent.', a:'go', v:'assistant'})}
+      ${li({icon:'lock', title:'Who sees what', sub:'Each kind of information has its own key. A phone only gets what its access level allows.', a:'go', v:'access'})}
+      ${li({icon:'route', title:'Activity record', sub:`${(c.audit || []).length} entries: access changes, approvals and what Tendu did`, a:'go', v:'audit'})}
+    </div></div>`;
+  h = h.replace(`${bar('Privacy centre')}<h1 class="largetitle">Privacy centre</h1>`, `${bar('Trust Centre')}<h1 class="largetitle">Trust Centre</h1><p class="subtitle">What Tendu stores, who can see it, what it knows, what it noticed, and what it did. All in one place.</p>`);
+  return h.replace(/(<div class="card promise2">[\s\S]*?<\/div><\/div>)/, '$1' + grid); })(PAGES.privacy);
+(() => { const _m = PAGES.more; PAGES.more = c => _m(c).replace(/Privacy centre/g, 'Trust Centre'); const _s = PAGES.settings; PAGES.settings = (c, p) => _s(c, p).replace(/Privacy centre/g, 'Trust Centre'); })();
 
 (function boot(){
   const accts = Accounts.list(), last = accts.find(a => a.id === LS.get('tendu.last'));
