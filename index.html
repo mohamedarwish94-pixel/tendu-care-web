@@ -929,6 +929,14 @@ body.kb .cvquick{display:none}
 .tbox{display:flex;flex-direction:column;align-items:flex-start;gap:4px;text-align:left;padding:12px;min-height:44px}
 .tbox .hi{width:34px;height:34px;border-radius:11px}.tbox .hi svg{width:18px;height:18px}.tbox .tn{font-size:1.5rem;font-weight:800;line-height:1.1}
 .chip.static{cursor:default}
+.card.worry{padding:12px 14px;background:var(--warn-soft);border:1px solid transparent;margin-bottom:10px}
+.card.worry b{display:block}.card.worry .small{display:block;margin-top:2px;color:var(--ink)}
+.card.worry .hi{width:36px;height:36px;border-radius:11px;background:var(--card);color:var(--warn)}.card.worry .hi svg{width:20px;height:20px}
+.claim.warnc{background:var(--crit);color:#fff}
+a.claim{display:inline-flex;align-items:center;text-decoration:none;min-height:36px}
+main::after{content:'';display:block;height:88px}
+.hero.calmhero{background:#1E4D57}
+.sospill{background:#B3261E;color:#fff}
 
 </style>
 <div id="app"></div>
@@ -1028,6 +1036,7 @@ const money = p => '£' + (Math.round(p)/100).toLocaleString('en-GB', {minimumFr
 function initials(n){ return String(n||'?').trim().split(/\s+/).map(w => w[0]).slice(0,2).join('').toUpperCase() || '?'; }
 const PALETTE = ['#F4A261','#8FB3A8','#E9C46A','#B9A4D6','#9CC5E8','#F2B5B5','#B5D99C','#E8B98F'];
 function colorFor(i){ return PALETTE[i % PALETTE.length]; }
+function allergyText(e){ e = e || {}; return e.allergies ? e.allergies : e.nka ? 'No known allergies' : 'Not recorded yet: ask before giving any medicine'; }
 function firstName(n){ return String(n||'').trim().split(/\s+/)[0] || n; }
 function clamp(n,a,b){ return Math.max(a, Math.min(b, n)); }
 function debounce(fn, ms){ let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); }; }
@@ -1279,10 +1288,10 @@ function smartFile(c, text){
   let kind = 'update';
   const money = text.match(/£\s?(\d+(?:\.\d{1,2})?)/);
   if (money && /(paid|spent|cost|bought|£)/.test(t)) kind = 'expense';
-  else if (/\b(\d+\s?(mg|mcg|ml)|tablet|tablets|medicine|medication|prescri|dose|inhaler|patch|capsule)\b/.test(t) && /(start|going up|increase|reduce|stop|change|new|switch|now)/.test(t)) kind = 'medication';
+  else if ((/\b(\d+(\.\d+)?\s?(mg|mcg|ml|micrograms|units)|tablet|tablets|medicine|medication|prescri|dose|inhaler|patch|capsule)\b/.test(t) || medName(text)) && /(start|going up|go up|increase|reduce|going down|stop|change|new|switch|now|once a day|twice a day|three times a day|four times a day|daily|at night|in the morning|with food)/.test(t) && !/(appointment|clinic|collect|pick up|order|pharmacy)/.test(t)) kind = 'medication';
   else if (/(waiting|haven't heard|have not heard|still no|no reply|not heard|chase|referral|referred)/.test(t)) kind = 'waiting';
-  else if (/\b(i'll visit|i will visit|i'm visiting|i am visiting|popping round|pop round|pop in|staying with her|i'll see her|i'll be with her)\b/.test(t)) kind = 'visit';
-  else if (/(appointment|clinic|\bgp\b|doctor|hospital|dentist|optician|nurse|podiatr|hairdresser|physio|scan|x-ray|review|eye test|blood test)/.test(t) && /(\d|today|tomorrow|monday|tuesday|wednesday|thursday|friday|saturday|sunday|next week)/.test(t) && !/\b(book|arrange|ring|call|phone|make an?)\b/.test(t)) kind = 'appointment';
+  else if (/\b(i'll visit|i will visit|i'm visiting|i am visiting|popping round|pop round|pop in|staying with her|i'll see her|i'll be with her)\b/.test(t) || (visitor(c, t) && !/(appointment|clinic|\bgp\b|doctor|hospital|dentist|optician|nurse|physio)/.test(t))) kind = 'visit';
+  else if (/(appointment|clinic|\bgp\b|doctor|hospital|dentist|optician|nurse|podiatr|hairdresser|physio|scan|x-ray|review|eye test|blood test|screening|check[- ]?up|vaccin|\bjab\b|injection|\becg\b|\bmri\b|ultrasound|mammogram|audiology|hearing test)/.test(t) && /(\d|today|tomorrow|monday|tuesday|wednesday|thursday|friday|saturday|sunday|next week)/.test(t) && !/\b(book|arrange|ring|call|phone|make an?)\b/.test(t)) kind = 'appointment';
   else if (/(i'll|i will|can someone|could someone|need to|needs to|we need|buy|pick up|collect|book|ring|call|order|fix|sort|take her|drop off|renew)/.test(t)) kind = 'task';
   let date = '';
   const wdIdx = WD.findIndex(d => t.includes(' ' + d.toLowerCase()));
@@ -1290,24 +1299,29 @@ function smartFile(c, text){
   else if (/\b(today|tonight|this morning|this afternoon)\b/.test(t)) date = plusDays(0);
   else if (wdIdx >= 0){ let n = (wdIdx - today0().getDay() + 7) % 7; if (n === 0 || /next /.test(t.slice(t.indexOf(WD[wdIdx].toLowerCase()) - 6))) n = n || 7; date = plusDays(n); }
   if (!date && /\bnext week\b/.test(t)) date = plusDays(((8 - today0().getDay()) % 7) || 7);
-  const dm = text.match(/\b(\d{1,2})(st|nd|rd|th)?\s+(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*/i) || text.match(/\b(\d{1,2})\/(\d{1,2})\b/);
-  if (dm){ let dd, mm; if (isNaN(dm[3])) { dd = +dm[1]; mm = MOs.findIndex(x => x.toLowerCase() === dm[3].slice(0,3).toLowerCase()); } else { dd = +dm[1]; mm = +dm[2]-1; }
-    if (mm >= 0 && dd > 0){ const y = new Date().getFullYear(); let d0 = new Date(y, mm, dd); if (d0 < today0()) d0 = new Date(y+1, mm, dd); date = iso(d0); } }
+  const dm = text.match(/\b(\d{1,2})(st|nd|rd|th)?\s+(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*/i) || (!/\b(pain|score|scored|rated|out of|24\/7|\d\/\d+ (of|a|an) )/i.test(text) && text.match(/(?<![\d\/])(\d{1,2})\/(\d{1,2})(?![\d\/])/));
+  if (dm){ let dd, mm; if (dm[3] && isNaN(dm[3])) { dd = +dm[1]; mm = MOs.findIndex(x => x.toLowerCase() === dm[3].slice(0,3).toLowerCase()); } else { dd = +dm[1]; mm = +dm[2]-1; }
+    if (mm >= 0 && mm <= 11 && dd > 0 && dd <= 31){ const y = new Date().getFullYear(); let d0 = new Date(y, mm, dd); if (d0 < today0()) d0 = new Date(y+1, mm, dd); if (d0.getDate() === dd && (!date || dm[3])) date = iso(d0); } }
+  const th = !date && text.match(/\b(?:on\s+)?the\s+(\d{1,2})(?:st|nd|rd|th)\b/i);
+  if (th){ const dd = +th[1], n = today0(); if (dd >= 1 && dd <= 31){ let d0 = new Date(n.getFullYear(), n.getMonth(), dd); if (d0 < n) d0 = new Date(n.getFullYear(), n.getMonth() + 1, dd); if (d0.getDate() === dd) date = iso(d0); } }
   let time = ''; const tm = t.match(/\b(\d{1,2})[:.](\d{2})\s?(am|pm)?\b/) || t.match(/\b(\d{1,2})\s?(am|pm)\b/) || t.match(/\bat (\d{1,2})\b(?![:\d])/);
   if (tm){ let h = +tm[1], mi = (tm[2] && /^\d+$/.test(tm[2])) ? tm[2] : '00'; const ap = (tm[3] || (/(am|pm)/.test(tm[2]||'') ? tm[2] : '')); if (ap === 'pm' && h < 12) h += 12; if (!ap && h >= 1 && h <= 6 && tm[0].startsWith('at')) h += 12; if (h < 24) time = String(h).padStart(2,'0') + ':' + mi; }
   let owner = '';
   if (/(i'll|i will|i can|i'm taking|i am taking|i'm doing|leave it with me)/.test(t)) owner = meId;
-  c.members.forEach(m => { if (!m.isMe && new RegExp('\\b' + firstName(m.name).toLowerCase() + "\\b('ll| will| can| is taking| is doing)").test(t)) owner = m.id; });
+  c.members.forEach(m => { if (!m.isMe && rxName(m) && new RegExp('\\b' + rxName(m) + "\\b('ll| will| can| is taking| is doing)").test(t)) owner = m.id; });
+  if (kind === 'visit'){ const vm = visitor(c, t); if (vm) owner = vm.id; }
   const sentences = text.split(/(?<=[.!?])\s+/).filter(Boolean);
   let title = kind === 'update' ? text.trim().slice(0, 240) : cleanTitle(text, kind);
-  title = title.replace(new RegExp('^(' + c.members.map(m => firstName(m.name)).join('|') + ")\\s+(will|'ll|can|is going to|is gonna)\\s+", 'i'), '').replace(/^./, x => x.toUpperCase());
+  title = title.replace(new RegExp('^(' + (c.members.map(rxName).filter(Boolean).join('|') || '$^') + ")\\s+(will|'ll|can|is going to|is gonna)\\s+", 'i'), '').replace(/^./, x => x.toUpperCase());
   let detail = sentences.slice(1).filter(x => !/^(i'll|i will) (pick up|collect|get|order)/i.test(x)).join(' ').slice(0,200);
 if (kind === 'appointment' && /(take|drive|go with|bring) (her|him|them|mum|dad|nan|gran)/i.test(t)) detail = (owner ? '' : 'Someone needs to go with ' + P(c).obj + '. ') + detail;
   const out = [];
   if (kind === 'medication'){
-    const m = text.match(/([A-Z][a-zA-Z]{3,})\s*(\d+(?:\.\d+)?\s?(?:mg|mcg|ml|g))/) || text.match(/([A-Za-z]{4,})\s*(\d+(?:\.\d+)?\s?(?:mg|mcg|ml|g))/);
-    const when = (t.match(/\b(morning|evening|night|bedtime|lunchtime|twice a day|once a day|three times a day)\b/)||[])[0];
-    out.push({kind, title: m ? cap(m[1]) + ' ' + m[2].replace(/\s/g,'') : title, detail: [when ? cap(when) : '', date ? 'from ' + niceDate(date) : ''].filter(Boolean).join(', ')});
+    const nm = medName(text), dose = (text.match(/(\d+(?:\.\d+)?)\s?(mg|mcg|micrograms|ml|units|g)\b/i) || []), m = !nm && (text.match(/([A-Z][a-zA-Z]{3,})\s*(\d+(?:\.\d+)?\s?(?:mg|mcg|ml|g))/) || text.match(/([A-Za-z]{4,})\s*(\d+(?:\.\d+)?\s?(?:mg|mcg|ml|g))/));
+    const when = (t.match(/\b(morning|evening|night|bedtime|lunchtime|twice a day|once a day|three times a day|four times a day|with food)\b/g)||[]).join(', ');
+    const stop = /\b(stop|stopped|stopping|no longer)\b/.test(t);
+    const name = nm ? cap(nm) + (dose[1] ? ' ' + dose[1] + dose[2].toLowerCase() : '') : m ? cap(m[1]) + ' ' + m[2].replace(/\s/g,'') : title;
+    out.push({kind, title:name, stop, detail: [stop ? 'Stopped' : '', when ? cap(when) : '', date ? 'from ' + niceDate(date) : ''].filter(Boolean).join(', ')});
     if (/(i'll|i will) (pick up|collect|get|order)/.test(t)){ const rest = t.split(/i'll|i will/)[1] || ''; const w2 = WD.findIndex(d => rest.includes(d.toLowerCase())); out.push({kind:'task', title:'Collect the new prescription', date: w2 >= 0 ? plusDays(((w2 - today0().getDay() + 7) % 7) || 7) : '', owner:meId}); }
   } else if (kind === 'expense'){
     out.push({kind, title: cap(text.replace(/£\s?\d+(\.\d{1,2})?/,'').replace(/^\s*(i\s+)?(just\s+)?(paid|spent|bought)\s+(for\s+)?/i,'').replace(/^\s*(for|on)\s+/i,'').replace(/[.!]+$/,'').replace(/\s+/g,' ').trim()).slice(0,80) || 'Care cost', amount:Math.round(parseFloat(money[1])*100), owner:meId});
@@ -1321,7 +1335,11 @@ if (kind === 'appointment' && /(take|drive|go with|bring) (her|him|them|mum|dad|
   return {items:out, question};
 }
 const cap = s => s ? s.charAt(0).toUpperCase() + s.slice(1) : s;
-const APPT_WORDS = [['memory clinic','Memory clinic'],['dentist','Dentist'],['optician','Optician'],['eye test','Eye test'],['podiatr','Podiatrist'],['chiropod','Chiropodist'],['hairdresser','Hairdresser'],['physio','Physio'],['x-ray','X-ray'],['scan','Scan'],['blood test','Blood test'],['nurse','Practice nurse'],['hearing','Hearing appointment'],['audiology','Audiology'],['hospital','Hospital appointment'],['clinic','Clinic appointment'],['gp','GP appointment'],['doctor','Doctor’s appointment'],['review','Review']];
+const MED_NAMES = ['amlodipine','ramipril','lisinopril','losartan','candesartan','bisoprolol','atenolol','furosemide','bumetanide','indapamide','bendroflumethiazide','spironolactone','doxazosin','digoxin','metformin','gliclazide','sitagliptin','dapagliflozin','empagliflozin','insulin','donepezil','memantine','rivastigmine','galantamine','atorvastatin','simvastatin','rosuvastatin','pravastatin','omeprazole','lansoprazole','esomeprazole','paracetamol','ibuprofen','naproxen','aspirin','clopidogrel','warfarin','apixaban','rivaroxaban','edoxaban','dabigatran','levothyroxine','sertraline','citalopram','escitalopram','mirtazapine','fluoxetine','amitriptyline','duloxetine','venlafaxine','gabapentin','pregabalin','codeine','co-codamol','tramadol','morphine','oxycodone','quetiapine','risperidone','haloperidol','lorazepam','diazepam','zopiclone','melatonin','senna','lactulose','laxido','movicol','adcal','alendronic','calcichew','prednisolone','salbutamol','tiotropium','beclometasone','fostair','tamsulosin','finasteride','solifenacin','mirabegron','levodopa','co-careldopa','madopar','allopurinol','colchicine','methotrexate','folic','ferrous','vitamin'];
+function medName(text){ const low = String(text || '').toLowerCase(); const n = MED_NAMES.find(x => new RegExp('\\b' + x.replace('-', '\\-') + '\\b').test(low)); return n ? (n === 'vitamin' ? (low.match(/vitamin\s+[a-z0-9]+/) || ['vitamin'])[0] : n) : ''; }
+const rxName = m => firstName(m.name).toLowerCase().replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+function visitor(c, t){ return (c.members || []).find(m => !m.isMe && rxName(m) && new RegExp('(^|[^\\p{L}])' + rxName(m) + "(?![\\p{L}])('s| is| will| can)?\\s+(visiting|visit|coming round|coming over|popping (round|in|over)|seeing (her|him|them|mum|dad))(?![\\p{L}])", 'u').test(t)); }
+const APPT_WORDS = [['diabetic eye screening','Diabetic eye screening'],['eye screening','Eye screening'],['flu jab','Flu jab'],['vaccin','Vaccination'],['memory clinic','Memory clinic'],['dentist','Dentist'],['optician','Optician'],['eye test','Eye test'],['podiatr','Podiatrist'],['chiropod','Chiropodist'],['hairdresser','Hairdresser'],['physio','Physio'],['x-ray','X-ray'],['scan','Scan'],['blood test','Blood test'],['nurse','Practice nurse'],['hearing','Hearing appointment'],['audiology','Audiology'],['hospital','Hospital appointment'],['clinic','Clinic appointment'],['gp','GP appointment'],['doctor','Doctor’s appointment'],['review','Review']];
 function cleanTitle(text, kind){
   let t = text.split(/(?<=[.!?])\s+/).find(x => !/^(the (gp|doctor|hospital|surgery|council) (rang|called|phoned)|just to say|fyi|update)[.!]?$/i.test(x.trim())) || text;
   const low = ' ' + t.toLowerCase() + ' ';
@@ -1346,7 +1364,9 @@ function applyFiled(c, res){
     const k = it.kind;
     if (k === 'task' || k === 'appointment'){ added.push({k, x:addItem(c, it)}); }
     else if (k === 'medication'){ const key = it.title.split(/\s+/)[0].toLowerCase(); const old = c.meds.find(m => m.name.split(/\s+/)[0].toLowerCase() === key);
-      if (old){ old.prev = old.name; old.name = it.title; old.when = it.detail || old.when; old.changedAt = Date.now(); added.push({k, x:old}); }
+      if (old && it.stop){ old.prev = old.name; old.stopped = todayIso(); old.when = 'Stopped' + (it.detail && it.detail !== 'Stopped' ? ' · ' + it.detail.replace(/^Stopped,?\s*/, '') : ''); old.changedAt = Date.now(); added.push({k, x:old}); }
+      else if (old){ old.prev = old.name; old.name = it.title; old.when = it.detail || old.when; old.changedAt = Date.now(); added.push({k, x:old}); }
+      else if (it.stop){ added.push({k, x:{title:it.title, name:it.title, when:'Stopped'}}); }
       else { const m = {id:uid(), name:it.title, when:it.detail||'', notes:'', supplyUntil:'', changedAt:Date.now(), prev:''}; c.meds.push(m); added.push({k, x:m}); }
       log(c, `Medicine change: ${it.title}${it.detail ? ', ' + it.detail.charAt(0).toLowerCase() + it.detail.slice(1) : ''}`, 'med'); }
     else if (k === 'waiting'){ const w = {id:uid(), title:it.title, from:it.from||'Not stated', asked:todayIso(), due:it.due||plusDays(14), ref:'', notes:'', done:false}; c.waiting.push(w); added.push({k, x:w}); }
@@ -1749,7 +1769,7 @@ PAGES.more = (c) => {
       ${li({icon:'plus', tone:'c-plain', title:'Care for someone else too', sub:'Another parent, a partner, a child…', a:'go', v:'newcircle'})}
       ${li({icon:'logout', tone:'c-plain', title:'Lock and sign out', a:'signout'})}
     </div></div>
-    <p class="disclaim center">Tendu helps people organise care together. It isn’t a medical device and doesn’t give medical advice.<br>Version 6.5</p>`;
+    <p class="disclaim center">Tendu helps people organise care together. It isn’t a medical device and doesn’t give medical advice.<br>Version 6.5.1</p>`;
 };
 ACTIONS.signout = async () => { const a = Session.acct && Accounts.list().find(x => x.id === Session.acct.id); await Session.flush(); Session.lock(); App.sheet = null; App.pipOpen = false;
   App.em = {flow:'signin', email:a ? a.email : ''}; App.authView = a && a.pin ? 'pin' : 'email'; App.lockedAcct = a ? a.id : null; App.route = {name:'home'}; App.stack = []; render(); };
@@ -1774,7 +1794,7 @@ ACTIONS.shareAbout = () => { const c = circle(), a = c.about; shareText('This is
 function emergencyText(c){
   const e = c.emergency, contacts = c.members.filter(m => m.phone);
   return [`EMERGENCY INFORMATION`, `${c.name}${c.age ? ', ' + c.age : ''}${c.preferred ? ' (likes to be called ' + c.preferred + ')' : ''}`, c.lives ? 'Lives: ' + c.lives : '',
-    e.conditions ? '\nConditions: ' + e.conditions : '', e.allergies ? 'Allergies: ' + e.allergies : 'Allergies: none recorded', e.mobility ? 'Mobility: ' + e.mobility : '', e.communication || c.about.communication ? 'Communication: ' + (c.about.communication || '') : '',
+    e.conditions ? '\nConditions: ' + e.conditions : '', 'Allergies: ' + allergyText(e), e.mobility ? 'Mobility: ' + e.mobility : '', e.communication || c.about.communication ? 'Communication: ' + (c.about.communication || '') : '',
     c.meds.length ? '\nMedicines (as recorded by family):\n' + c.meds.map(m => '• ' + m.name + (m.when ? ', ' + (m.when.charAt(0).toLowerCase() + m.when.slice(1)) : '')).join('\n') : '',
     contacts.length ? '\nContacts:\n' + contacts.map(m => '• ' + m.name + (m.relation ? ' (' + m.relation + ')' : '') + ': ' + m.phone).join('\n') : '',
     e.gp ? '\nGP: ' + e.gp + (e.gpPhone ? ', ' + e.gpPhone : '') : '', e.nhs ? 'NHS number: ' + e.nhs : '', e.lpa ? 'Lasting Power of Attorney: ' + e.lpa : '', e.respect ? 'ReSPECT form: ' + e.respect + (e.respectWhere ? ', original kept: ' + e.respectWhere : '') + (e.respectDate ? ', dated ' + niceDate(e.respectDate) : '') : '', e.plans ? 'Other plans: ' + e.plans : '', e.notes ? '\nWishes and notes: ' + e.notes : ''].filter(Boolean).join('\n');
@@ -1784,7 +1804,7 @@ PAGES.emergency = (c) => {
   const dl = (k, v) => v ? `<div class="li noicon" style="align-items:flex-start"><span class="main"><div class="tiny muted b" style="text-transform:uppercase;letter-spacing:.06em">${k}</div><div style="margin-top:3px">${v}</div></span></div>` : '';
   return `${bar('Emergency card', {right:`<button class="textbtn" data-a="sheet" data-v="editEmergency">Edit</button>`})}
     <div class="card" style="border:2px solid var(--crit);box-shadow:none"><div class="row">${personAvatar(c,'md')}<span class="grow"><div class="b" style="font-size:1.2rem">${esc(c.name)}</div><div class="small muted">${esc([c.age, c.lives].filter(Boolean).join(' · '))}</div></span><span class="badge crit">${ic('siren','style="width:14px;height:14px"')}Emergency</span></div></div>
-    <div class="list mt12">${dl('Conditions', esc(e.conditions))}${dl('Allergies', esc(e.allergies || 'None recorded'))}${dl('Mobility', esc(e.mobility))}${dl('Communication', esc(c.about.communication))}
+    <div class="list mt12">${dl('Conditions', esc(e.conditions))}${dl('Allergies', esc(allergyText(e)))}${dl('Mobility', esc(e.mobility))}${dl('Communication', esc(c.about.communication))}
       ${dl('Medicines (as recorded by family)', c.meds.map(m => esc(m.name) + (m.when ? ', ' + esc((m.when.charAt(0).toLowerCase() + m.when.slice(1))) : '')).join('<br>') || 'None recorded')}
       ${dl('Contacts', contacts.map(m => `${esc(m.name)}${m.relation ? ' (' + esc(m.relation) + ')' : ''}: <b style="user-select:all">${esc(m.phone)}</b>`).join('<br>') || 'Add phone numbers in People')}
       ${dl('GP', esc([e.gp, e.gpPhone].filter(Boolean).join(', ')))}${dl('NHS number', e.nhs ? `<span style="user-select:all">${esc(e.nhs)}</span>` : '')}${dl('Lasting Power of Attorney', esc(e.lpa))}${dl('ReSPECT form', e.respect ? `<b>${esc(e.respect)}</b>${e.respectWhere ? '. Original kept: ' + esc(e.respectWhere) : ''}${e.respectDate ? '. Dated ' + esc(niceDate(e.respectDate)) : ''}` : '')}${dl('Other plans', esc(e.plans))}${dl('Key documents (photos in Tendu)', c.docs.filter(d => d.key).map(d => `<button class="textbtn" style="padding:0" data-a="sheet" data-v="docView" data-id="${d.id}">${esc(d.kind)}: ${esc(d.title)}</button>`).join('<br>'))}${dl('Wishes and notes', esc(e.notes))}</div>
@@ -2088,7 +2108,7 @@ SHEETS.obs = c => { const sel = App.obsSel || []; return {title:`How is ${whoNam
 ACTIONS.obsTag = (v, id, el) => { const s = App.obsSel = App.obsSel || []; const i = s.indexOf(v); i >= 0 ? s.splice(i, 1) : s.push(v); el.setAttribute('aria-pressed', i < 0); };
 ACTIONS.saveObs = (f) => { const c = circle(); const tags = App.obsSel || []; if (!tags.length && !f.note.trim()) return toast('Tap at least one note', 'info');
   c.obs.push({id:uid(), date:todayIso(), by:me(c).id, tags:[...tags], note:f.note.trim()}); if (f.ok && !checkedInToday(c)) c.checkins[todayIso()] = {by:me(c).id, at:Date.now()};
-  if (f.note.trim()) log(c, f.note.trim(), 'update'); App.obsSel = []; save(); closeSheet(); toast('Notes saved'); };
+  if (f.note.trim()) log(c, `${firstName(me(c).name)} added a daily note`, 'obs'); App.obsSel = []; save(); closeSheet(); toast('Notes saved'); };
 
 SHEETS.circles = () => ({title:'Who you’re caring for', body:`<div class="list">${D().circles.map(c => `<button class="li" data-a="switchCircle" data-id="${c.id}">${personAvatar(c,'md')}<span class="main"><div class="ttl">${esc(whoName(c))}</div><div class="sub">${esc(c.name)} · ${c.members.length} in the circle</div></span>${c.id === D().active ? `<span class="badge brand">Open</span>` : chevron()}</button>`).join('')}</div><button class="btn secondary mt12" data-a="newCircle">${ic('plus')}Add another person</button>`});
 ACTIONS.switchCircle = (v, id) => { D().active = id; save(); App.sheet = null; go('home'); toast('Switched to ' + whoName(circle())); };
@@ -2220,7 +2240,7 @@ function careSummary(c){
   return `CARE SUMMARY: ${c.name}${c.preferred ? ' (' + c.preferred + ')' : ''}${c.age ? ', ' + c.age : ''}\nPrepared by ${me(c).name}, ${longDate()}`
     + sec('About them', [a.life && '• ' + a.life, a.likes && '• Loves: ' + a.likes, a.calms && '• What calms them: ' + a.calms, a.upsets && '• What upsets them: ' + a.upsets, a.communication && '• Talking with them: ' + a.communication])
     + sec('Daily routine', [a.routine && '• ' + a.routine])
-    + sec('Health (as told to the family)', [e.conditions && '• Conditions: ' + e.conditions, '• Allergies: ' + (e.allergies || 'none recorded'), e.mobility && '• Mobility: ' + e.mobility])
+    + sec('Health (as told to the family)', [e.conditions && '• Conditions: ' + e.conditions, '• Allergies: ' + allergyText(e), e.mobility && '• Mobility: ' + e.mobility])
     + sec('Medicines (as recorded)', c.meds.map(m => '• ' + m.name + (m.when ? ', ' + m.when : '')))
     + sec('Coming up', openItems(c).filter(i => i.date && daysFromToday(i.date) >= 0 && daysFromToday(i.date) <= 7).map(i => `• ${niceDate(i.date)}${i.time ? ' ' + i.time : ''}: ${i.title}`))
     + sec('Who to call', c.members.filter(m => m.phone).map(m => `• ${m.name}${m.relation ? ' (' + m.relation + ')' : ''}: ${m.phone}`).concat([e.gp && `• GP: ${e.gp}${e.gpPhone ? ', ' + e.gpPhone : ''}`]))
@@ -2916,7 +2936,8 @@ const Sync = {
     if (m.k === 'rec' && typeof Access !== 'undefined') await Access.sealRec(c, body);
     if (typeof Access !== 'undefined' && (m.s === 'tendu' || (m.x && m.x.ask))) await Access.signTendu(c, body, m);
     const ct = await crypto.subtle.encrypt({name:'AES-GCM', iv}, await this.key(c), enc.encode(JSON.stringify(body)));
-    const r = await fetch(this.rpc('tendu_post'), {method:'POST', headers:this.headers(), body:JSON.stringify({p_room:c.share.room, p_token:await this.token(c), p_id:m.id, p_at:m.at, p_iv:b64(iv), p_ct:b64(ct)})});
+    const ac = typeof AbortController !== 'undefined' ? new AbortController() : null, to = ac && setTimeout(() => ac.abort(), 30e3);
+    const r = await fetch(this.rpc('tendu_post'), {method:'POST', headers:this.headers(), body:JSON.stringify({p_room:c.share.room, p_token:await this.token(c), p_id:m.id, p_at:m.at, p_iv:b64(iv), p_ct:b64(ct)}), ...(ac ? {signal:ac.signal} : {})}).finally(() => to && clearTimeout(to));
     if (!r.ok) throw new Error('Server replied ' + r.status);
   },
   async pull(c){
@@ -3479,7 +3500,7 @@ ACTIONS.meetSave = f => { const c = circle(), notes = f.notes.trim(); (c.meeting
 
 function passportText(c){ const a = c.about, e = c.emergency, who = whoName(c), contacts = c.members.filter(m => m.phone);
   return [`HOSPITAL PASSPORT: ${c.name}`, `Likes to be called: ${c.preferred || firstName(c.name)}${c.age ? ' · Age ' + c.age : ''}`, '',
-    '## Things you must know', `Allergies: ${e.allergies || 'none recorded'}`, e.conditions ? `Conditions (as told to the family): ${e.conditions}` : '', e.respect ? `ReSPECT form: ${e.respect}${e.respectWhere ? ' (original: ' + e.respectWhere + ')' : ''}` : '', e.lpa ? `Lasting Power of Attorney: ${e.lpa}` : '', contacts.length ? 'Contacts: ' + contacts.map(m => `${m.name}${m.relation ? ' (' + m.relation + ')' : ''} ${m.phone}`).join('; ') : '', '',
+    '## Things you must know', `Allergies: ${allergyText(e)}`, e.conditions ? `Conditions (as told to the family): ${e.conditions}` : '', e.respect ? `ReSPECT form: ${e.respect}${e.respectWhere ? ' (original: ' + e.respectWhere + ')' : ''}` : '', e.lpa ? `Lasting Power of Attorney: ${e.lpa}` : '', contacts.length ? 'Contacts: ' + contacts.map(m => `${m.name}${m.relation ? ' (' + m.relation + ')' : ''} ${m.phone}`).join('; ') : '', '',
     '## How to communicate with me', a.communication || 'Not recorded', '',
     '## Things that are important to me', ([a.likes ? 'I love: ' + a.likes : '', a.calms ? 'What calms me: ' + a.calms : '', a.upsets ? 'What upsets me: ' + a.upsets : '', a.routine ? 'My routine: ' + a.routine : ''].filter(Boolean).join('\n') || 'Not recorded yet'), '',
     '## Medicines (as recorded by family; check with the pharmacist)', c.meds.length ? c.meds.map(m => '- ' + m.name + (m.when ? ', ' + m.when : '')).join('\n') : 'None recorded', '',
@@ -3671,7 +3692,7 @@ PAGES.more = c => { const who = esc(whoName(c)), d = D(), simple = simpleMode(),
       ${li({icon:'plus', tone:'c-plain', title:'Care for someone else too', sub:'Each person gets their own circle', a:'go', v:'newcircle'})}
       ${li({icon:'logout', tone:'c-plain', title:'Lock and sign out', a:'signout'})}
     </div></section>
-    <p class="disclaim center">Tendu helps people organise care together. It isn’t a medical device and doesn’t give medical advice.<br>Version 6.5</p>`; };
+    <p class="disclaim center">Tendu helps people organise care together. It isn’t a medical device and doesn’t give medical advice.<br>Version 6.5.1</p>`; };
 
 const _home3 = PAGES.home; PAGES.home = c => { let h = _home3(c);
   h = h.replace(/<div class="section"><div class="sechead"><h2>Shortcuts<\/h2><\/div><div class="stats"[\s\S]*?<\/div><\/div>\s*/, '');
@@ -3804,7 +3825,10 @@ const isEmptyObj = v => v == null || (typeof v === 'object' && !Array.isArray(v)
 let _syncT = null, _syncing = false, _syncFirst = 0, _syncAgain = false;
 function scheduleSync(){ clearTimeout(_syncT); const now = Date.now(); if (!_syncFirst) _syncFirst = now;
   _syncT = setTimeout(() => { _syncFirst = 0; pushAll(); }, Math.max(0, Math.min(1500, _syncFirst + 4000 - now))); }
-async function pushAll(){ if (!Session.data) return; if (_syncing){ _syncAgain = true; return; } _syncing = true; _syncAgain = false;
+let _pushRun = null, _pushNext = null;
+function pushAll(){ if (!Session.data) return Promise.resolve(); if (!_pushRun) return (_pushRun = pushOnce().catch(() => {}).finally(() => { _pushRun = null; }));
+  return _pushNext || (_pushNext = _pushRun.catch(() => {}).then(() => { _pushNext = null; return pushAll(); }, () => { _pushNext = null; })); }
+async function pushOnce(){ if (!Session.data) return; _syncing = true; _syncAgain = false;
   try { for (const c of D().circles){ if (!syncOn(c)) continue; const st = syncState(c); if (c.share.joiner && !st.ready) continue;
       const cur = collect(c), sends = [];
       Object.entries(cur).forEach(([k, v]) => { const h = hashStr(JSON.stringify(v)); if (st.h[k] !== h){
@@ -3814,11 +3838,11 @@ async function pushAll(){ if (!Session.data) return; if (_syncing){ _syncAgain =
       for (const [k, v, h] of sends){ const u = Date.now(); const m = {id:crypto.randomUUID(), s:D().me.id, n:firstName(D().me.name), t:'', at:u, k:'rec', key:k, v, u, del:v === null};
         try { await Sync.send(c, m); if (h) { st.h[k] = h; st.u[k] = u; } else { delete st.h[k]; st.u[k] = u; } } catch(e){ break; } }
       st.fresh = false; if (sends.length) Session.save(); } }
-  finally { _syncing = false; if (_syncAgain){ _syncAgain = false; scheduleSync(); } } }
+  finally { _syncing = false; } }
 const _sessSave = Session.save.bind(Session); Session.save = function(){ _sessSave(); if (Session.data && Session.data.circles.some(syncOn)) scheduleSync(); };
 
-function applyRecs(c, recs){ const st = syncState(c); let n = 0;
-  recs.sort((a, b) => a.u - b.u).forEach(m => { const k = m.key; if (!k) return; if ((st.u[k] || 0) > m.u) return;
+function applyRecs(c, recs){ const st = syncState(c); let n = 0; const applied = new Set();
+  recs.sort((a, b) => a.u - b.u).forEach(m => { const k = m.key; if (!k) return; if ((st.u[k] || 0) > m.u || ((st.u[k] || 0) === m.u && st.h[k])) return; /* already have this version: re-delivery (a re-read of history) must not undo an edit not yet sent */ applied.add(k);
     const [col, id] = k.split('/'); n++;
     if (col === 'checkins'){ if (m.del) delete c.checkins[id]; else c.checkins[id] = m.v; }
     else if (SYNC_COLS.includes(col)){ const arr = c[col] = c[col] || []; const i = arr.findIndex(r => r.id === id);
@@ -3830,7 +3854,7 @@ function applyRecs(c, recs){ const st = syncState(c); let n = 0;
     else if (k === 'person'){ if (!m.del) Object.assign(c, Object.fromEntries(Object.entries(m.v).filter(([kk, vv]) => vv !== '' || kk !== 'photo'))); }
     else if (SYNC_OBJS.includes(k)){ if (m.del) delete c[k]; else c[k] = m.v; }
     st.u[k] = m.u; });
-  const cur = collect(c); recs.forEach(m => { if (m.key in cur) st.h[m.key] = hashStr(JSON.stringify(cur[m.key])); else delete st.h[m.key]; });
+  const cur = collect(c); recs.filter(m => applied.has(m.key)).forEach(m => { if (m.key in cur) st.h[m.key] = hashStr(JSON.stringify(cur[m.key])); else delete st.h[m.key]; });
   if (n){ Session.save(); if (TABS.includes(App.route.name) && !App.sheet && !(document.activeElement && document.activeElement.matches('textarea,input'))) render(); }
 }
 function claimMe(c, v){ const mine = c.members.find(x => x.isMe); if (!mine || mine.id === v.id) return false;
@@ -3959,7 +3983,7 @@ function cpText(c){ const p = cpCfg(c), a = c.about, e = c.emergency, who = whoN
   return [`IF I CAN'T CARE: plan for ${c.name}`, `Made with Tendu · ${niceDate(todayIso())}${p.reviewed ? ' · last checked ' + niceDate(p.reviewed) : ''}`, '',
     sec('Who to call first', backups.map((b, k) => `${k + 1}. ${b.name}${b.relation || b.role ? ' (' + (b.relation || b.role) + ')' : ''}${b.phone ? ': ' + b.phone : ''}`)),
     sec(`About ${who}`, [`${c.name}${c.preferred && c.preferred !== c.name ? ', likes to be called ' + c.preferred : ''}${c.age ? ', age ' + c.age : ''}`, c.lives ? 'Lives: ' + c.lives : '', a.communication ? 'How to communicate: ' + a.communication : '', a.calms ? 'What helps: ' + a.calms : '', a.upsets ? 'What upsets them: ' + a.upsets : '']),
-    sec('Health (as told to the family)', [e.allergies ? 'Allergies: ' + e.allergies : 'Allergies: none recorded', e.conditions ? 'Conditions: ' + e.conditions : '', e.mobility ? 'Mobility: ' + e.mobility : '', e.respect ? 'ReSPECT form: ' + e.respect + (e.respectWhere ? ' (original: ' + e.respectWhere + ')' : '') : '', e.lpa ? 'Lasting Power of Attorney: ' + e.lpa : '']),
+    sec('Health (as told to the family)', ['Allergies: ' + allergyText(e), e.conditions ? 'Conditions: ' + e.conditions : '', e.mobility ? 'Mobility: ' + e.mobility : '', e.respect ? 'ReSPECT form: ' + e.respect + (e.respectWhere ? ' (original: ' + e.respectWhere + ')' : '') : '', e.lpa ? 'Lasting Power of Attorney: ' + e.lpa : '']),
     sec('Medicines (as recorded by the family; check with the pharmacist)', [...c.meds.map(m => `- ${m.name}${m.when ? ', ' + m.when : ''}${(m.times || []).length ? ' (' + m.times.join(', ') + ')' : ''}`), p.storage ? 'Kept: ' + p.storage : '']),
     sec('Every day', [a.routine ? a.routine : '', ...(c.routines || []).map(r => `- ${r.title}${r.time ? ' at ' + r.time : ''}${r.steps.length ? ': ' + r.steps.join('; ') : ''}`)]),
     sec('Practical needs', [p.practical]),
@@ -4756,7 +4780,7 @@ PAGES.sos = c => { const who = whoName(c), contacts = [...c.members.filter(m => 
     ${contacts.map(x => `<a class="sosbtn" href="tel:${esc(x.ph.replace(/[^\d+]/g, ''))}">${ic('phone')}<span><b>Call ${esc(firstName(x.n))}</b><small>${esc(x.r || '')} · ${esc(x.ph)}</small></span></a>`).join('') || `<button class="sosbtn" data-a="sheet" data-v="member">${ic('plus')}<span><b>Add an emergency contact</b><small>Their phone number shows here</small></span></button>`}
     <a class="sosbtn" href="tel:111">${ic('phone')}<span><b>Call NHS 111</b><small>Urgent, not an emergency</small></span></a>
     <div class="sosgrid"><button class="sost" data-a="go" data-v="emergency">${ic('siren')}<span>Show the emergency card</span></button><button class="sost" data-a="sosTeam">${ic('users')}<span>Tell the team</span></button><button class="sost" data-a="go" data-v="contingency">${ic('shield')}<span>If I can’t care plan</span></button><button class="sost" data-a="shareEmergency">${ic('share')}<span>Send the card</span></button></div>
-    ${e.allergies || e.conditions ? `<div class="card sosinfo"><div class="tiny b up">Key details</div>${e.allergies ? `<div><b>Allergies:</b> ${esc(e.allergies)}</div>` : ''}${e.conditions ? `<div><b>Conditions:</b> ${esc(e.conditions)}</div>` : ''}${e.respect ? `<div><b>ReSPECT:</b> ${esc(e.respect)}${e.respectWhere ? ', kept ' + esc(e.respectWhere) : ''}</div>` : ''}</div>` : ''}
+    ${true ? `<div class="card sosinfo"><div class="tiny b up">Key details</div><div><b>Allergies:</b> ${esc(allergyText(e))}</div>${e.conditions ? `<div><b>Conditions:</b> ${esc(e.conditions)}</div>` : ''}${e.respect ? `<div><b>ReSPECT:</b> ${esc(e.respect)}${e.respectWhere ? ', kept ' + esc(e.respectWhere) : ''}</div>` : ''}</div>` : ''}
     <h2 class="sos-q">What’s happened?</h2>
     <div class="chips">${SOS.map(([k, l, i]) => `<button class="chip" data-a="sosWhat" data-v="${k}" aria-pressed="${App.sosWhat === k}">${ic(i)}${esc(l)}</button>`).join('')}</div>
     ${sel ? `<div class="card mt12"><ul class="whyl">${sel[3].map(t => `<li>${esc(t)}</li>`).join('')}</ul>${sel[0] === 'hospital' ? `<button class="btn sm mt8" data-a="hospOn">${ic('hospital')}Turn on Hospital mode</button>` : ''}${sel[0] === 'carer' || sel[0] === 'missing' ? `<button class="btn sm mt8" data-a="sosTeam" data-v="${sel[0]}">${ic('users')}Ask the team now</button>` : ''}</div>` : ''}
@@ -7176,6 +7200,93 @@ PAGES.privacy = (orig => c => { let h = orig(c); const g = CG.of(c), resp = g.re
   h = h.replace(`${bar('Privacy centre')}<h1 class="largetitle">Privacy centre</h1>`, `${bar('Trust Centre')}<h1 class="largetitle">Trust Centre</h1><p class="subtitle">What Tendu stores, who can see it, what it knows, what it noticed, and what it did. All in one place.</p>`);
   return h.replace(/(<div class="card promise2">[\s\S]*?<\/div><\/div>)/, '$1' + grid); })(PAGES.privacy);
 (() => { const _m = PAGES.more; PAGES.more = c => _m(c).replace(/Privacy centre/g, 'Trust Centre'); const _s = PAGES.settings; PAGES.settings = (c, p) => _s(c, p).replace(/Privacy centre/g, 'Trust Centre'); })();
+
+
+const CONFUSED = /\b(more confused|very confused|suddenly confused|so confused|is confused|seems confused|was confused|been confused|confusion|disorientat\w*|muddled|delirium|not making sense|doesn'?t know (where|who)|didn'?t (know|recognise) (me|us|her|him|where)|isn'?t (her|him|them)sel(f|ves)|not (her|him|them)sel(f|ves)|agitated|hallucinat\w*|seeing things)\b/i;
+const NOT_CONFUSED = /\bconfused (about|by|with|as to|over)\b/i;
+const WORRY = [
+  {k:'confusion-fever', rx:CONFUSED, not:NOT_CONFUSED, also:/(temperature|fever|feverish|hot to (the )?touch|shiver|shaking|infection|\buti\b|burning up)/i,
+    t:'Confusion with a temperature or infection', say:'The NHS says to call 999 or go to A&E if someone is acting confused and has, or might have, an infection. If you’re not sure, call NHS 111.', arts:['sepsis', 'confusion']},
+  {k:'fall', rx:/\b(fell|fallen|had a fall|has had a fall|keeps falling|falling over|falls a lot|fell over|found (her|him|them|mum|dad|nan|gran) on the floor|on the floor and (can'?t|couldn'?t)|couldn'?t get up|can'?t get up)\b/i, not:/\bfalls? (prevention|risk|class|clinic|assessment|team|service)\b/i,
+    t:'A fall', say:'The NHS says to call 999 if they can’t get up, may have hurt their head, neck, back or hip, are bleeding heavily, or are not responding. If they seem unhurt, call NHS 111 or the GP for advice today and mention any blood-thinning medicines.', arts:['fall']},
+  {k:'confusion', rx:CONFUSED, not:NOT_CONFUSED,
+    t:'A change in confusion', say:'The NHS says to call 999 or go to A&E if someone suddenly becomes confused. If it has come on slowly over weeks, see the GP.', arts:['confusion']},
+  {k:'fever', rx:/\b(high temperature|has a temperature|got a temperature|running a temperature|temperature of 3\d|fever|feverish|burning up|shivering)\b/i,
+    t:'A temperature', say:'If you’re worried, call NHS 111 or the GP today. The NHS says to call 999 if someone is acting confused, is very drowsy, is breathing very fast, or has blotchy, blue or very pale skin.', arts:['sepsis']},
+  {k:'eatdrink', rx:/\b(not (eating|drinking)|stopped (eating|drinking)|won'?t (eat|drink)|hasn'?t (eaten|drunk|had a drink))\b/i,
+    t:'Not eating or drinking', say:'Call the GP or NHS 111 for advice today, especially if they’ve hardly drunk anything for a day or are passing very little urine.', arts:['fluids']},
+  {k:'unwell', rx:/\b(very unwell|really unwell|poorly|vomiting|being sick|been sick|diarrh(o)?ea|breathless|out of breath|in a lot of pain|severe pain|bleeding)\b/i,
+    t:'Feeling unwell', say:'If you’re worried, call NHS 111 or the GP. Call 999 in an emergency.', arts:[]}
+];
+const MED_Q = /\b(can (she|he|they|mum|dad|nan|gran|i|we) (take|have|use)|is it (ok|okay|safe) to (take|give)|safe to (take|give)|together with|interact|side[- ]?effects?|missed (a |her |his |their )?dose|double (up|the dose|a dose)|how (much|many) .{0,20}(give|take)|instead of (her|his|their)|with (her|his|their) [a-z]+ (tablets?|medicines?|pills?))\b/i;
+const MED_WORD = /\b(tablets?|pills?|medicines?|medication|dose|paracetamol|ibuprofen|aspirin|antibiotic|inhaler|patch|cream|drops)\b/i;
+const DISTRESS = /\b(exhausted|can'?t cope|cannot cope|can'?t do this|can'?t go on|at the end of my tether|breaking down|falling apart|burn(ed|t) out|overwhelmed|at breaking point|no one helps|nobody helps|alone in this|keep crying|can'?t sleep for worry|i'?m not coping|not coping)\b/i;
+const SUPPORT_REPLY = 'That sounds really hard, and you don’t have to manage it on your own.\n\nTalk to someone today:\n• Carers UK Helpline: 0808 808 7777 (weekdays, free)\n• Samaritans, any time, day or night: 116 123 (free)\n• Shout: text SHOUT to 85258\n• NHS 111, option 2, for urgent mental health help\n\nIf you feel you might harm yourself, call 999.\n\nPractical help: ask the council for a carer’s assessment, and use “I need a break” or “Ask for help” in Tendu to hand some jobs to the team.';
+const PHARMACIST_REPLY = 'That’s a question for a pharmacist: they can check it against everything else being taken. A local pharmacy can advise without an appointment, or call NHS 111. If it’s about a missed or extra dose and they seem unwell, call NHS 111 now, and call 999 if they are very drowsy, hard to wake or having trouble breathing.\n\nTendu can’t advise on medicines.';
+
+function worryOf(text){ const t = String(text || ''); if (!t.trim()) return null;
+  for (const w of WORRY){ if (w.rx.test(t) && !(w.not && w.not.test(t) && !w.rx.test(t.replace(w.not, ''))) && (!w.also || w.also.test(t))) return w; } return null; }
+const adultCircle = c => !((c.needs || []).some(n => ['child', 'baby', 'teen'].includes(n)) || (+c.age && +c.age < 18));
+const childOnly = a => (a.needs || []).length && a.needs.every(n => ['child', 'baby', 'teen'].includes(n));
+const signpostHtml = (w, c, key) => `<div class="card worry" role="note"><div class="row" style="gap:10px;align-items:flex-start"><span class="hi">${ic('alert')}</span><span class="grow"><b>${esc(w.t)}</b><span class="small">${esc(w.say)}</span></span></div>
+  <div class="row mt8" style="gap:6px;flex-wrap:wrap"><a class="claim" href="tel:111">Call NHS 111</a><a class="claim warnc" href="tel:999">Call 999</a>${w.arts.map(id => { const a = LIB.find(x => x.id === id); return a ? `<button class="claim ghostish" data-a="openArticle" data-v="${esc(a.id)}">${esc(a.t)}</button>` : ''; }).join('')}${key ? `<button class="claim ghostish" data-a="worryDone" data-v="${esc(key)}">It’s sorted</button>` : ''}</div>
+  <p class="tiny muted mt8" style="margin-bottom:0">Tendu can’t tell how serious something is. If you’re worried, ask NHS 111 or the GP.</p></div>`;
+
+localAnswer = (orig => function(c, q){ const t = String(q || '');
+  if (URGENT_RX.test(t)) return orig(c, q);
+  const out = {reply:'', tasks:[], articles:[], message:'', plan:''};
+  const w = worryOf(t), med = MED_Q.test(t) && (MED_WORD.test(t) || medName(t)), dis = DISTRESS.test(t);
+  if (w || med || dis){ const parts = [];
+    if (w) parts.push(`${w.t}.\n\n${w.say}`); if (med) parts.push(PHARMACIST_REPLY); if (dis) parts.push(SUPPORT_REPLY);
+    if (w) parts.push('Tendu can’t tell how serious something is: if you’re worried, ask NHS 111 or the GP.');
+    out.reply = parts.join('\n\n'); out.articles = [...(w ? w.arts : []), ...(med ? ['meds'] : []), ...(dis ? ['burnout', 'assess'] : [])].filter((id, k, all) => all.indexOf(id) === k && LIB.some(a => a.id === id)).slice(0, 3); return out; }
+  if (/\b(this week|the week|week ahead|next few days|coming up|next 7 days)\b/i.test(t)){ const who = whoName(c), days = Care.days(7);
+    const rows = days.map(d => { const its = openItems(c).filter(i => i.date === d), vs = c.visits.filter(v => v.date === d); if (!its.length && !vs.length) return '';
+      return `${dayWord(d).replace(/^./, x => x.toUpperCase())}:\n${its.map(i => `• ${i.time ? i.time + ' ' : ''}${i.title}${i.owner ? ' (' + firstName(memberName(i.owner, c)) + ')' : ' (nobody yet)'}`).concat(vs.map(v => `• Visit (${firstName(memberName(v.memberId, c))})`)).join('\n')}`; }).filter(Boolean);
+    out.reply = rows.length ? `This week for ${who}:\n\n${rows.join('\n\n')}` : `Nothing is planned for ${who} in the next 7 days. Tap + to add something.`; return out; }
+  if (!adultCircle(c)) return orig(c, q);
+  const keep = LIB.slice(); try { LIB.splice(0, LIB.length, ...keep.filter(a => !childOnly(a))); return orig(c, q); } finally { LIB.splice(0, LIB.length, ...keep); } })(localAnswer);
+(() => { const _send = ACTIONS.aiSend; ACTIONS.aiSend = async f => { const c0 = circle(), n0 = c0 ? chatLog(c0).length : 0; await _send(f); const c = circle(), text = (f && f.text) || '', log = chatLog(c), last = log[log.length - 1];
+  if (!last || last.role !== 'ai' || log.length <= n0) return; const w = worryOf(text), add = [];
+  if (w && !/\b111\b/.test(last.text)) add.push(`${w.t}: ${w.say}`); if (DISTRESS.test(text) && !/116 123/.test(last.text)) add.push(SUPPORT_REPLY);
+  if (!add.length) return; last.text = add.join('\n\n') + '\n\n' + last.text; save(); if (App.route.name === 'assistant') render(); }; })();
+
+(() => { const _cs = ACTIONS.capSmart; ACTIONS.capSmart = async f => { App.capWorry = worryOf(f && f.text) || (DISTRESS.test((f && f.text) || '') ? {k:'distress'} : null); return _cs(f); }; })();
+SHEETS.capture = (orig => (c, p) => { const s = orig(c, p), w = App.capWorry; if (!w) return s;
+  const card = w.k === 'distress' ? `<div class="card worry"><b>That sounds hard</b><div class="small mt4" style="white-space:pre-line">${esc(SUPPORT_REPLY.split('\n\n').slice(1, 3).join('\n\n'))}</div></div>` : signpostHtml(w, c);
+  return {...s, body:card + s.body}; })(SHEETS.capture);
+(() => { const _ca = ACTIONS.capAgain; ACTIONS.capAgain = (...x) => { App.capWorry = null; return _ca(...x); }; })();
+(() => { const _cl = closeSheet; closeSheet = function(){ App.capWorry = null; return _cl(); }; })();
+
+function recentWorry(c){ const since = Date.now() - 48 * 36e5, done = c.worryDone || {};
+  const obs = (c.obs || []).filter(o => o.note && (o.at || parseIso(o.date || todayIso()).getTime() + 12 * 36e5) > since).map(o => ({id:'o-' + o.id, text:o.note, at:o.at || parseIso(o.date || todayIso()).getTime() + 12 * 36e5, by:o.by}));
+  const seen = new Set(obs.map(o => o.text.trim()));
+  const feed = (c.feed || []).filter(f => f.at > since && (f.kind || 'update') === 'update' && !seen.has(String(f.text).trim())).map(f => ({id:'f-' + f.id, text:f.text, at:f.at, by:f.by}));
+  for (const n of [...obs, ...feed].sort((a, b) => b.at - a.at)){ if (done[n.id]) continue; const w = worryOf(n.text); if (w) return {...n, w}; } return null; }
+SYNC_OBJS.push('worryDone');
+(() => { const _cc = ACTIONS.capConfirm; ACTIONS.capConfirm = f => { const w = App.capWorry, text = App.capDraft; _cc(f);
+  if (w && w.k !== 'distress' && text){ const c = circle(); if (!(c.obs || []).some(o => o.note === text)){ (c.obs = c.obs || []).push({id:uid(), date:todayIso(), at:Date.now(), tags:[], note:text, by:me(c).id}); save(); render(); } } }; })();
+ACTIONS.worryDone = v => { const c = circle(); (c.worryDone = c.worryDone || {})[v] = Date.now(); save(); render(); toast('Marked as sorted'); };
+calmStatus = (orig => function(c){ const s = orig(c), r = recentWorry(c); if (!r) return s; return {...s, head:`${whoName(c)}: something to check on`, sub:r.w.t, warn:true}; })(calmStatus);
+todayCard = (orig => function(c){ const h = orig(c), r = recentWorry(c); if (!r) return h;
+  const by = r.by && member(r.by, c), note = `<p class="tiny muted" style="margin:0 2px 6px">${esc((by ? (by.isMe ? 'You' : firstName(by.name)) : 'Someone') + ' noted ' + timeAgo(r.at) + ': “' + String(r.text).slice(0, 140) + '”')}</p>`;
+  return `<div class="section">${note}${signpostHtml(r.w, c, r.id)}</div>` + h; })(todayCard);
+commandCentre = todayCard;
+
+const COND_NEEDS = ['dementia', 'stroke', 'parkinsons', 'heart', 'diabetes', 'cancer', 'mental', 'ld', 'autism', 'physical', 'sight', 'addiction'];
+const setupConditions = c => (c.needs || []).filter(n => COND_NEEDS.includes(n)).map(n => (NEEDS.find(x => x[0] === n) || [n, n])[1]);
+(() => { const _f = ACTIONS.obFinish; ACTIONS.obFinish = (...x) => { _f(...x); const c = circle(); if (c && c.emergency && !c.emergency.conditions){ const cs = setupConditions(c); if (cs.length){ c.emergency.conditions = cs.join(', ') + ' (from setup, please check)'; save(); } } }; })();
+SHEETS.editEmergency = (orig => c => { const s = orig(c), e = c.emergency, cs = setupConditions(c);
+  let body = s.body.replace(/(<div class="field">(?:(?!<\/div>)[\s\S])*?name="allergies"[\s\S]*?<\/div>)/, `$1<label class="row" style="gap:10px;min-height:44px;margin-top:-4px"><input type="checkbox" name="nka" value="1" ${e.nka ? 'checked' : ''} style="width:22px;height:22px"><span>No known allergies (confirmed)</span></label>`);
+  if (!e.conditions && cs.length) body = `<div class="card tint small">From setup: ${esc(cs.join(', '))}. <button type="button" class="textbtn" data-a="sosFromSetup">Add to the card</button></div>` + body;
+  return {...s, body}; })(SHEETS.editEmergency);
+(() => { const _s = ACTIONS.saveEmergency; ACTIONS.saveEmergency = f => { const c = circle(); c.emergency.nka = !!f.nka && !String(f.allergies || '').trim(); const g = {...f}; delete g.nka; return _s(g); }; })();
+ACTIONS.sosFromSetup = () => { const c = circle(); c.emergency.conditions = setupConditions(c).join(', ') + ' (from setup, please check)'; save(); render(); };
+setupSteps = (orig => function(c){ const a = Accounts.list().find(x => x.id === Session.acct.id) || {};
+  return orig(c).map(s => s.k === 'secure' && a.kind === 'local' && !a.em ? {...s, t:'Make a backup (phone-only account)', done:!!D().lastBackup, a:'backup', v:''} : s); })(setupSteps);
+renderOnboarding = (orig => function(){ if (!App.onb && Session.data && D()._onbDraft) App.onb = D()._onbDraft;
+  const h = orig(); try { if (Session.data && App.onb){ const j = JSON.stringify(App.onb); if (j !== App._onbSaved){ D()._onbDraft = App.onb; App._onbSaved = j; Session.save(); } } } catch(e){} return h; })(renderOnboarding);
+(() => { const _f = ACTIONS.obFinish; ACTIONS.obFinish = (...x) => { try { delete D()._onbDraft; } catch(e){} App._onbSaved = null; return _f(...x); }; })();
 
 (function boot(){
   const accts = Accounts.list(), last = accts.find(a => a.id === LS.get('tendu.last'));
