@@ -819,7 +819,8 @@ label.chip{cursor:pointer}
 .invin::placeholder{letter-spacing:.14em;opacity:.35}
 body:has(.chatin.ontab) .pip.ontab .pip-fab{display:none}
 
-html,body{overflow-x:hidden;max-width:100%}
+html{overflow-x:hidden;max-width:100%}
+body{max-width:100%;overflow:visible}
 #app{overflow-x:clip}
 p,h1,h2,h3,.ttl,.sub,.card,.bubble,.who,.small,.tiny,.li .main,label,.lead{overflow-wrap:anywhere}
 .row>*,.li>*,.cmsg>*{min-width:0}
@@ -937,6 +938,23 @@ a.claim{display:inline-flex;align-items:center;text-decoration:none;min-height:3
 main::after{content:'';display:block;height:88px}
 .hero.calmhero{background:#1E4D57}
 .sospill{background:#B3261E;color:#fff}
+.cvnote{margin:6px 8px 10px;padding:10px 12px;border-radius:14px;background:var(--warn-soft,#FFF1DC);color:var(--ink);font-size:.86rem;line-height:1.4}
+.peoplecard{display:block;padding:14px 16px}
+.peoplecard .avrow{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+details.alltools>summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between}
+details.alltools>summary::-webkit-details-marker{display:none}
+details.alltools>summary h2::after{content:' ›';color:var(--sub)}
+details.alltools[open]>summary h2::after{content:' ⌄'}
+.badge.warn{background:var(--warn-soft,#FFF1DC);color:var(--warn,#8a5300)}
+.badge.good{background:var(--good-soft);color:var(--good)}
+.budans{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px 14px;margin-bottom:10px;font-size:.92rem;line-height:1.45}
+.budans .bp{margin:2px 0}
+.budans .bl{margin:2px 0 2px 2px;color:var(--ink)}
+.budans.safety{border-color:var(--crit);background:var(--crit-soft)}
+.pip-chips{display:flex;flex-wrap:wrap;gap:6px}
+.crow .crowmain{display:flex;align-items:center;gap:12px;flex:1;min-width:0;text-align:left;background:none;border:0;padding:0;color:inherit;font:inherit}
+.crow .claimit{cursor:pointer;border:0}
+.crow .claimit{min-height:34px;padding:6px 12px;font-size:.8rem}
 
 </style>
 <div id="app"></div>
@@ -1447,8 +1465,10 @@ const root = () => document.getElementById('app');
 const TABS = ['home','plan','updates','more'];
 const PAGES = {}; const SHEETS = {}; const ACTIONS = {};
 
-function go(name, params = {}){ if (TABS.includes(name)) { App.stack = []; App.route = {name, params}; } else { App.stack.push(App.route); App.route = {name, params}; } render(); window.scrollTo(0,0); }
-function back(){ App.route = App.stack.pop() || {name:'home'}; render(); }
+const scrollNow = () => window.scrollY || document.documentElement.scrollTop || document.body.scrollTop || 0;
+function scrollToY(y){ const set = () => { window.scrollTo({top:y, left:0, behavior:'instant'}); document.body.scrollTop = 0; }; set(); requestAnimationFrame(() => { set(); setTimeout(set, 60); }); }
+function go(name, params = {}){ App.route.sy = scrollNow(); if (TABS.includes(name)) { App.stack = []; App.route = {name, params}; } else { App.stack.push(App.route); App.route = {name, params}; } render(); scrollToY(0); }
+function back(){ App.route = App.stack.pop() || {name:'home'}; const y = App.route.sy || 0; App._restoring = true; try { render(); } finally { App._restoring = false; } scrollToY(y); }
 function applyPrefs(){
   const p = Session.data ? Session.data.prefs : {theme:'system', text:LS.get('tendu.text') || 'normal'};
   const r = document.documentElement;
@@ -1467,6 +1487,7 @@ function render(){
   const isTab = TABS.includes(App.route.name);
   const full = typeof DataStore !== 'undefined' && DataStore.full ? `<div class="worry" role="alert" style="margin:8px 0 12px"><b>This phone’s storage is full.</b> New changes are only kept until Tendu closes. Free some space on the phone, or remove old voice notes and photos, then reopen Tendu.</div>` : '';
   el.innerHTML = `<main class="screen">${full}${page(circle(), App.route.params)}</main>${isTab ? tabbar() : ''}${renderSheet()}`;
+  if (App.route !== App._drawnRoute){ App._drawnRoute = App.route; if (!App._restoring) scrollToY(0); }
   afterRender();
 }
 function afterRender(){ const f = document.querySelector('[data-autofocus]'); if (f && !('ontouchstart' in window)) f.focus(); }
@@ -1629,7 +1650,7 @@ function renderOnboarding(){
     ${App.route.name === 'newcircle' ? '' : `<button class="li card flat mt16" style="border-radius:18px" data-a="sheet" data-v="join"><span class="tile c-accent">${ic('chat')}</span><span class="main"><div class="ttl">Joining someone else’s team?</div><div class="sub">Paste the invite code they sent you</div></span>${chevron()}</button>`}</div>`;
   if (o.step === 2){
     const list = (o.helpers||[]).map((h, i) => li({icon:'user', title:esc(h.name), sub:esc([h.relation, h.role === 'carer' ? 'Paid carer' : ''].filter(Boolean).join(' · ')), end:`<button class="iconbtn" data-a="obDelHelper" data-v="${i}" aria-label="Remove">${ic('x')}</button>`})).join('');
-    return `<div class="auth">${steps}<h1>Who else helps?</h1><p class="lead mt8">Family, friends, neighbours or paid carers. You can share tasks with them.</p>
+    return `<div class="auth">${steps}<h1>Who else helps?</h1><p class="lead mt8">Family, friends, neighbours or paid carers. After this, Tendu gives you an invite link for each of them, so they see the plan and the chat on their own phone.</p>
       ${list ? `<div class="list mt16">${list}</div>` : ''}
       <form class="stack mt16" data-submit="obHelper"><div class="twocol"><input class="input" name="name" placeholder="Name" required><input class="input" name="relation" placeholder="e.g. Brother"></div>
         <div class="seg" role="group"><button type="button" data-a="obRole" data-v="family" aria-pressed="${(o.role||'family')==='family'}">Family</button><button type="button" data-a="obRole" data-v="friend" aria-pressed="${o.role==='friend'}">Friend</button><button type="button" data-a="obRole" data-v="carer" aria-pressed="${o.role==='carer'}">Paid carer</button></div>
@@ -1667,7 +1688,7 @@ function itemRow(c, i, opts = {}){
   const when = i.time ? `${esc(i.time)}${opts.showDate && i.date ? `<small>${esc(daysFromToday(i.date) === 0 ? 'Today' : daysFromToday(i.date) === 1 ? 'Tmrw' : WDs[parseIso(i.date).getDay()] + ' ' + parseIso(i.date).getDate())}</small>` : ''}` : (opts.showDate && i.date ? `${parseIso(i.date).getDate()}<small>${MOs[parseIso(i.date).getMonth()]}</small>` : ic(i.kind === 'appointment' ? 'calendar' : 'task'));
   const kindLabel = i.kind === 'appointment' ? 'Appointment' : (i.repeat && i.repeat !== 'none' ? 'Repeats ' + ({weekly:'weekly', fortnightly:'fortnightly', '4weekly':'every 4 weeks', monthly:'monthly'}[i.repeat]) : '');
   const sub = [kindLabel, i.detail].filter(Boolean).join(' · ');
-  const end = i.done ? '' : (o ? avatar(o) : `<button class="claim" data-a="claim" data-id="${i.id}">Take it</button>`);
+  const end = i.done ? '' : (o ? avatar(o) : `<button class="claim" data-a="claim" data-id="${i.id}">I’ll do it</button>`);
   return `<div class="ti${i.done ? ' done' : ''}"><button class="when" data-a="sheet" data-v="item" data-id="${i.id}" aria-label="Open ${esc(i.title)}">${when}</button>
     <button class="body" style="text-align:left" data-a="sheet" data-v="item" data-id="${i.id}"><div class="ttl">${esc(i.title)}</div>${sub ? `<div class="sub">${esc(sub)}</div>` : ''}</button>
     <span class="end">${end}<button class="chk" role="checkbox" aria-checked="${i.done}" aria-label="Mark done: ${esc(i.title)}" data-a="toggleItem" data-id="${i.id}">${ic('check')}</button></span></div>`;
@@ -1806,7 +1827,7 @@ PAGES.more = (c) => {
       ${li({icon:'plus', tone:'c-plain', title:'Care for someone else too', sub:'Another parent, a partner, a child…', a:'go', v:'newcircle'})}
       ${li({icon:'logout', tone:'c-plain', title:'Lock and sign out', a:'signout'})}
     </div></div>
-    <p class="disclaim center">Tendu helps people organise care together. It isn’t a medical device and doesn’t give medical advice.<br>Version 6.6</p>`;
+    <p class="disclaim center">Tendu helps people organise care together. It isn’t a medical device and doesn’t give medical advice.<br>Version 0.7.0</p>`;
 };
 ACTIONS.signout = async () => { const a = Session.acct && Accounts.list().find(x => x.id === Session.acct.id); await Session.flush(); Session.lock(); App.sheet = null; App.pipOpen = false;
   App.em = {flow:'signin', email:a ? a.email : ''}; App.authView = a && a.pin ? 'pin' : 'email'; App.lockedAcct = a ? a.id : null; App.route = {name:'home'}; App.stack = []; render(); };
@@ -2311,11 +2332,11 @@ ACTIONS.wbSave = () => { const d = D(); (d.wellbeing = d.wellbeing || []).push({
 PAGES.guide = () => `${bar('How Tendu works')}<h1 class="largetitle">How Tendu works</h1><p class="subtitle">The things that make the biggest difference.</p>
   <div class="list">${[
     ['plus','Tap + and type it like a text','Appointments, medicine changes, things you’re waiting for, costs. Tendu sorts them for you.'],
-    ['handshake','Take jobs, or ask for help','Tap “Take it” on any job. Use Ask for help to send a request to the family chat.'],
+    ['handshake','Take jobs, or ask for help','Tap “I’ll do it” on any job. Use Ask for help to send a request to the family chat.'],
     ['heart','One tap: All OK today','Whoever sees or speaks to them taps it, so nobody worries or rings round.'],
-    ['list','Not sure what to do? Try “What now?”','Ideas for each situation from NHS and GOV.UK guidance. Your team chooses what to add, when, and who does it.'],
-    ['users','Connect: more than medicine','Record what matters, check wellbeing, and find groups, activities and support nearby.'],
-    ['chat','Share the plan with the family','Set up the team chat and everyone sees the same jobs, visits and notes, encrypted end to end.'],
+    ['users','Invite the people who help','Adding someone sends them an invite link. Once they join (in their browser, nothing to download), they see the plan and the team chat on their own phone.'],
+    ['sparkle','Ask Bud','Tap Bud and ask “What needs me?”, “What am I waiting for?” or “Is Mum ready for tomorrow?”. Bud answers from the plan.'],
+    ['heart','The Care tab is their profile','Know me, the emergency card, medicines, documents and the people helping. Everything else is in All tools.'],
     ['route','Send a handover','Before someone else takes over, send the one-minute brief from the Team tab.'],
     ['siren','Keep the emergency card ready','Fill it in once. Share it with paramedics, the hospital or a new carer in seconds.']
   ].map(([i,t,s]) => li({icon:i, title:t, sub:s})).join('')}</div>
@@ -3571,7 +3592,7 @@ itemRow = function(c, i, opts = {}){
   const when = i.time ? `${esc(i.time)}${opts.showDate && i.date ? `<small>${dLabel}</small>` : ''}` : (opts.showDate && i.date ? `${parseIso(i.date).getDate()}<small>${MOs[parseIso(i.date).getMonth()]}</small>` : '');
   const kind = i.kind === 'appointment' ? 'Appointment' : '', rep = i.repeat && i.repeat !== 'none' ? 'Repeats ' + ({weekly:'weekly', fortnightly:'fortnightly', '4weekly':'every 4 weeks', monthly:'monthly'}[i.repeat]) : '';
   const sub = [kind, rep, i.detail && !/^https?:/.test(i.detail) ? i.detail : ''].filter(Boolean).join(' · ');
-  const who = i.done ? '' : o ? (o.isMe ? `<span class="you">You</span>` : avatar(o)) : `<button class="claim" data-a="claim" data-id="${i.id}">Take it</button>`;
+  const who = i.done ? '' : o ? (o.isMe ? `<span class="you">You</span>` : avatar(o)) : `<button class="claim" data-a="claim" data-id="${i.id}">I’ll do it</button>`;
   return `<div class="swipe" data-swipe="${i.id}"><div class="sbg"><span class="sl">${ic('check')}Done</span><span class="sr">${ic('clock')}Tomorrow</span></div>
     <div class="ti${i.done ? ' done' : ''}${when ? '' : ' nowhen'}${late ? ' late' : ''}">${when ? `<button class="when" data-a="sheet" data-v="item" data-id="${i.id}" aria-label="Open ${esc(i.title)}">${when}</button>` : ''}
     <button class="body" style="text-align:left" data-a="sheet" data-v="item" data-id="${i.id}"><div class="ttl">${i.kind === 'appointment' && !when ? ic('calendar','class="kic"') : ''}${esc(i.title)}</div>${sub ? `<div class="sub">${esc(sub)}</div>` : ''}${late && !opts.showDate ? `<div class="sub latetxt">Was due ${esc(niceDate(i.date).toLowerCase())}</div>` : ''}</button>
@@ -3732,7 +3753,7 @@ PAGES.more = c => { const who = esc(whoName(c)), d = D(), simple = simpleMode(),
       ${li({icon:'plus', tone:'c-plain', title:'Care for someone else too', sub:'Each person gets their own circle', a:'go', v:'newcircle'})}
       ${li({icon:'logout', tone:'c-plain', title:'Lock and sign out', a:'signout'})}
     </div></section>
-    <p class="disclaim center">Tendu helps people organise care together. It isn’t a medical device and doesn’t give medical advice.<br>Version 6.6</p>`; };
+    <p class="disclaim center">Tendu helps people organise care together. It isn’t a medical device and doesn’t give medical advice.<br>Version 0.7.0</p>`; };
 
 const _home3 = PAGES.home; PAGES.home = c => { let h = _home3(c);
   h = h.replace(/<div class="section"><div class="sechead"><h2>Shortcuts<\/h2><\/div><div class="stats"[\s\S]*?<\/div><\/div>\s*/, '');
@@ -4718,7 +4739,7 @@ function reqState(c, i){ if (!i.req || i.done) return ''; const to = member(i.re
   const steps = [['asked', 'Asked'], ['yes', 'Accepted'], ['done', 'Done']], cur = i.req.st === 'yes' ? 1 : 0;
   return `<div class="steps3">${steps.map(([k, l], n) => `<span class="${n <= cur ? 'on' : ''}">${l}</span>`).join('<i></i>')}</div><div class="tiny muted mt4">${i.req.st === 'no' ? `${esc(to.isMe ? 'You' : firstName(to.name))} couldn’t this time` : i.req.st === 'yes' ? `${esc(to.isMe ? 'You' : firstName(to.name))} said yes` : `${esc(by && by.isMe ? 'You' : by ? firstName(by.name) : 'Someone')} asked ${esc(to.isMe ? 'you' : firstName(to.name))} ${timeAgo(i.req.at)}`}</div>`; }
 const _itemRow2 = itemRow; itemRow = function(c, i, opts = {}){ let h = _itemRow2(c, i, opts);
-  if (!i.done && i.req && !i.owner){ const to = member(i.req.to, c); if (to) h = h.replace(`<button class="claim" data-a="claim" data-id="${i.id}">Take it</button>`, i.req.st === 'asked' ? (i.req.to === me(c).id ? `<button class="claim" data-a="reqYes" data-id="${i.id}">Yes, I’ll do it</button>` : `<span class="reqpill wait" title="Waiting for an answer">${ic('clock')}${esc(firstName(to.name))}?</span>`) : `<button class="claim" data-a="claim" data-id="${i.id}">Take it</button>`); }
+  if (!i.done && i.req && !i.owner){ const to = member(i.req.to, c); if (to) h = h.replace(`<button class="claim" data-a="claim" data-id="${i.id}">I’ll do it</button>`, i.req.st === 'asked' ? (i.req.to === me(c).id ? `<button class="claim" data-a="reqYes" data-id="${i.id}">Yes, I’ll do it</button>` : `<span class="reqpill wait" title="Waiting for an answer">${ic('clock')}${esc(firstName(to.name))}?</span>`) : `<button class="claim" data-a="claim" data-id="${i.id}">I’ll do it</button>`); }
   return h; };
 
 PAGES.requests = c => { const soon = openItems(c).filter(i => i.date && daysFromToday(i.date) <= 14);
@@ -5911,7 +5932,7 @@ ACTIONS.invMake = f => busy('form[data-submit=invMake] [type=submit]', async () 
   try { const rec = await invCreate(c, {mid:m.id, name:m.name, role:m.role, rel:m.relation || rel, acc:m.access}); App.invForm = null; App.invMade = rec.id; openSheet('invmade'); }
   catch(e){ toast(e.message, 'info'); }
 });
-function invMsg(c, rec){ return `Hi${rec.name ? ' ' + firstName(rec.name) : ''}, I’ve invited you to help with ${whoName(c)}’s care on Tendu Care, so we can share the plan and keep in touch.\n\nTap to join: ${invLink(rec.code)}\n\nOr open the Tendu Care app, choose “I’ve been invited” and enter: ${invShow(rec.code)}\n\nThe code works for ${INV_DAYS} days.`; }
+function invMsg(c, rec){ return `Hi${rec.name ? ' ' + firstName(rec.name) : ''}, I’ve invited you to help with ${whoName(c)}’s care on Tendu Care, so we can share the plan and keep in touch.\n\nTap to join: ${invLink(rec.code)}\n\nIt opens in your browser, so there’s nothing to download and it’s free. (If you already have the Tendu Care app, choose “I’ve been invited” and enter: ${invShow(rec.code)})\n\nThe code works for ${INV_DAYS} days.`; }
 SHEETS.invmade = c => { const rec = (c.invites || []).find(x => x.id === App.invMade); if (!rec) return {title:'Invite', body:'<p class="muted">This invite has gone.</p>'};
   const days = Math.max(1, Math.ceil((rec.exp - Date.now()) / 864e5));
   return {title:rec.name ? `Invite for ${firstName(rec.name)}` : 'Invite', body:`<div class="center"><p class="muted small" style="margin:0 2px 8px">Their code</p><div class="invcode" aria-label="Invite code ${esc(invShow(rec.code).split('').join(' '))}">${esc(invShow(rec.code))}</div>
@@ -7519,6 +7540,229 @@ careSituations = memoDraw(careSituations, cOnly); agentProposals = memoDraw(agen
 careRisks = memoDraw(careRisks, cOnly); careSignals = memoDraw(careSignals, c => cOnly(c)); careDecisions = memoDraw(careDecisions, c => cOnly(c));
 recentWorry = memoDraw(recentWorry, c => cOnly(c)); needsMe = memoDraw(needsMe, (c, id) => cOnly(c, id || ''));
 helpers = memoDraw(helpers, (c, item, d) => c && c.id ? c.id + '|' + (item ? item.id || item.title || '' : '') + '|' + (d || (item && item.date) || '') : null);
+
+
+const liveInvite = (c, m) => (c.invites || []).find(i => i.mid === m.id && !i.off && !i.revoked && !i.used && i.exp > Date.now());
+function joinState(c, m){ if (m.isMe) return 'me'; if (m.acct) return 'joined'; if (liveInvite(c, m)) return 'invited'; return m.noApp ? 'noapp' : 'none'; }
+const notJoined = c => c.members.filter(m => !m.isMe && !m.acct && m.role !== 'pro' && !m.noApp);
+const nameList = ms => { const n = ms.map(m => firstName(m.name)); return n.length <= 2 ? n.join(' and ') : n.slice(0, -1).join(', ') + ' and ' + n[n.length - 1]; };
+ACTIONS.invShowFor = (v, id) => { const c = circle(), m = member(id, c), rec = m && liveInvite(c, m); if (!rec) return ACTIONS.invFor(v, id); App.invMade = rec.id; openSheet('invmade'); };
+openSheet = (orig => function(name, params = {}){
+  if (name === 'member' && !(params && params.id) && !App._nameOnly && typeof invSrv === 'function' && invSrv()){ App.invForm = null; return orig('invite', {}); }
+  App._nameOnly = false; return orig(name, params); })(openSheet);
+SHEETS.invite = (orig => c => { const s = orig(c);
+  return {...s, body:s.body + `<button class="textbtn small mt12" data-a="nameOnly" style="display:block;margin:10px auto 0">Or just add a name (they won’t see the plan or the chat)</button>`}; })(SHEETS.invite);
+ACTIONS.nameOnly = () => { App._nameOnly = true; App._noAppNext = true; openSheet('member'); };
+(() => { const _s = ACTIONS.saveMember; ACTIONS.saveMember = f => { const c = circle(), before = new Set(c.members.map(m => m.id)), r = _s(f);
+  if (App._noAppNext && !f.id) c.members.filter(m => !before.has(m.id)).forEach(m => { m.noApp = true; }); App._noAppNext = false; save(); return r; }; })();
+SHEETS.member = (orig => (c, p) => { const s = orig(c, p); if (p && p.id) return s;
+  return {...s, body:`<div class="card tint small" style="margin-bottom:12px">This adds a name to ${esc(whoName(c))}’s team, for example someone without a smartphone. They won’t get messages or see the plan. To share with someone, <button type="button" class="textbtn small" data-a="invFor" data-id="">invite them</button> instead.</div>` + s.body}; })(SHEETS.member);
+
+const STATE_PILL = {me:['You', 'good'], joined:['On Tendu', 'good'], invited:['Invited · not joined yet', 'warn'], none:['Not on Tendu', ''], noapp:['Name only (no app)', '']};
+PAGES.members = c => { const who = whoName(c), ms = c.members.slice().sort((a, b) => (b.isMe ? 1 : 0) - (a.isMe ? 1 : 0)), nj = notJoined(c), away = c.members.filter(m => isAway(m));
+  const row = m => { const st = joinState(c, m), [pl, tone] = STATE_PILL[st];
+    const act = st === 'invited' ? `<button class="claim" data-a="invShowFor" data-id="${m.id}">Send again</button>` : (st === 'none' || st === 'noapp') && m.role !== 'pro' ? `<button class="claim" data-a="invFor" data-id="${m.id}">Invite</button>` : '';
+    return `<div class="li" style="align-items:center"><button class="row grow" data-a="sheet" data-v="member" data-id="${m.id}" style="gap:12px;text-align:left;min-width:0">${avatar(m)}<span class="main"><div class="ttl">${esc(m.name)}${m.isMe ? ' (you)' : ''}</div><div class="sub">${esc([m.relation, roleName(m.role)].filter(Boolean).join(' · '))}</div>${st === 'me' ? '' : `<span class="badge ${tone}" style="margin-top:4px;display:inline-block">${esc(pl)}</span>`}</span></button>${act}</div>`; };
+  return `${bar('People')}<h1 class="largetitle">Who helps ${esc(who)}</h1>
+    <p class="subtitle">People see the plan and the team chat once they’ve joined on their own phone.</p>
+    ${nj.length ? `<div class="card tint small" style="margin-bottom:12px"><b>${esc(nameList(nj))} ${nj.length === 1 ? 'hasn’t' : 'haven’t'} joined yet.</b> Until they do, they can’t see messages or the plan. Send them an invite: it takes them about a minute.</div>` : ''}
+    <div class="list">${ms.map(row).join('')}</div>
+    <button class="btn mt16" data-a="invFor" data-id="">${ic('users')}Invite someone</button>
+    <button class="textbtn small mt12" data-a="nameOnly" style="display:block;margin:10px auto 0">Add a name only (no app)</button>
+    ${invitesWaiting(c)}
+    <section class="section"><div class="list">
+      ${li({icon:'clock', tone:'c-plain', title:'Who’s away', sub:away.length ? esc(nameList(away)) + (away.length === 1 ? ' is away' : ' are away') : 'Nobody is marked away', a:'sheet', v:'away'})}
+      ${li({icon:'lock', tone:'c-plain', title:'Who sees what', sub:'What each person’s phone receives', a:'go', v:'access'})}
+      ${c.members.some(m => !m.isMe) ? li({icon:'gift', tone:'c-plain', title:'Welcome packs', sub:'A short introduction for someone new', a:'sheet', v:'welcomepick'}) : ''}
+    </div></section>`; };
+function invitesWaiting(c){ const w = typeof invWaiting === 'function' ? invWaiting(c) : []; if (!w.length) return '';
+  return `<section class="section"><div class="sechead"><h2>Invites waiting</h2></div><div class="list">${w.map(i => { const d = Math.max(1, Math.ceil((i.exp - Date.now()) / 864e5));
+    return `<div class="li noicon"><span class="main"><div class="ttl">${esc(i.name || 'Invite without a name')}</div><div class="sub">Code ${esc(invShow(i.code))} · works ${d} more ${d === 1 ? 'day' : 'days'}</div></span><button class="claim" data-a="invShowRec" data-id="${esc(i.id)}">Send</button><button class="textbtn small" data-a="invCancel" data-id="${esc(i.id)}" style="margin-left:6px">Cancel</button></div>`; }).join('')}</div></section>`; }
+ACTIONS.invShowRec = (v, id) => { App.invMade = id; openSheet('invmade'); };
+SHEETS.welcomepick = c => ({title:'Welcome packs', body:`<p class="muted small" style="margin:0 2px 12px">A short introduction to ${esc(whoName(c))} and their part, for someone new to the team.</p><div class="list">${c.members.filter(m => !m.isMe).map(m => li({icon:'gift', title:esc(m.name), sub:esc(m.relation || roleName(m.role)), a:'welcomeFor', v:m.id})).join('')}</div>`});
+const roleName = r => ({organiser:'Organiser', family:'Family', friend:'Friend', neighbour:'Neighbour', carer:'Paid carer', pro:'Professional'})[r] || '';
+
+(() => { const _u = PAGES.updates; PAGES.updates = (c, p) => { let h = _u(c, p); const nj = notJoined(c), joined = c.members.some(m => !m.isMe && m.acct);
+  if (!nj.length || !joined) return h;
+  const note = `<div class="cvnote" role="note">${esc(nameList(nj))} ${nj.length === 1 ? 'hasn’t' : 'haven’t'} joined yet, so ${nj.length === 1 ? 'they don’t' : 'they don’t'} see these messages. <button class="textbtn small" data-a="go" data-v="members">Invite</button></div>`;
+  return h.replace(/(<div class="cvs"[^>]*>)/, `$1${note}`); }; })();
+
+function homeInvite(c){ const nj = notJoined(c); if (!nj.length || c.inviteCardHidden || !(typeof invSrv === 'function' && invSrv())) return '';
+  return `<div class="card tint mt12" style="padding:12px 14px"><b>${esc(nameList(nj))} ${nj.length === 1 ? 'hasn’t' : 'haven’t'} joined yet</b><div class="small" style="margin:4px 0 10px">They can’t see the plan or the chat until they do. Each invite takes them about a minute, in their browser.</div>
+    <div class="btnrow"><button class="btn sm" data-a="sheet" data-v="inviteall" style="width:auto">${ic('users')}Send invites</button><button class="btn sm ghost" data-a="inviteCardHide" style="width:auto">Not now</button></div></div>`; }
+ACTIONS.inviteCardHide = () => { circle().inviteCardHidden = Date.now(); save(); render(); };
+SHEETS.inviteall = c => { const nj = notJoined(c); return {title:'Invite the people who help', body:`<p class="muted small" style="margin:0 2px 12px">You added ${esc(nameList(nj))}. They’ll only see the plan and the chat once they join on their own phone.</p>
+  <div class="list">${nj.map(m => li({icon:'user', title:esc(m.name), sub:esc(m.relation || roleName(m.role)), a:'invFor', id:m.id, end:`<span class="claim">Invite</span>`})).join('')}</div>
+  <button class="btn ghost mt16" data-a="closeSheet">Later</button>`}; };
+
+function homeNeeds(c){ const n = needsMe(c), ds = careDecisions(c), rows = n.list.slice(0, 3);
+  const extra = n.list.length - rows.length;
+  const row = x => `<button class="li" data-a="${x.a}" data-v="${esc(x.v || '')}" data-id="${esc(x.id || '')}"><span class="tile ${x.late ? 'c-warn' : 'c-accent'}">${ic(x.icon || 'task')}</span><span class="main"><div class="ttl">${esc(x.t)}</div>${x.sub ? `<div class="sub">${esc(x.sub)}</div>` : ''}</span>${chevron()}</button>`;
+  const foot = n.nobody.length ? `<button class="textbtn small" data-a="go" data-v="plan">${n.nobody.length} ${n.nobody.length === 1 ? 'job has' : 'jobs have'} nobody yet</button>` : `<span class="small muted">Everything else planned has someone.</span>`;
+  return `<section class="section"><div class="sechead"><h2>${rows.length ? `${n.list.length} ${n.list.length === 1 ? 'thing needs' : 'things need'} you` : 'Nothing needs you right now'}</h2>${n.list.length ? `<span class="tiny muted">About ${esc(minsText(n.mins || 1))}</span>` : ''}</div>
+    ${rows.length || ds.length ? `<div class="list">${rows.map(row).join('')}${extra > 0 ? li({icon:'list', tone:'c-plain', title:`${extra} more`, a:'go', v:'needsme'}) : ''}${ds.length ? li({icon:'check', tone:'c-good', title:`${ds.length} ${ds.length === 1 ? 'suggestion' : 'suggestions'} to approve`, sub:'Tendu waits for your OK', a:'go', v:'actions'}) : ''}</div>` : ''}
+    <div style="margin:8px 4px 0">${foot}</div></section>`; }
+function homeToday(c){ const rows = todayRows(c), who = m => m ? (m.isMe ? 'You' : firstName(m.name)) : '';
+  const row = x => { if (x.v){ const m = member(x.v.memberId, c); return `<div class="crow"><span class="ct ${x.time ? '' : 'any'}">${esc(x.time || 'Any')}</span><span class="cn">${x.v.slot === 'call' ? 'Phone call' : 'Visit'}</span><span class="cp">${esc(who(m))}</span></div>`; }
+    return homeRow(c, x.i, x.time || 'Any', !x.time); };
+  const next = openItems(c).filter(i => i.date && i.date > todayIso() && daysFromToday(i.date) <= 7).slice(0, 3);
+  return `<section class="section calm"><div class="sechead calmh"><h2>Today</h2><button class="more" data-a="go" data-v="plan">The week</button></div>
+    <div class="clist">${rows.length ? rows.map(row).join('') : `<p class="small muted" style="margin:12px 0">Nothing planned for today.</p>`}</div>
+    ${next.length ? `<div class="tiny muted b" style="margin:14px 4px 6px">Coming up</div><div class="clist">${next.map(i => homeRow(c, i, daysFromToday(i.date) === 1 ? 'Tmrw' : WD[parseIso(i.date).getDay()].slice(0, 3), false)).join('')}</div>` : ''}
+  </section>`; }
+function homeRow(c, i, when, any){ const who = m => m ? (m.isMe ? 'You' : firstName(m.name)) : '', o = i.owner ? member(i.owner, c) : null;
+  const pill = i.done ? `<span class="cp good">${ic('check')}Done</span>` : apptPill(c, i) || (o ? `<span class="cp ${isAway(o, i.date) ? 'warn' : ''}">${esc(who(o))}</span>` : i.req && i.req.st === 'asked' ? `<span class="cp ask">Asked</span>` : '');
+  const claim = !i.done && !o && !(i.req && i.req.st === 'asked') ? `<button class="cp warn claimit" data-a="claim" data-id="${i.id}" aria-label="I’ll do it: ${esc(i.title)}">I’ll do it</button>` : '';
+  return `<div class="crow ${i.done ? 'done' : ''}"><button class="crowmain" data-a="sheet" data-v="item" data-id="${i.id}"><span class="ct ${any ? 'any' : ''}">${esc(when)}</span><span class="cn">${esc(i.title)}</span>${pill}</button>${claim}</div>`; }
+const READY_KEYS = c => ['who', 'lift', ...(typeof Access === 'undefined' || Access.has(c, 'docs') ? ['docs'] : [])];
+function apptPill(c, i){ if (i.kind !== 'appointment' || !i.date || daysFromToday(i.date) > 3) return ''; let miss = 0, asked = 0;
+  try { const ev = careEvent(c, i), ks = READY_KEYS(c); miss = ev.needs.filter(x => ks.includes(x.k) && x.st === 'missing').length; asked = ev.needs.filter(x => ks.includes(x.k) && x.st === 'asked').length; } catch(e){ return ''; }
+  return miss ? `<span class="cp warn">${miss} still to sort</span>` : asked ? `<span class="cp ask">Waiting for a reply</span>` : `<span class="cp good">${ic('check')}Ready</span>`; }
+const canHealth = c => (typeof Access === 'undefined' || Access.has(c, 'health')) && !(((typeof HIDE_FOR !== 'undefined' && HIDE_FOR[accessLevel(c, me(c))]) || []).includes('meds'));
+function homeMeds(c){ if (!canHealth(c)) return ''; const timed = liveMeds(c).filter(m => (m.times || []).length); if (!timed.length) return '';
+  const due = timed.reduce((n, m) => n + m.times.length, 0), gv = (c.medlog || []).filter(g => g.date === todayIso() && timed.some(m => m.id === g.med)).sort((a, b) => b.at - a.at);
+  const last = gv[0], t = last ? new Date(last.at).toLocaleTimeString('en-GB', {hour:'2-digit', minute:'2-digit'}) : '';
+  return `<button class="calmbtn mt12" data-a="go" data-v="meds">${ic('pill')}<span>Medicines today: ${Math.min(gv.length, due)} of ${due} given${last ? ` · last by ${esc(memberName(last.by, c))} at ${t}` : ''}</span>${chevron()}</button>`; }
+function homeHeadsUp(c){ const ws = CG.of(c).waits().filter(w => w.late), rs = careRisks(c, 7).filter(r => r.sev === 1);
+  if (!ws.length && !rs.length) return '';
+  return `<div class="qchips" style="margin-top:4px">${rs.length ? `<button class="qchip warn" data-a="go" data-v="risks">${ic('shield')}${rs.length} could go wrong this week</button>` : ''}${ws.length ? `<button class="qchip" data-a="go" data-v="waitingfor">${ic('hourglass')}${ws.length} ${ws.length === 1 ? 'late reply' : 'late replies'}</button>` : ''}</div>`; }
+function homeV7(c){ const s = calmStatus(c), ci = checkedInToday(c), who = whoName(c), mi = me(c) || {}, h = c.hosp, r = recentWorry(c);
+  const status = ci ? `<div class="ok">${ic('checkCircle')}<span>All OK today · ${esc(memberName(ci.by, c))}</span></div>` : `<button class="btn" data-a="checkin">${ic('heart')}All OK today</button>`;
+  return `${topbar(c)}
+    <p class="subtitle" style="margin:2px 2px 10px">${esc(greeting())}, ${esc(firstName(D().me.name))} · ${esc(longDate())}</p>
+    ${typeof alertsHtml === 'function' ? alertsHtml(c) || '' : ''}
+    ${mi.role === 'carer' ? `<button class="calmbtn" style="margin:0 0 12px" data-a="go" data-v="shift">${ic('clock')}<span>${D().shift && D().shift.circle === c.id ? 'On shift: today and end the shift' : 'Start your shift'}</span>${chevron()}</button>` : ''}
+    ${c.share && c.share.joiner && !(c.welcomed && c.welcomed[mi.id]) ? `<button class="card welcomecard" data-a="welcomeFor" data-v="${mi.id}">${PIP_SVG()}<span class="grow"><b>Welcome to ${esc(who)}’s team</b><span class="tiny" style="display:block">A 30-second introduction, and your part</span></span>${chevron()}</button>` : ''}
+    <section class="hero calmhero" aria-label="${esc(c.name)}">
+      <button class="who" data-a="go" data-v="about" style="text-align:left;color:inherit;width:100%">${personAvatar(c)}<span class="grow"><h2>${esc(s.head)}</h2><div class="meta">${esc(s.sub)}</div></span><span style="opacity:.7">${ic('chevR', 'style="width:20px;height:20px"')}</span></button>
+      <div class="checkin">${status}<button class="btn ghostlight" data-a="sheet" data-v="capture">Add something</button></div>
+    </section>
+    ${h && h.on ? `<button class="card hbanner mt12" data-a="go" data-v="hospital">${ic('hospital')}<span class="grow"><b>${esc(who)} is in hospital</b><span class="tiny" style="display:block">${esc([h.where, h.ward].filter(Boolean).join(' · ') || 'Open Hospital mode')}</span></span>${chevron()}</button>` : ''}
+    ${r ? `<div class="section">${signpostHtml(r.w, c, r.id)}</div>` : ''}
+    ${homeInvite(c)}
+    ${homeMeds(c)}
+    ${homeNeeds(c)}
+    ${homeHeadsUp(c)}
+    ${homeToday(c)}
+    ${homeMoment(c)}
+    ${homeSetup(c)}`; }
+function homeMoment(c){ if (typeof moments !== 'function') return ''; const m = moments(c).filter(x => !String(x.k).startsWith('hob-'))[0]; if (!m) return '';
+  return `<div class="moment mt12"><span class="hi c-accent">${ic(m.icon)}</span><button class="grow" data-a="${m.a}" data-v="${esc(m.v)}" ${m.id ? `data-id="${esc(m.id)}"` : ''}><b>${esc(m.t)}</b><span class="tiny muted" style="display:block">${esc(m.s)}</span></button><button class="iconbtn" data-a="momentHide" data-v="${esc(m.k)}" aria-label="Not now">${ic('x')}</button></div>`; }
+function homeSetup(c){ if (c.setupHidden) return ''; const s = setupSteps(c), n = s.filter(x => x.done).length, next = s.filter(x => !x.done).slice(0, 2); if (!next.length) return '';
+  return `<section class="section"><div class="sechead"><h2>Getting started</h2><button class="more" data-a="hideSetup">Hide</button></div>
+    <div class="card" style="padding:6px 0"><div style="padding:8px 16px 6px"><div class="row" style="justify-content:space-between"><span class="small b">${n} of ${s.length} done</span></div><div class="barrow" style="grid-template-columns:1fr;margin-top:8px"><span class="track"><span class="fill" style="display:block;width:${Math.round(n / s.length * 100)}%"></span></span></div></div>
+    ${next.map(x => `<button class="li noicon" data-a="${x.a}" data-v="${esc(x.v || '')}" style="min-height:50px"><span class="main"><div class="ttl">${esc(x.t)}</div></span>${chevron()}</button>`).join('')}</div></section>`; }
+PAGES.home = (orig => c => { if (c.archived || (typeof assisted === 'function' && assisted())) return orig(c); try { return homeV7(c); } catch(e){ console.warn('Tendu home', e); return orig(c); } })(PAGES.home);
+
+const MORE_TOOLS = [['about', 'Know me'], ['passport', 'Hospital passport'], ['passport2', 'Passport for a new carer'], ['memories', 'Memory book'], ['house', 'Home notes'], ['obs', 'Notes over time'], ['questions', 'Questions for the doctor'],
+  ['routines', 'Routines'], ['waiting', 'Waiting on'], ['waitingfor', 'What I’m waiting for'], ['costs', 'Shared costs'], ['goals', 'Goals'], ['hospital', 'Hospital mode'], ['contingency', 'If I can’t care'],
+  ['needsme', 'What needs me'], ['risks', 'What could go wrong'], ['actions', 'Suggestions to approve'], ['studio', 'What if someone can’t help'], ['situations', 'What’s happening'], ['changes', 'What changed'],
+  ['forecast', 'Week ahead'], ['continuity', 'Care continuity'], ['resp', 'Who looks after what'], ['balance', 'Share of care'], ['caremap', 'Care map'], ['story', 'Care story'], ['caremem', 'Care memory'], ['timeline', 'Care timeline'],
+  ['episodes', 'Care episodes'], ['meeting', 'Family meeting'], ['handmy', 'Hand over my care'], ['inbox', 'Care inbox'], ['summary', 'Care summary'], ['entitle', 'Money and benefits'], ['support', 'UK support'], ['connect', 'Local activities'],
+  ['library', 'Care Library'], ['assistant', 'Ask Tendu'], ['me', 'How am I doing?'], ['carercheck', 'How are you?'], ['brk', 'I need a break'], ['impact', 'Impact report'], ['journey', 'When caring ends'], ['autopilot', 'What Bud may do'],
+  ['access', 'Who sees what'], ['audit', 'Activity record'], ['desk', 'Command centre'], ['shift', 'Shift (paid carers)'], ['mylife', 'My life'], ['integrations', 'Connected services']];
+PAGES.more = c => { const who = esc(whoName(c)), lv = accessLevel(c, me(c)), hide = new Set((typeof HIDE_FOR !== 'undefined' && HIDE_FOR[lv]) || []);
+  const ok = v => !hide.has(v) && PAGES[v], low = lowMeds(c).length, nj = notJoined(c).length, ds = careDecisions(c).length;
+  const T = (icon, label, a, v, tone, badge) => ok(v) || a !== 'go' ? tile(icon, label, a, v, tone, badge) : '';
+  const grid = (title, tiles, sub) => { const t = tiles.filter(Boolean); return t.length ? `<section class="section"><div class="sechead"><h2>${title}</h2>${sub || ''}</div><div class="hubgrid">${t.join('')}</div></section>` : ''; };
+  const people = c.members.filter(m => !m.isMe).slice(0, 6);
+  return `${bar(whoName(c), {back:false, right:`<button class="iconbtn" data-a="sheet" data-v="display" aria-label="Display and ease of use"><span class="aa">Aa</span></button>`})}
+    <button class="personcard" data-a="sheet" data-v="circles">${personAvatar(c, 'lg')}<span class="grow"><span class="pc-n">${who}</span><span class="pc-s">${esc([c.name !== whoName(c) ? c.name : '', c.age, c.lives].filter(Boolean).join(' · '))}</span></span><span class="pc-sw">Switch</span></button>
+    <div class="stagebar"><button class="sosbar" data-a="go" data-v="sos">${ic('siren')}<b>I need help now</b></button></div>
+    ${grid(`About ${who}`, [T('heart', 'Know me', 'go', 'about', 'c-accent'), T('siren', 'Emergency card', 'go', 'emergency', 'c-crit'), T('pill', 'Medicines', 'go', 'meds', '', low || ''), T('folder', 'Documents', 'go', 'docs', 'c-plain'), T('phone', 'Contacts', 'go', 'contacts', 'c-good'), T('eye', 'Daily notes', 'go', 'obs', 'c-good')])}
+    <section class="section"><div class="sechead"><h2>People helping</h2><button class="more" data-a="go" data-v="members">All</button></div>
+      <button class="card peoplecard" data-a="go" data-v="members" style="width:100%;text-align:left"><span class="avrow">${people.map(m => avatar(m, 'md')).join('')}${people.length ? '' : `<span class="small muted">Just you so far</span>`}</span>
+        <span class="small" style="display:block;margin-top:8px">${nj ? `<b>${nj} not joined yet.</b> Tap to send their invites.` : people.length ? 'Everyone has joined.' : 'Invite family, friends or carers to share the load.'}</span></button>
+      <button class="btn secondary mt8" data-a="invFor" data-id="">${ic('users')}Invite someone</button></section>
+    ${grid('The plan', [T('repeat', 'Routines', 'go', 'routines'), T('hourglass', 'Waiting on', 'go', 'waiting', 'c-warn', overdueWaiting(c).length || ''), T('pound', 'Shared costs', 'go', 'costs', 'c-plain'), T('star', 'Goals', 'go', 'goals', 'c-accent'), T('hospital', 'Hospital mode', 'go', 'hospital', 'c-crit'), T('doc', 'Hospital passport', 'go', 'passport', 'c-crit')])}
+    ${grid('Tendu’s view', [T('task', 'What needs me', 'go', 'needsme', 'c-accent'), T('shield', 'What could go wrong', 'go', 'risks', 'c-warn'), T('check', 'Suggestions', 'go', 'actions', 'c-good', ds || '')])}
+    ${grid('Help', [T('sparkle', 'Ask Tendu', 'go', 'assistant', 'c-accent'), T('book', 'Care Library', 'go', 'library'), T('pound', 'Money and benefits', 'go', 'entitle', 'c-good'), T('users', 'Local support', 'go', 'connect', 'c-good'), T('coffee', 'I need a break', 'go', 'brk', 'c-good'), T('smile', 'How are you?', 'go', 'carercheck', 'c-good')])}
+    <details class="section alltools"><summary class="sechead"><h2>All tools</h2><span class="tiny muted">${MORE_TOOLS.filter(([v]) => ok(v)).length}</span></summary>
+      <div class="list">${MORE_TOOLS.filter(([v]) => ok(v)).sort((a, b) => a[1].localeCompare(b[1])).map(([v, l]) => li({title:esc(l), a:'go', v})).join('')}</div></details>
+    <section class="section"><div class="list">
+      ${li({icon:'lock', tone:'c-good', title:'Trust Centre', sub:'What Tendu holds, who can see it, what has been shared', a:'go', v:'privacy'})}
+      ${li({icon:'text', tone:'c-plain', title:'Display and ease of use', sub:'Text size, contrast, Simple mode', a:'sheet', v:'display'})}
+      ${li({icon:'shield', title:'Settings and security', sub:'PIN, email sign-in, backup', a:'go', v:'settings'})}
+      ${li({icon:'info', tone:'c-plain', title:'How Tendu works', a:'go', v:'guide'})}
+      ${li({icon:'plus', tone:'c-plain', title:'Care for someone else too', sub:'Each person gets their own circle', a:'go', v:'newcircle'})}
+      ${li({icon:'chat', tone:'c-plain', title:'Join a team', sub:'With an invite code', a:'sheet', v:'join'})}
+      ${li({icon:'logout', tone:'c-plain', title:'Lock and sign out', a:'signout'})}
+    </div></section>
+    <p class="disclaim center">Tendu helps people organise care together. It isn’t a medical device and doesn’t give medical advice.<br>Version ${TENDU_VERSION}</p>`; };
+const TENDU_VERSION = '0.7.0';
+['home', 'more', 'members'].forEach(k => { const f = PAGES[k]; PAGES[k] = (...a) => { try { return f(...a); } catch(e){ console.warn('Tendu screen', k, e); return `${bar('Tendu Care')}<div class="card center mt16"><div class="b">This screen couldn’t be shown</div><button class="btn mt12" data-a="go" data-v="home">Back to Home</button></div>`; } }; });
+(() => { const _g = ACTIONS.medGive; ACTIONS.medGive = (v, id) => { const c = circle(), g = given(c, id, v), m = (c.meds || []).find(x => x.id === id);
+  if (g && g.by !== (me(c) || {}).id) return confirmSheet('Remove this record?', `${memberName(g.by, c)} recorded ${m ? m.name : 'this medicine'} (${v}) as given at ${new Date(g.at).toLocaleTimeString('en-GB', {hour:'2-digit', minute:'2-digit'})}. Only remove it if it wasn’t given.`, 'Remove the record', () => _g(v, id));
+  return _g(v, id); }; })();
+
+
+const BUD_Q = [['happening', 'What’s happening?'], ['needs', 'What needs me?'], ['waiting', 'What am I waiting for?'], ['wrong', 'What could go wrong?'], ['ready', 'Is everything ready?'], ['helping', 'Who’s helping?'], ['changed', 'What changed?']];
+function budIntent(q){ const t = ' ' + String(q || '').toLowerCase() + ' ';
+  if (/\b(ready|prepared|sorted for|set for)\b/.test(t)) return 'ready';
+  if (/\b(waiting|heard back|still no|chase|reply|replies)\b/.test(t)) return 'waiting';
+  if (/\b(wrong|risk|problem|worry about|gaps?|uncovered|fall through)\b/.test(t)) return 'wrong';
+  if (/\b(need(s)? me|my jobs|should i|do next|to do|todo|what now)\b/.test(t)) return 'needs';
+  if (/\b(who('s| is)? help|helping|team|who does|carrying|share)\b/.test(t)) return 'helping';
+  if (/\b(changed|change|new this week|different)\b/.test(t)) return 'changed';
+  if (/\b(happening|going on|how is|how's|overview|today|this week|summary|update)\b/.test(t)) return 'happening';
+  return ''; }
+const budBtn = (t, a, v = '', id = '') => ({t, a, v, id});
+function budAnswer(c, q, intent){ const who = whoName(c), k = intent || budIntent(q);
+  const t = String(q || '');
+  if (t && !intent && ((typeof URGENT_RX !== 'undefined' && URGENT_RX.test(t)) || worryOf(t) || DISTRESS.test(t) || (MED_Q.test(t) && (MED_WORD.test(t) || medName(t))))){
+    const a = localAnswer(c, t); return {lines:String(a.reply || '').split('\n').filter(Boolean).slice(0, 8), btns:[budBtn('Call NHS 111', 'tel', '111'), budBtn('Call 999', 'tel', '999')], kind:'safety'}; }
+  if (k === 'needs'){ const n = needsMe(c);
+    return n.list.length ? {lines:[`${n.list.length} ${n.list.length === 1 ? 'thing needs' : 'things need'} you, about ${minsText(n.mins || 1)}:`, ...n.list.slice(0, 4).map(x => '• ' + x.t + (x.sub ? ' (' + x.sub.toLowerCase() + ')' : '')), n.nobody.length ? `${n.nobody.length} ${n.nobody.length === 1 ? 'job has' : 'jobs have'} nobody yet.` : 'Everything else planned has someone.'],
+      btns:[budBtn('Show me', 'go', 'needsme')]} : {lines:['Nothing needs you right now.', n.nobody.length ? `${n.nobody.length} ${n.nobody.length === 1 ? 'job has' : 'jobs have'} nobody yet, if you have time.` : 'Everything planned has someone.'], btns:n.nobody.length ? [budBtn('See them', 'go', 'plan')] : []}; }
+  if (k === 'waiting'){ const w = CG.of(c).waits();
+    return w.length ? {lines:[`You’re waiting for ${w.length} ${w.length === 1 ? 'thing' : 'things'}:`, ...w.slice(0, 5).map(x => `• ${x.from}: ${x.what}${x.late ? ' (late)' : ''}`)], btns:[budBtn('Open the list', 'go', 'waitingfor')]} : {lines:['You’re not waiting for anything right now.'], btns:[budBtn('Add something you’re waiting for', 'sheet', 'waiting')]}; }
+  if (k === 'wrong'){ const r = careRisks(c, 14);
+    return r.length ? {lines:[`${r.length} ${r.length === 1 ? 'thing' : 'things'} could go wrong in the next two weeks:`, ...r.slice(0, 3).map(x => '• ' + (x.cons || x.t))], btns:[budBtn('See the plans to sort them', 'go', 'risks')]} : {lines:['Nothing in the next two weeks looks at risk from what’s in the plan.', 'Tendu only knows what’s in Tendu.'], btns:[]}; }
+  if (k === 'ready'){ const words = t.toLowerCase().split(/\W+/).filter(w => w.length > 3 && !['ready', 'everything', 'tomorrow', 'today', 'prepared'].includes(w));
+    const appts = openItems(c).filter(i => i.kind === 'appointment' && i.date && daysFromToday(i.date) >= 0);
+    const i = appts.find(x => words.some(w => x.title.toLowerCase().includes(w))) || (/\btomorrow\b/i.test(t) ? appts.find(x => daysFromToday(x.date) === 1) : null) || appts[0];
+    if (!i) return {lines:['There’s no appointment coming up in the plan.'], btns:[budBtn('Add one', 'sheet', 'capture')]};
+    const ks = [...READY_KEYS(c), 'qs', 'told'], ev = careEvent(c, i), miss = ev.needs.filter(n => ks.includes(n.k) && n.st === 'missing'), ok = ev.needs.filter(n => n.st === 'arranged' && ks.includes(n.k)), wait = ev.needs.filter(n => ks.includes(n.k) && n.st === 'asked');
+    return {lines:[`${i.title}, ${dayWord(i.date)}${i.time ? ' at ' + ampm(i.time) : ''}: ${miss.length > 2 ? 'not ready yet.' : miss.length || wait.length ? 'almost.' : 'ready.'}`, ...ok.map(n => '✓ ' + n.label + (n.k === 'who' && i.owner ? ': ' + memberName(i.owner, c) : '')), ...wait.map(n => '• Waiting for a reply: ' + n.label.toLowerCase() + (n.who && member(n.who, c) ? ' (' + memberName(n.who, c) + ')' : '')), ...miss.map(n => '• Still to sort: ' + n.label.toLowerCase())],
+      btns:[budBtn(miss.length ? 'Sort the rest' : 'Open the checklist', 'go', 'getready', i.id)]}; }
+  if (k === 'helping'){ const k2 = continuity(c), joined = c.members.filter(m => !m.isMe && m.acct), nj = notJoined(c);
+    return {lines:[c.members.length > 1 ? `${c.members.length - 1} ${c.members.length === 2 ? 'person helps' : 'people help'} with ${who}${joined.length < c.members.length - 1 ? ` (${joined.length} on Tendu)` : ''}.` : `It’s just you in ${who}’s team so far.`,
+      ...k2.per.slice(0, 3).map(x => `• ${x.m.isMe ? 'You' : firstName(x.m.name)}: ${x.pct}% of this week’s jobs`), nj.length ? `${nameList(nj)} ${nj.length === 1 ? 'hasn’t' : 'haven’t'} joined yet, so ${nj.length === 1 ? 'they don’t' : 'they don’t'} see the plan.` : ''].filter(Boolean),
+      btns:[budBtn(nj.length ? 'Send invites' : 'People', 'go', 'members')]}; }
+  if (k === 'changed'){ const w = weekChanges(c), meds = (c.meds || []).filter(m => m.changedAt && Date.now() - m.changedAt < 7 * 864e5), done = c.items.filter(i => i.done && i.doneAt && Date.now() - i.doneAt < 7 * 864e5);
+    const lines = [...(canHealth(c) ? w.lines.slice(0, 3).map(x => `• ${x.t}: noted ${x.n} ${x.n === 1 ? 'time' : 'times'} this week (${x.p} the week before)`) : []), meds.length && canHealth(c) ? `• ${meds.length} ${meds.length === 1 ? 'medicine' : 'medicines'} changed` : '', `• ${done.length} ${done.length === 1 ? 'job' : 'jobs'} done this week`, w.missed ? `• ${w.missed} ${w.missed === 1 ? 'day' : 'days'} without an “All OK”` : ''].filter(Boolean);
+    return {lines:['This week compared with last:', ...lines], btns:[budBtn('See more', 'go', 'changes')]}; }
+  if (k === 'happening'){ const s = calmStatus(c), n = needsMe(c), w = CG.of(c).waits().filter(x => x.late), r = careRisks(c, 7).filter(x => x.sev === 1);
+    return {lines:[`${s.head}. ${s.sub}.`, n.list.length ? `${n.list.length} ${n.list.length === 1 ? 'thing needs' : 'things need'} you.` : 'Nothing needs you right now.', r.length ? `${r.length} ${r.length === 1 ? 'thing' : 'things'} could go wrong this week.` : '', w.length ? `${w.length} late ${w.length === 1 ? 'reply' : 'replies'} you’re waiting for.` : ''].filter(Boolean),
+      btns:[n.list.length ? budBtn('What needs me', 'go', 'needsme') : null, r.length ? budBtn('What could go wrong', 'go', 'risks') : null].filter(Boolean)}; }
+  const qq = t.toLowerCase().trim(), short = qq.split(/\s+/).length <= 4 || /^(open|show|find|where|take me|go to)\b/.test(qq);
+  const tool = short && qq.length > 2 ? MORE_TOOLS.find(([v, l]) => l.toLowerCase() === qq.replace(/^(open|show|find|where is|take me to|go to)\s+(the\s+)?/, '')) : null;
+  const hit = tool ? [null, tool[0], tool[1]] : short ? PIP_FIND.find(([r]) => r.test(qq)) : null;
+  if (hit){ const [, v, l] = hit; return {lines:[`Open ${l}?`], btns:[v.startsWith('#') ? budBtn('Open', 'sheet', v.slice(1)) : budBtn('Open', 'go', v)]}; }
+  return {lines:['I can answer questions about the plan from what’s in Tendu. For anything else, Tendu’s assistant can help.'], btns:[budBtn('Ask the assistant', 'budAssist')]}; }
+
+function budCount(c){ if (!c) return 0; let n = 0; try { n = needsMe(c).list.filter(x => x.late || /^(ask|bk|ev)-/.test(x.key)).length + (typeof activeAlerts === 'function' ? activeAlerts(c).length : 0) + (recentWorry(c) ? 1 : 0); } catch(e){} return n; }
+pipHtml = function(){ if (!pipOn() || App.sheet || App.route.name === 'companion' || App.route.name === 'sos' || App.route.name === 'desk') return '';
+  const c = circle(), open = !!App.pipOpen, tabs = TABS.includes(App.route.name), mood = pipMood(c), n = budCount(c), ask = c && pipCheckinDue(c), lv = autoLevel();
+  const ans = App.budAns, bubble = ans ? '' : (App.pipCheck || App.pipMsg || (c ? budAnswer(c, '', 'happening').lines.slice(0, 2).join(' ') : pipGreeting(c)));
+  const btn = b => b.a === 'tel' ? `<a class="btn sm ${b.v === '999' ? 'danger' : ''}" href="tel:${b.v}" style="width:auto">${esc(b.t)}</a>` : `<button class="btn sm" data-a="budBtn" data-v="${esc(b.a + '|' + (b.v || '') + '|' + (b.id || ''))}" style="width:auto">${esc(b.t)}</button>`;
+  const panel = !open ? '' : `<div class="pip-scrim" data-a="pipClose"></div><section class="pip-panel bud" role="dialog" aria-label="Bud, your care helper">
+      <div class="row" style="gap:12px;align-items:flex-end"><div class="pip-big">${PIP_SVG('talk', mood === 'quiet' ? 'calm' : mood)}</div>${bubble ? `<div class="pip-bubble">${esc(bubble)}</div>` : ''}</div>
+      ${App.pipAsking ? `<div class="pip-feel">${[['great','😊','Good'],['ok','🙂','OK'],['tired','😮‍💨','Tired'],['hard','😟','Struggling']].map(([k, e, l]) => `<button data-a="pipFeel" data-v="${k}"><span>${e}</span>${l}</button>`).join('')}</div>` : `
+      <div class="budbody">
+        ${ans ? `<div class="budans ${ans.kind || ''}" aria-live="polite">${ans.q ? `<div class="tiny muted b">${esc(ans.q)}</div>` : ''}${ans.lines.map(l => `<div class="${/^[•✓]/.test(l) ? 'bl' : 'bp'}">${esc(l)}</div>`).join('')}${ans.btns.length ? `<div class="btnrow mt8" style="flex-wrap:wrap">${ans.btns.map(btn).join('')}</div>` : ''}</div>` : ''}
+        <form class="pip-find" data-submit="budAsk"><input class="input" name="q" placeholder="Ask Bud about ${esc(c ? whoName(c) : 'the plan')}…" autocomplete="off" aria-label="Ask Bud a question"><button class="btn sm" type="submit" style="width:auto">Ask</button></form>
+        <div class="pip-chips mt8">${BUD_Q.map(([k, l]) => `<button class="chip" data-a="budQ" data-v="${k}" aria-pressed="${!!(ans && ans.k === k)}">${esc(l)}</button>`).join('')}</div>
+        <button class="autobar mt12" data-a="pipGo" data-v="autopilot">${ic('bolt')}<span>What Bud may do: <b>${esc(AUTO[lv][1])}</b></span>${chevron()}</button>
+      </div>`}
+      <div class="row pip-foot"><button class="textbtn tiny" data-a="pipHome">Move Bud back</button><button class="textbtn tiny" data-a="pipHide">Hide Bud</button><button class="textbtn tiny" data-a="pipClose">Close</button></div></section>`;
+  return `<div class="pip ${tabs ? 'ontab' : ''} ${open ? 'open' : ''}">${panel}
+    <button class="pip-fab mood-${mood}" ${pipPosStyle()} data-pip="1" aria-label="Bud, your care helper${n ? ', ' + n + ' need you today' : ''}" title="Ask Bud. Drag me anywhere.">${PIP_SVG('', mood)}${n ? `<i class="pip-n">${n > 9 ? '9+' : n}</i>` : ask ? '<i class="pip-dot"></i>' : ''}${App.pipPop ? `<span class="pip-pop">${esc(App.pipPop)}</span>` : ''}</button></div>`; };
+ACTIONS.budQ = v => { const c = circle(); if (!c) return; const label = (BUD_Q.find(x => x[0] === v) || [v, ''])[1]; App.budAns = {...budAnswer(c, label, v), k:v, q:label}; App.pipOpen = true; render(); };
+ACTIONS.budAsk = f => { const c = circle(), q = String((f && f.q) || '').trim(); if (!c || !q) return; const k = budIntent(q); App.budAns = {...budAnswer(c, q), k, q}; App.pipOpen = true; render(); };
+ACTIONS.budBtn = v => { const [a, x, id] = String(v).split('|'), q = App.budAns && App.budAns.q; App.pipOpen = false; App.budAns = null;
+  if (a === 'go') return go(x, id ? {id} : {}); if (a === 'sheet') return openSheet(x, id ? {id} : {}); if (a === 'budAssist'){ App.aiDraft = q || ''; return go('assistant'); } render(); };
+ACTIONS.pipClose = (orig => (...a) => { App.budAns = null; return orig ? orig(...a) : (App.pipOpen = false, render()); })(ACTIONS.pipClose);
 
 (function boot(){
   const accts = Accounts.list(), last = accts.find(a => a.id === LS.get('tendu.last'));
